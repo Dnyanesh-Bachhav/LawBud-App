@@ -3,15 +3,17 @@ import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import { COLORS } from './components/constants';
 import Categories from './components/HomeScreen/Categories';
 import Header from './components/HomeScreen/Header';
+import Lawyers from './components/HomeScreen/Lawyers';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Header/>
-      <Text style={styles.textStyle}>Hello, User</Text>
-      <Text style={{fontSize: 20,fontWeight: '400',marginLeft: 10}}>Categories</Text>
-      <Categories/>
-      <StatusBar style="auto" />
+        <Header/>
+        <Text style={styles.textStyle}>Hello, User</Text>
+        <Text style={{fontSize: 20,fontWeight: '400',marginLeft: 10}}>Categories</Text>
+        <Categories/>
+        <Lawyers/>
+        <StatusBar style="auto" />
     </View>
   );
 }

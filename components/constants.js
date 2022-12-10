@@ -4,7 +4,7 @@ const COLORS = {
     gray: "#64748B",
     black: "#000000",
     white: "#ffffff"
-}
+};
 const CATEGORIES = [
     {
         name: "Notary",
@@ -39,5 +39,36 @@ const CATEGORIES = [
         name: "Criminal",
         imgSrc: "",
     },
-]
-export { COLORS, CATEGORIES } ; 
+];
+const LAWYERS = [
+    {
+        name: "Harvey Spector",
+        imgSrc: "",
+        type: "Civil Lawyer",
+        languages: ["English","Hindi","Bihari"],
+        experience: 15
+    },
+    {
+        name: "Harvey Spector",
+        imgSrc: "",
+        type: "Elder Law",
+        languages: ["English","Hindi","Bihari"],
+        experience: 15
+    },
+    {
+        name: "Madhav Mishra",
+        imgSrc: "",
+        type: "Criminal Lawyer",
+        languages: ["English","Hindi","Bihari"],
+        experience: 15
+    },
+    {
+        name: "Madhav Mishra",
+        imgSrc: "",
+        type: "Criminal Lawyer",
+        languages: ["English","Hindi","Bihari"],
+        experience: 15
+    },
+   
+];
+export { COLORS, CATEGORIES, LAWYERS } ;
