@@ -5,4 +5,39 @@ const COLORS = {
     black: "#000000",
     white: "#ffffff"
 }
-export { COLORS } ; 
+const CATEGORIES = [
+    {
+        name: "Notary",
+        imgSrc: "",
+    },
+    {
+        name: "Agreement",
+        imgSrc: "",
+    },
+    {
+        name: "Civil",
+        imgSrc: "",
+    },
+    {
+        name: "Criminal",
+        imgSrc: "",
+    },
+    
+    {
+        name: "Notary",
+        imgSrc: "",
+    },
+    {
+        name: "Agreement",
+        imgSrc: "",
+    },
+    {
+        name: "Civil",
+        imgSrc: "",
+    },
+    {
+        name: "Criminal",
+        imgSrc: "",
+    },
+]
+export { COLORS, CATEGORIES } ; 

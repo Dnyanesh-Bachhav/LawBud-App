@@ -4,7 +4,7 @@ import { COLORS } from "../constants";
 function Header() {
     return (
         <View style={styles.container}>
-            <FontAwesome name="bars" size={24} color={COLORS.white} />
+            <FontAwesome name="bars" size={24} color={COLORS.white} style={{marginLeft: 10}} />
             <View style={{flexDirection: 'row',alignItems: 'center' }} >
                 <TextInput
                     placeholder="Search for lawyers in your area..."
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         padding: 5,
+        paddingRight: 16,
         backgroundColor: "#000000",
         alignItems: 'center',
         justifyContent: 'space-between'
