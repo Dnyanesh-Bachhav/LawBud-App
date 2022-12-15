@@ -29,7 +29,7 @@ function Card({ name, type, languages, experience }) {
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginRight: 10,marginTop: 5 }} >
                     <Text style={{ fontSize: 16, fontWeight: '500' }} >{name}</Text>
                     <TouchableOpacity>
-                    <AntDesign name="hearto" size={21} color={COLORS.black} />
+                        <AntDesign name="hearto" size={21} color={COLORS.black} />
                     </TouchableOpacity>
                 </View>
                 <Text style={{ color: COLORS.gray }} >{type}</Text>
