@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
-import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { COLORS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
 function Header() {
@@ -9,9 +9,9 @@ function Header() {
             <TouchableOpacity onPress={()=>{
                 navigation.goBack();
             }} >
-            <FontAwesome name="bars" size={24} color={COLORS.white} style={{marginLeft: 10}} />
-            <Text>About</Text>
+            <AntDesign name="arrowleft" size={24} color={COLORS.white} />
             </TouchableOpacity>
+            <Text style={{color: COLORS.white,marginLeft: 10 }}>Profile</Text>
         </View>
     );
 }
@@ -22,15 +22,6 @@ const styles = StyleSheet.create({
         paddingRight: 16,
         backgroundColor: "#000000",
         alignItems: 'center',
-        justifyContent: 'space-between'
     },
-    inputStyle: {
-        borderWidth: 1,
-        padding: 4,
-        color: COLORS.white,
-        paddingHorizontal: 10,
-        borderRadius: 5,
-        backgroundColor: COLORS.secondary,
-    }
 })
 export default Header;

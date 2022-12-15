@@ -24,7 +24,12 @@ function Card({ name, type, languages, experience }) {
     return (
         <View style={{ borderWidth: 1, borderRadius: 7, marginBottom: 10, marginRight: 10, overflow: 'hidden' }} >
             <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>{
-                navigation.navigate('About');
+                navigation.navigate('About',{
+                    name,
+                    type,
+                    languages,
+                    experience
+                });
             }} >
 
             <Image
