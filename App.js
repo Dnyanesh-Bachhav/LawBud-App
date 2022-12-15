@@ -6,16 +6,20 @@ import { COLORS } from './components/constants';
 import Categories from './components/HomeScreen/Categories';
 import Header from './components/HomeScreen/Header';
 import Lawyers from './components/HomeScreen/Lawyers';
+import AboutScreen from './screens/AboutScreen';
 import HomeScreen from './screens/HomeScreen';
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <View style={styles.container}>
         <NavigationContainer>
-          <Stack.Navigator>
+          <Stack.Navigator initialRouteName='Home' >
             <Stack.Screen name='Home' component={HomeScreen} options={{
               headerShown: false,
             }} />
+            <Stack.Screen name='About' component={AboutScreen} options={{
+              headerShown: false,
+            }}/>
           </Stack.Navigator>
         </NavigationContainer>
         <StatusBar style="auto" />

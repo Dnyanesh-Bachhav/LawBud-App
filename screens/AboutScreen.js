@@ -1,10 +1,12 @@
-import { View } from "react-native";
+import { Text, View } from "react-native";
+import Header from "../components/AboutScreen/Header";
 
 
 function AboutScreen(){
     return(
         <View>
-            <Text></Text>
+            <Header/>
+            <Text>Hello World...!!!</Text>
         </View>
     );
 }

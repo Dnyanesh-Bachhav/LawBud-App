@@ -2,6 +2,7 @@ import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react
 import { AntDesign } from '@expo/vector-icons';
 import image1 from "../../assets/image.jpg";
 import { COLORS, LAWYERS } from "../constants";
+import { useNavigation } from "@react-navigation/native";
 
 function Lawyers() {
     return (
@@ -11,20 +12,25 @@ function Lawyers() {
                 style={styles.listStyle}
                 renderItem={({ item, index }) => (
                     <Card name={item.name} type={item.type} languages={item.languages} experience={item.experience} key={index} />
-                )}
-                keyExtractor={({ item, index }) => index}
-            />
+                    )}
+                    keyExtractor={({ item, index }) => index}
+                    />
         </View>
     );
 }
 function Card({ name, type, languages, experience }) {
+    const navigation = useNavigation();
     console.log(experience);
     return (
-        <View style={{ flexDirection: 'row', borderWidth: 1, borderRadius: 7, marginBottom: 10, marginRight: 10, overflow: 'hidden' }} >
+        <View style={{ borderWidth: 1, borderRadius: 7, marginBottom: 10, marginRight: 10, overflow: 'hidden' }} >
+            <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>{
+                navigation.navigate('About');
+            }} >
+
             <Image
                 source={image1}
                 style={styles.imgStyle}
-            />
+                />
             <View style={{ flex: 1, marginLeft: 10 }} >
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginRight: 10,marginTop: 5 }} >
                     <Text style={{ fontSize: 16, fontWeight: '500' }} >{name}</Text>
@@ -36,7 +42,7 @@ function Card({ name, type, languages, experience }) {
                 <Text style={{ color: COLORS.gray }} >{languages.map((item,index) => 
                 {
                     if(index!==languages.length-1){
-                    return item + ", "
+                        return item + ", "
                     }
                     else{
                         return item;
@@ -53,6 +59,7 @@ function Card({ name, type, languages, experience }) {
                     </View>
                 </View>
             </View>
+        </TouchableOpacity>
         </View>
     );
 }
