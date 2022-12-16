@@ -16,7 +16,9 @@ function AboutScreen({ route }){
                 <View  style={styles.textStyle}>
                     <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, provident pariatur dolorum quidem nihil, quaerat voluptatibus nam adipisci consectetur repellendus, facilis excepturi? Aliquam assumenda enim quia laboriosam. Quam, temporibus perspiciatis?</Text>
                 </View>
-                <Ratings/>
+                <View style={{ backgroundColor: COLORS.white, marginTop: 10, elevation: 10, borderRadius: 5 }} >
+                    <Ratings/>
+                </View>
                 <Report_Button/>
                 <Chat_Button/>
             </View>

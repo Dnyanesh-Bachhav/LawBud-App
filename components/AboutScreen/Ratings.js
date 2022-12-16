@@ -8,8 +8,19 @@ function Ratings(){
                 <Text>Ratings</Text>
                 <TouchableOpacity><AntDesign name="staro" size={20} color="black" /></TouchableOpacity>
             </View>
-            <View>
-                <View>
+            <View style={{ flexDirection: 'row', }} >
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
+                    <Text style={styles.ratingText}>4.69</Text>
+                    <View style={{ flexDirection: 'row' }} >
+                        <TouchableOpacity><AntDesign name="staro" size={20} color="black" /></TouchableOpacity>
+                        <TouchableOpacity><AntDesign name="staro" size={20} color="black" /></TouchableOpacity>
+                        <TouchableOpacity><AntDesign name="staro" size={20} color="black" /></TouchableOpacity>
+                        <TouchableOpacity><AntDesign name="staro" size={20} color="black" /></TouchableOpacity>
+                        <TouchableOpacity><AntDesign name="staro" size={20} color="black" /></TouchableOpacity>
+                    </View>
+                    <Text>420 reviews</Text>
+                </View>
+                <View style={{ flex: 1, }}>
                     <View style={styles.barStyle}><Text>1</Text><ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={0.5} color={COLORS.blue} style={{width:'80%', marginLeft: 10 }} /></View>
                     <View style={styles.barStyle}><Text>2</Text><ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={0.5} color={COLORS.blue} style={{width:'80%', marginLeft: 10 }} /></View>
                     <View style={styles.barStyle}><Text>3</Text><ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={0.5} color={COLORS.blue} style={{width:'80%', marginLeft: 10 }} /></View>
@@ -24,6 +35,7 @@ function Ratings(){
 const styles = StyleSheet.create({
     container:{
         padding: 5,
+        width: '100%',
     },
     header:{
         flexDirection: 'row',
@@ -31,10 +43,12 @@ const styles = StyleSheet.create({
     },
     barStyle:{
         flexDirection: 'row',
-        width: '50%',
-        borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    ratingText:{
+        fontSize: 40,
+        color: COLORS.gray,
     }
 });
 export default Ratings;
