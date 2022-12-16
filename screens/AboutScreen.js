@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
 import { Text, View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import Header from "../components/AboutScreen/Header";
-
+import { Ionicons } from '@expo/vector-icons';
 import image1 from "../assets/image.jpg";
 import { COLORS } from "../components/constants";
 
@@ -16,6 +16,7 @@ function AboutScreen({ route }){
                     <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, provident pariatur dolorum quidem nihil, quaerat voluptatibus nam adipisci consectetur repellendus, facilis excepturi? Aliquam assumenda enim quia laboriosam. Quam, temporibus perspiciatis?</Text>
                 </View>
                 <Report_Button/>
+                <Chat_Button/>
             </View>
         </View>
     );
@@ -75,6 +76,15 @@ function Report_Button(){
     );
 }
 
+function Chat_Button(){
+    return(
+        <View style={styles.chat_btn}>
+            <Ionicons name="chatbubble-ellipses" size={24} color={COLORS.blue} />
+            <Text style={{ color: COLORS.blue, fontSize: 20, fontWeight: '400', marginLeft: 5}} >Chat</Text>
+        </View>
+    );
+}
+
 const styles = StyleSheet.create({
     container:{
         padding: 10
@@ -98,7 +108,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderColor: COLORS.red,
         borderWidth: 1,
-
+    },
+    chat_btn:{
+        flexDirection: 'row',
+        backgroundColor: COLORS.secondary,
+        justifyContent: 'center',
+        marginTop: 10,
+        paddingVertical: 10,
+        alignItems: 'center',
+        borderWidth: 1,
     }
 });
 
