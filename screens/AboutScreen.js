@@ -5,6 +5,7 @@ import Header from "../components/AboutScreen/Header";
 import { Ionicons } from '@expo/vector-icons';
 import image1 from "../assets/image.jpg";
 import { COLORS } from "../components/constants";
+import Ratings from "../components/AboutScreen/Ratings";
 
 function AboutScreen({ route }){
     return(
@@ -15,6 +16,7 @@ function AboutScreen({ route }){
                 <View  style={styles.textStyle}>
                     <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, provident pariatur dolorum quidem nihil, quaerat voluptatibus nam adipisci consectetur repellendus, facilis excepturi? Aliquam assumenda enim quia laboriosam. Quam, temporibus perspiciatis?</Text>
                 </View>
+                <Ratings/>
                 <Report_Button/>
                 <Chat_Button/>
             </View>
