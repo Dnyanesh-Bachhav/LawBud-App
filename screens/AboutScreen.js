@@ -8,12 +8,14 @@ import { COLORS } from "../components/constants";
 
 function AboutScreen({ route }){
     return(
-        <View style={{flex:1, }} >
+        <View style={{flex:1}}>
             <Header/>
-            <Card name={ route.params.name } type={ route.params.type } languages={ route.params.languages } experience={ route.params.experience } />
-            <View  style={styles.textStyle}>
-
-            <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, provident pariatur dolorum quidem nihil, quaerat voluptatibus nam adipisci consectetur repellendus, facilis excepturi? Aliquam assumenda enim quia laboriosam. Quam, temporibus perspiciatis?</Text>
+            <View style={styles.container}>
+                <Card name={ route.params.name } type={ route.params.type } languages={ route.params.languages } experience={ route.params.experience } />
+                <View  style={styles.textStyle}>
+                    <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, provident pariatur dolorum quidem nihil, quaerat voluptatibus nam adipisci consectetur repellendus, facilis excepturi? Aliquam assumenda enim quia laboriosam. Quam, temporibus perspiciatis?</Text>
+                </View>
+                <Report_Button/>
             </View>
         </View>
     );
@@ -23,7 +25,7 @@ function Card({ name, type, languages, experience }) {
     const navigation = useNavigation();
     console.log(experience);
     return (
-        <View style={{ borderWidth: 1, borderRadius: 7, marginTop: 10, marginBottom: 10, marginLeft: 10, marginRight: 10}} >
+        <View style={{ borderWidth: 1, borderRadius: 7, marginBottom: 10,overflow: 'hidden' }} >
             <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>{
                 navigation.navigate('About');
             }} >
@@ -65,8 +67,18 @@ function Card({ name, type, languages, experience }) {
     );
 }
 
+function Report_Button(){
+    return(
+        <View style={styles.report_btn}>
+            <Text> Report Account </Text>
+        </View>
+    );
+}
 
 const styles = StyleSheet.create({
+    container:{
+        padding: 10
+    },
     imgStyle: {
         width: 80,
         height: 110,
@@ -78,8 +90,15 @@ const styles = StyleSheet.create({
         elevation:10,
         backgroundColor: COLORS.white,
         alignSelf: 'center',
-        marginHorizontal: 10,
         padding: 5
+    },
+    report_btn:{
+        marginTop: 10,
+        paddingVertical: 10,
+        alignItems: 'center',
+        borderColor: COLORS.red,
+        borderWidth: 1,
+
     }
 });
 
