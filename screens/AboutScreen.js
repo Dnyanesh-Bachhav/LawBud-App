@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import image1 from "../assets/image.jpg";
 import { COLORS } from "../components/constants";
 import Ratings from "../components/AboutScreen/Ratings";
+import Reviews from "../components/AboutScreen/Reviews";
 
 function AboutScreen({ route }){
     return(
@@ -18,6 +19,7 @@ function AboutScreen({ route }){
                 </View>
                 <View style={{ backgroundColor: COLORS.white, marginTop: 10, elevation: 10, borderRadius: 5 }} >
                     <Ratings/>
+                    <Reviews/>
                 </View>
                 <Report_Button/>
                 <Chat_Button/>
