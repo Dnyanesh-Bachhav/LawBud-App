@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     header:{
+        marginBottom: 4,
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
