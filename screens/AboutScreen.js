@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
-import { Text, View, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { Text, View, TouchableOpacity, Image, StyleSheet, ScrollView } from "react-native";
 import Header from "../components/AboutScreen/Header";
 import { Ionicons } from '@expo/vector-icons';
 import image1 from "../assets/image.jpg";
@@ -11,6 +11,8 @@ import Reviews from "../components/AboutScreen/Reviews";
 function AboutScreen({ route }){
     return(
         <View style={{flex:1}}>
+            <ScrollView>
+
             <Header/>
             <View style={styles.container}>
                 <Card name={ route.params.name } type={ route.params.type } languages={ route.params.languages } experience={ route.params.experience } />
@@ -24,6 +26,7 @@ function AboutScreen({ route }){
                 <Report_Button/>
                 <Chat_Button/>
             </View>
+            </ScrollView>
         </View>
     );
 }
@@ -32,7 +35,7 @@ function Card({ name, type, languages, experience }) {
     const navigation = useNavigation();
     console.log(experience);
     return (
-        <View style={{ borderWidth: 1, borderRadius: 7, marginBottom: 10,overflow: 'hidden' }} >
+        <View style={{ borderWidth: 1, borderRadius: 7, marginBottom: 10,overflow: 'hidden', }} >
             <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>{
                 navigation.navigate('About');
             }} >
@@ -114,6 +117,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderColor: COLORS.red,
         borderWidth: 1,
+        borderRadius: 5,
     },
     chat_btn:{
         flexDirection: 'row',
@@ -123,6 +127,8 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         alignItems: 'center',
         borderWidth: 1,
+        borderRadius: 5,
+        marginBottom: 20,
     }
 });
 
