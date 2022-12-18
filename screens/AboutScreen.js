@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
-import { Text, View, TouchableOpacity, Image, StyleSheet, ScrollView } from "react-native";
+import { Text, View, TouchableOpacity, Image, StyleSheet, ScrollView, SafeAreaView } from "react-native";
 import Header from "../components/AboutScreen/Header";
 import { Ionicons } from '@expo/vector-icons';
 import image1 from "../assets/image.jpg";
@@ -10,16 +10,16 @@ import Reviews from "../components/AboutScreen/Reviews";
 
 function AboutScreen({ route }){
     return(
-        <View style={{flex:1}}>
+        <SafeAreaView style={{flex:1,backgroundColor: COLORS.lightGray, }}>
+            <Header/>
             <ScrollView>
 
-            <Header/>
             <View style={styles.container}>
                 <Card name={ route.params.name } type={ route.params.type } languages={ route.params.languages } experience={ route.params.experience } />
                 <View  style={styles.textStyle}>
-                    <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, provident pariatur dolorum quidem nihil, quaerat voluptatibus nam adipisci consectetur repellendus, facilis excepturi? Aliquam assumenda enim quia laboriosam. Quam, temporibus perspiciatis?</Text>
+                    <Text style={{padding: 12}}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, provident pariatur dolorum quidem nihil, quaerat voluptatibus nam adipisci consectetur repellendus, facilis excepturi? Aliquam assumenda enim quia laboriosam. Quam, temporibus perspiciatis?</Text>
                 </View>
-                <View style={{ backgroundColor: COLORS.white, marginTop: 10, elevation: 10, borderRadius: 5 }} >
+                <View style={{ backgroundColor: COLORS.white, marginTop: 10, elevation: 2, borderRadius: 5, padding: 12, }} >
                     <Ratings/>
                     <Reviews/>
                 </View>
@@ -27,7 +27,7 @@ function AboutScreen({ route }){
                 <Chat_Button/>
             </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 }
 
@@ -35,20 +35,28 @@ function Card({ name, type, languages, experience }) {
     const navigation = useNavigation();
     console.log(experience);
     return (
-        <View style={{ borderWidth: 1, borderRadius: 7, marginBottom: 10,overflow: 'hidden', }} >
+        <View style={{elevation: 2, borderRadius: 7, marginBottom: 10, overflow: 'hidden' }} >
+            <View style={{flex:1, justifyContent: 'center', backgroundColor: COLORS.white}} >
+                
+            
             <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>{
-                navigation.navigate('About');
+                navigation.navigate('About',{
+                    name,
+                    type,
+                    languages,
+                    experience
+                });
             }} >
 
             <Image
                 source={image1}
                 style={styles.imgStyle}
                 />
-            <View style={{ flex: 1, marginLeft: 10 }} >
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginRight: 10,marginTop: 5 }} >
+            <View style={{ flex: 1, marginLeft: 10, justifyContent: 'center' }} >
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginRight: 10 }} >
                     <Text style={{ fontSize: 16, fontWeight: '500' }} >{name}</Text>
                     <TouchableOpacity>
-                        <AntDesign name="hearto" size={21} color={COLORS.black} />
+                        <AntDesign name="hearto" size={21} color={COLORS.gray} />
                     </TouchableOpacity>
                 </View>
                 <Text style={{ color: COLORS.gray }} >{type}</Text>
@@ -64,15 +72,16 @@ function Card({ name, type, languages, experience }) {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',marginRight: 10 }} >
                     <Text style={{ color: COLORS.gray }} >Exp: {experience}</Text>
                     <View style={{ flexDirection: 'row' }} >
-                        <TouchableOpacity><AntDesign name="staro" size={20} color="black" /></TouchableOpacity>
-                        <TouchableOpacity><AntDesign name="staro" size={20} color="black" /></TouchableOpacity>
-                        <TouchableOpacity><AntDesign name="staro" size={20} color="black" /></TouchableOpacity>
-                        <TouchableOpacity><AntDesign name="staro" size={20} color="black" /></TouchableOpacity>
-                        <TouchableOpacity><AntDesign name="staro" size={20} color="black" /></TouchableOpacity>
+                        <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
+                        <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
+                        <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
+                        <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
+                        <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
                     </View>
                 </View>
             </View>
-        </TouchableOpacity>
+            </TouchableOpacity>
+        </View>
         </View>
     );
 }
@@ -96,25 +105,31 @@ function Chat_Button(){
 
 const styles = StyleSheet.create({
     container:{
-        padding: 10
+        flex: 1,
+        padding: 10,
+        backgroundColor: COLORS.lightGray
     },
     imgStyle: {
-        width: 80,
+        width: 110,
         height: 110,
+        aspectRatio: 1/1,
         // borderWidth: 5,
         borderColor: COLORS.black,
         resizeMode: "cover",
     },
     textStyle:{
-        elevation:10,
+        flex: 1,
+        elevation:2,
         backgroundColor: COLORS.white,
         alignSelf: 'center',
-        padding: 5
+        borderRadius: 5,
+        
     },
     report_btn:{
         marginTop: 10,
         paddingVertical: 10,
         alignItems: 'center',
+        backgroundColor: "#f8fafc",
         borderColor: COLORS.red,
         borderWidth: 1,
         borderRadius: 5,

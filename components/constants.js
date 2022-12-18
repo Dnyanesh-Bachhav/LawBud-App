@@ -6,7 +6,7 @@ const COLORS = {
     gray: "#64748B",
     lightGray: "#E2E8F0",
     grey: "#D9D9D9",
-    black: "#000000",
+    black: "#333",
     white: "#ffffff"
 };
 const CATEGORIES = [

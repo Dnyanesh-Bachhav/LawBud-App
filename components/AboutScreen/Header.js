@@ -11,14 +11,14 @@ function Header() {
             }} >
             <AntDesign name="arrowleft" size={24} color={COLORS.white} />
             </TouchableOpacity>
-            <Text style={{color: COLORS.white,marginLeft: 10 }}>Profile</Text>
+            <Text style={{color: COLORS.white,marginLeft: 10, fontSize:16 }}>Profile</Text>
         </View>
     );
 }
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        padding: 5,
+        padding: 12,
         paddingRight: 16,
         backgroundColor: "#000000",
         alignItems: 'center',
