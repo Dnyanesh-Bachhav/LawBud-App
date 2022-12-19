@@ -40,7 +40,8 @@ function Card({ name, type, languages, experience }) {
                 
             
             <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>{
-                navigation.navigate('About',{
+            // Navigate to Lawyer's AboutScreen 
+            navigation.navigate('About',{
                     name,
                     type,
                     languages,
