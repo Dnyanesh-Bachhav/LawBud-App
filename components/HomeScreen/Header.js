@@ -32,5 +32,5 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: COLORS.secondary,
     }
-})
+});
 export default Header;

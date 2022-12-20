@@ -84,5 +84,5 @@ const styles = StyleSheet.create({
     listStyle: {
         marginLeft: 10
     }
-})
+});
 export default Lawyers;

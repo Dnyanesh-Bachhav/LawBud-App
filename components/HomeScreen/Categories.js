@@ -9,7 +9,6 @@ function Categories(){
             <FlatList
             data={CATEGORIES}
             numColumns={4}
-            // horizontal={true}
             style={{flexWrap:"wrap" }}
             renderItem={({ item,index })=>(
                 <Card name={item.name} key={index} />
