@@ -7,6 +7,7 @@ import Categories from './components/HomeScreen/Categories';
 import Header from './components/HomeScreen/Header';
 import Lawyers from './components/HomeScreen/Lawyers';
 import AboutScreen from './screens/AboutScreen';
+import ChatScreen from './screens/ChatScreen';
 import HomeScreen from './screens/HomeScreen';
 const Stack = createNativeStackNavigator();
 export default function App() {

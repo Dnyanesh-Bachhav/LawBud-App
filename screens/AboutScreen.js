@@ -24,7 +24,7 @@ function AboutScreen({ route }){
                     <Reviews/>
                 </View>
                 <Report_Button/>
-                <Chat_Button/>
+                <Chat_Button name={route.params.name} />
             </View>
             </ScrollView>
         </SafeAreaView>
@@ -95,12 +95,20 @@ function Report_Button(){
     );
 }
 
-function Chat_Button(){
+function Chat_Button({name}){
+    const navigation = useNavigation();
     return(
+        <TouchableOpacity onPress={()=>{
+            navigation.navigate('Chat',{
+                imgSrc: image1,
+                name,
+            });
+        }} >
         <View style={styles.chat_btn}>
             <Ionicons name="chatbubble-ellipses" size={24} color={COLORS.blue} />
             <Text style={{ color: COLORS.blue, fontSize: 20, fontWeight: '400', marginLeft: 5}} >Chat</Text>
         </View>
+        </TouchableOpacity>
     );
 }
 
