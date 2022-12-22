@@ -8,6 +8,7 @@ import Header from './components/HomeScreen/Header';
 import Lawyers from './components/HomeScreen/Lawyers';
 import AboutScreen from './screens/AboutScreen';
 import ChatScreen from './screens/ChatScreen';
+import FavouritesScreen from './screens/FavouritesScreen';
 import HomeScreen from './screens/HomeScreen';
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -22,6 +23,9 @@ export default function App() {
               headerShown: false,
             }}/>
             <Stack.Screen name='Chat' component={ChatScreen} options={{
+              headerShown: false,
+            }}/>
+            <Stack.Screen name='Favourite' component={FavouritesScreen} options={{
               headerShown: false,
             }}/>
           </Stack.Navigator>

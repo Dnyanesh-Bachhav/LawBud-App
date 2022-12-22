@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
-import { COLORS } from "../constants";
+import { COLORS } from "./constants";
 import { useNavigation } from "@react-navigation/native";
 function Header({headerText}) {
     const navigation = useNavigation();

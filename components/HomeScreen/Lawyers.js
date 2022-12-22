@@ -5,6 +5,7 @@ import { COLORS, LAWYERS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
 
 function Lawyers() {
+    const navigation = useNavigation();
     return (
         <View style={{ flex: 1, marginTop: 10 }} >
             <FlatList
@@ -15,6 +16,11 @@ function Lawyers() {
                     )}
                     keyExtractor={({ item, index }) => index}
                     />
+            <TouchableOpacity onPress={()=>{
+                navigation.navigate('Favourite');
+            }} >
+                <Text>Click Me...</Text>
+            </TouchableOpacity>
         </View>
     );
 }
