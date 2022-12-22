@@ -3,6 +3,7 @@ import Header from "../components/ChatScreen/Header";
 import { COLORS } from "../components/constants";
 import { Feather } from '@expo/vector-icons';
 
+// Chat Screen
 function ChatScreen({route}){
     return(
         <View style={styles.container}>
