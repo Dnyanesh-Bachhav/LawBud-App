@@ -20,6 +20,9 @@ export default function App() {
             <Stack.Screen name='About' component={AboutScreen} options={{
               headerShown: false,
             }}/>
+            <Stack.Screen name='Chat' component={ChatScreen} options={{
+              headerShown: false,
+            }}/>
           </Stack.Navigator>
         </NavigationContainer>
         <StatusBar style="auto" />
