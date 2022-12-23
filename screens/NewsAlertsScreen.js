@@ -41,7 +41,7 @@ function Card({ name, description, isOnline }) {
                 />
             <View style={{ flex: 1, marginLeft: 10, justifyContent: 'center' }} >
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }} >
-                    <Text style={{ fontSize: 16, fontWeight: '500' }} >{name}</Text>
+                    <Text style={{ fontSize: 20, fontWeight: '500' }} >{name}</Text>
                     <View style={{ width: 16, height: 16, backgroundColor: COLORS.black, borderRadius: 50, marginLeft: 8, backgroundColor: COLORS.success }} ></View>
                 </View>
                 <Text style={{ color: COLORS.gray }} >{description}</Text>
