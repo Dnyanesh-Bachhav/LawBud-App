@@ -10,6 +10,7 @@ import AboutScreen from './screens/AboutScreen';
 import ChatScreen from './screens/ChatScreen';
 import FavouritesScreen from './screens/FavouritesScreen';
 import HomeScreen from './screens/HomeScreen';
+import NewsAlertsScreen from './screens/NewsAlertsScreen';
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
@@ -26,6 +27,9 @@ export default function App() {
               headerShown: false,
             }}/>
             <Stack.Screen name='Favourite' component={FavouritesScreen} options={{
+              headerShown: false,
+            }}/>
+            <Stack.Screen name='News' component={NewsAlertsScreen} options={{
               headerShown: false,
             }}/>
           </Stack.Navigator>

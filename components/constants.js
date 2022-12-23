@@ -6,6 +6,7 @@ const COLORS = {
     gray: "#64748B",
     lightGray: "#E2E8F0",
     grey: "#D9D9D9",
+    success: "#27AE60",
     purple: "#1E293B",
     black: "#333",
     white: "#ffffff"
@@ -76,4 +77,31 @@ const LAWYERS = [
     },
    
 ];
-export { COLORS, CATEGORIES, LAWYERS } ;
+const CHATS_DATA = [
+    {
+        name: "Madhav Mishra",
+        description: "Aap Nisgchint Rahiye",
+        isOnline: true,
+    },
+    {
+        name: "Madhav Mishra",
+        description: "Aap Nisgchint Rahiye",
+        isOnline: true,
+    },
+    {
+        name: "Madhav Mishra",
+        description: "Aap Nisgchint Rahiye",
+        isOnline: false,
+    },
+    {
+        name: "Madhav Mishra",
+        description: "Aap Nisgchint Rahiye",
+        isOnline: true,
+    },
+    {
+        name: "Madhav Mishra",
+        description: "Aap Nisgchint Rahiye",
+        isOnline: false,
+    }
+];
+export { COLORS, CATEGORIES, LAWYERS, CHATS_DATA };

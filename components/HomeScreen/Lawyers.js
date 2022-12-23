@@ -21,6 +21,11 @@ function Lawyers() {
             }} >
                 <Text>Click Me...</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={()=>{
+                navigation.navigate('News');
+            }} >
+                <Text>Click Me...123</Text>
+            </TouchableOpacity>
         </View>
     );
 }
