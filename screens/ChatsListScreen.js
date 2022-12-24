@@ -4,7 +4,7 @@ import { CHATS_DATA, COLORS } from "../components/constants";
 import Header from "../components/Header";
 import image1 from "../assets/image.jpg";
 
-function NewsAlertsScreen(){
+function ChatsListScreen(){
     return(
         <View>
             <Header headerText={"Chats"} />
@@ -63,4 +63,4 @@ function Card({ name, description, isOnline }) {
         resizeMode: "cover",
     },
 })
-export default NewsAlertsScreen;
+export default ChatsListScreen;

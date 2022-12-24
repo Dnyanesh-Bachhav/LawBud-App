@@ -22,7 +22,7 @@ function Lawyers() {
                 <Text>Click Me...</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={()=>{
-                navigation.navigate('News');
+                navigation.navigate('ChatsList');
             }} >
                 <Text>Click Me...123</Text>
             </TouchableOpacity>
