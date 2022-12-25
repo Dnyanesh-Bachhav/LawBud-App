@@ -6,6 +6,7 @@ import { COLORS } from './components/constants';
 import Categories from './components/HomeScreen/Categories';
 import Header from './components/HomeScreen/Header';
 import Lawyers from './components/HomeScreen/Lawyers';
+import Tabs from './Navigation/tabs';
 import AboutScreen from './screens/AboutScreen';
 import ChatScreen from './screens/ChatScreen';
 import ChatsListScreen from './screens/ChatsListScreen';
@@ -16,23 +17,7 @@ export default function App() {
   return (
     <View style={styles.container}>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName='Home' >
-            <Stack.Screen name='Home' component={HomeScreen} options={{
-              headerShown: false,
-            }} />
-            <Stack.Screen name='About' component={AboutScreen} options={{
-              headerShown: false,
-            }}/>
-            <Stack.Screen name='Chat' component={ChatScreen} options={{
-              headerShown: false,
-            }}/>
-            <Stack.Screen name='Favourite' component={FavouritesScreen} options={{
-              headerShown: false,
-            }}/>
-            <Stack.Screen name='ChatsList' component={ChatsListScreen} options={{
-              headerShown: false,
-            }}/>
-          </Stack.Navigator>
+          <Tabs/>
         </NavigationContainer>
         <StatusBar style="auto" />
     </View>
