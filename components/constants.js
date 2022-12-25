@@ -104,4 +104,26 @@ const CHATS_DATA = [
         isOnline: false,
     }
 ];
-export { COLORS, CATEGORIES, LAWYERS, CHATS_DATA };
+const NEWS_ALERTS = [
+    {
+        headline: "Headline will be here...",
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, ipsam id nesciunt adipisci saepe vero excepturi reprehenderit, dolorem laborum quos doloribus."
+    },
+    {
+        headline: "Headline will be here...",
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, ipsam id nesciunt adipisci saepe vero excepturi reprehenderit, dolorem laborum quos doloribus."
+    },
+    {
+        headline: "Headline will be here...",
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, ipsam id nesciunt adipisci saepe vero excepturi reprehenderit, dolorem laborum quos doloribus."
+    },
+    {
+        headline: "Headline will be here...",
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, ipsam id nesciunt adipisci saepe vero excepturi reprehenderit, dolorem laborum quos doloribus."
+    },
+    {
+        headline: "Headline will be here...",
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, ipsam id nesciunt adipisci saepe vero excepturi reprehenderit, dolorem laborum quos doloribus."
+    }
+]
+export { COLORS, CATEGORIES, LAWYERS, CHATS_DATA, NEWS_ALERTS };

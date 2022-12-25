@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { COLORS } from "../components/constants";
 import ChatStack from "../Stacks/ChatStack";
 import HomeStack from "../Stacks/HomeStack";
+import NewsStack from "../Stacks/NewsStack";
 
 const Tab = createBottomTabNavigator();
 function Tabs(){
@@ -42,6 +43,19 @@ function Tabs(){
                             tintColor: focused ? COLORS.primary : COLORS.black,
                             ...styles.imgStyle}}/>
                         <Text style={{color: focused ? COLORS.primary : COLORS.black,}} >Home</Text>
+                    {/* </TouchableOpacity> */}
+                    </View>
+                )
+            }} />
+            <Tab.Screen name="NewsScreen" component={NewsStack} options={{
+                headerShown: false,
+                tabBarIcon: ({focused})=>(
+                    <View style={styles.tabOption}>
+                    {/* <TouchableOpacity> */}
+                        <Image source={require("../assets/Home.png")} style={{
+                            tintColor: focused ? COLORS.primary : COLORS.black,
+                            ...styles.imgStyle}}/>
+                        <Text style={{color: focused ? COLORS.primary : COLORS.black,}} >NEWS</Text>
                     {/* </TouchableOpacity> */}
                     </View>
                 )
