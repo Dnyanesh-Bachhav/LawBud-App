@@ -1,7 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 import { COLORS } from "../components/constants";
 import ChatStack from "../Stacks/ChatStack";
+import FavouriteStack from "../Stacks/FavouriteStack";
 import HomeStack from "../Stacks/HomeStack";
 import NewsStack from "../Stacks/NewsStack";
 
@@ -11,6 +13,7 @@ function Tabs(){
         <Tab.Navigator
         screenOptions={{
             "tabBarShowLabel": false,
+            "tabBarStyle" : { backgroundColor: COLORS.black },
             "tabBarStyle": [
               {
                 "display": "flex"
@@ -18,6 +21,7 @@ function Tabs(){
               null
             ]
           }}
+          
 
         
         >
@@ -27,9 +31,8 @@ function Tabs(){
                     <View style={styles.tabOption}>
                     {/* <TouchableOpacity> */}
                         <Image source={require("../assets/Home.png")} style={{
-                            tintColor: focused ? COLORS.primary : COLORS.black,
+                            tintColor: focused ? COLORS.grey : COLORS.black,
                             ...styles.imgStyle}}/>
-                        <Text style={{color: focused ? COLORS.primary : COLORS.black,}} >Home</Text>
                     {/* </TouchableOpacity> */}
                     </View>
                 )
@@ -39,10 +42,9 @@ function Tabs(){
                 tabBarIcon: ({focused})=>(
                     <View style={styles.tabOption}>
                     {/* <TouchableOpacity> */}
-                        <Image source={require("../assets/Home.png")} style={{
-                            tintColor: focused ? COLORS.primary : COLORS.black,
+                        <Image source={require("../assets/messenger.png")} style={{
+                            tintColor: focused ? COLORS.grey : COLORS.black,
                             ...styles.imgStyle}}/>
-                        <Text style={{color: focused ? COLORS.primary : COLORS.black,}} >Home</Text>
                     {/* </TouchableOpacity> */}
                     </View>
                 )
@@ -52,10 +54,21 @@ function Tabs(){
                 tabBarIcon: ({focused})=>(
                     <View style={styles.tabOption}>
                     {/* <TouchableOpacity> */}
-                        <Image source={require("../assets/Home.png")} style={{
-                            tintColor: focused ? COLORS.primary : COLORS.black,
+                        <Image source={require("../assets/book.png")} style={{
+                            tintColor: focused ? COLORS.grey : COLORS.black,
                             ...styles.imgStyle}}/>
-                        <Text style={{color: focused ? COLORS.primary : COLORS.black,}} >NEWS</Text>
+                    {/* </TouchableOpacity> */}
+                    </View>
+                )
+            }} />
+            <Tab.Screen name="FavouriteScreen" component={FavouriteStack} options={{
+                headerShown: false,
+                tabBarIcon: ({focused})=>(
+                    <View style={styles.tabOption}>
+                    {/* <TouchableOpacity> */}
+                        <Image source={require("../assets/heart.png")} style={{
+                            tintColor: focused ? COLORS.grey : COLORS.black,
+                            ...styles.imgStyle}}/>
                     {/* </TouchableOpacity> */}
                     </View>
                 )

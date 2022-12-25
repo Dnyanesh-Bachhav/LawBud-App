@@ -16,7 +16,7 @@ function Lawyers() {
                     )}
                     keyExtractor={({ item, index }) => index}
                     />
-            <TouchableOpacity onPress={()=>{
+            {/* <TouchableOpacity onPress={()=>{
                 navigation.navigate('Favourite');
             }} >
                 <Text>Click Me...</Text>
@@ -30,7 +30,7 @@ function Lawyers() {
                 navigation.navigate('NewsAlert');
             }} >
                 <Text>Click Me...1234</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </View>
     );
 }

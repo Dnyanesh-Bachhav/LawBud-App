@@ -25,7 +25,7 @@ function Card({ name, type, languages, experience }) {
     const navigation = useNavigation();
     console.log(experience);
     return (
-        <View style={{elevation: 2, borderRadius: 7, marginBottom: 10, marginRight: 10, overflow: 'hidden' }} >
+        <View style={{elevation: 2, borderRadius: 7, marginTop: 10, marginRight: 10, overflow: 'hidden' }} >
             <View style={{flex:1, justifyContent: 'center', backgroundColor: COLORS.white}} >
                 
             
