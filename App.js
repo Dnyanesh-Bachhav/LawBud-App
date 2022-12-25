@@ -3,15 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import { COLORS } from './components/constants';
-import Categories from './components/HomeScreen/Categories';
-import Header from './components/HomeScreen/Header';
-import Lawyers from './components/HomeScreen/Lawyers';
 import Tabs from './Navigation/tabs';
-import AboutScreen from './screens/AboutScreen';
-import ChatScreen from './screens/ChatScreen';
-import ChatsListScreen from './screens/ChatsListScreen';
-import FavouritesScreen from './screens/FavouritesScreen';
-import HomeScreen from './screens/HomeScreen';
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
