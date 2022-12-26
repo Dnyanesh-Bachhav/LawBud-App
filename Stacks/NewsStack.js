@@ -1,5 +1,4 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ChatsListScreen from "../screens/ChatsListScreen";
 import NewsAlertScreen from "../screens/NewsAlertsScreen";
 
 

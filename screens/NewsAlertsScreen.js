@@ -1,8 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { AntDesign } from '@expo/vector-icons';
 import { Text, View, TouchableOpacity, Image, StyleSheet, ScrollView, SafeAreaView, FlatList } from "react-native";
-import { Ionicons } from '@expo/vector-icons';
-import image1 from "../assets/image.jpg";
 import { COLORS, NEWS_ALERTS } from "../components/constants";
 import Header from "../components/Header";
 
