@@ -11,6 +11,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import CustomDrawer from "../components/CustomDrawer";
 
 const HomeScreenStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -18,36 +19,20 @@ function DrawerStack(){
   return(
     <Drawer.Navigator initialRouteName="Home1" drawerContent={(props)=> <CustomDrawer {...props} />} screenOptions={{
       headerShown: false,
-      drawerActiveBackgroundColor: COLORS.primary,
+      drawerActiveBackgroundColor: COLORS.purple,
       drawerActiveTintColor: COLORS.white,
       drawerInactiveTintColor: COLORS.black,
       drawerLabelStyle:{
-          marginLeft: -25
+          marginLeft: 0
       }
       
   }} >
-    <Drawer.Screen name="Home " component={HomeScreen} options={{
-                drawerIcon: ({color})=>(
-                    <FontAwesome name="home" size={24} color={color} />
-                )
-            }} />
-            {/* <Drawer.Screen name="Market" component={MarketScreen} options={{
-                drawerIcon: ({color})=>(
-                    <FontAwesome name="line-chart" size={24} color={color} />
-                )
-            }} />
-            <Drawer.Screen name="News" component={NewsScreen}
-            options={{
-                drawerIcon: ({color})=>(
-                    <Ionicons name="newspaper-outline" size={24} color={color} />
-                )
-            }} />
-            <Drawer.Screen name="Basket" component={BasketsScreen} 
-            options={{
-                drawerIcon: ({color})=>(
-                    <Fontisto name="shopping-basket" size={24} color={color} />
-                )
-            }} /> */}
+    <Drawer.Screen name="Home " component={HomeScreen}  />
+            <Drawer.Screen name="Feedback" component={HomeScreen} />
+            <Drawer.Screen name="Contact us" component={HomeScreen}
+           />
+            <Drawer.Screen name="Privacy Policy" component={HomeScreen} 
+           />
             
         </Drawer.Navigator>
   );

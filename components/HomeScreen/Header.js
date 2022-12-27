@@ -1,10 +1,16 @@
-import { Text, View, StyleSheet, TextInput } from "react-native";
+import { Text, View, StyleSheet, TextInput, Pressable } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import { COLORS } from "../constants";
+import { useNavigation } from "@react-navigation/native";
 function Header() {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
-            <FontAwesome name="bars" size={24} color={COLORS.white} style={{marginLeft: 10}} />
+            <Pressable onPress={()=>{
+                navigation.openDrawer();
+            }} >
+                <FontAwesome name="bars" size={24} color={COLORS.white} style={{marginLeft: 10}} />
+            </Pressable>
             <View style={{flexDirection: 'row',alignItems: 'center' }} >
                 <TextInput
                     placeholder="Search for lawyers in your area..."
