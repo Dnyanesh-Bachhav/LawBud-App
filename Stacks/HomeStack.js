@@ -7,10 +7,6 @@ import ChatsListScreen from "../screens/ChatsListScreen";
 import FavouritesScreen from "../screens/FavouritesScreen";
 import HomeScreen from "../screens/HomeScreen";
 import NewsAlertScreen from "../screens/NewsAlertsScreen";
-import { FontAwesome } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { Fontisto } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
 import CustomDrawer from "../components/CustomDrawer";
 
 const HomeScreenStack = createNativeStackNavigator();
@@ -29,10 +25,8 @@ function DrawerStack(){
   }} >
     <Drawer.Screen name="Home " component={HomeScreen}  />
             <Drawer.Screen name="Feedback" component={HomeScreen} />
-            <Drawer.Screen name="Contact us" component={HomeScreen}
-           />
-            <Drawer.Screen name="Privacy Policy" component={HomeScreen} 
-           />
+            <Drawer.Screen name="Contact us" component={HomeScreen}/>
+            <Drawer.Screen name="Privacy Policy" component={HomeScreen} />
             
         </Drawer.Navigator>
   );
