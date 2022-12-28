@@ -1,21 +1,36 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import image1 from "../../assets/image.jpg";
 import { COLORS, LAWYERS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import { getLawyersData } from "../../Services/requests";
 
 function Lawyers() {
     const navigation = useNavigation();
+    const[ lawyersData, setLawyersData ] = useState(null);
+    async function getLawyersData1(){
+        const lawyersArray = await getLawyersData();
+        console.log(lawyersArray);
+        setLawyersData(lawyersArray);
+    }
+    useEffect(()=>{
+        getLawyersData1();
+    },[]);
     return (
         <View style={{ flex: 1, marginTop: 10 }} >
-            <FlatList
-                data={LAWYERS}
-                style={styles.listStyle}
-                renderItem={({ item, index }) => (
-                    <Card name={item.name} type={item.type} languages={item.languages} experience={item.experience} key={index} />
-                    )}
-                    keyExtractor={({ item, index }) => index}
-                    />
+            {
+                lawyersData ?
+                <FlatList
+                    data={ lawyersData }
+                    style={styles.listStyle}
+                    renderItem={({ item, index }) => (
+                        <Card name={item.name} type={item.type} imgSrc={item.profile_image} languages={item.ratings} experience={item.experience} key={index} />
+                        )}
+                        keyExtractor={({ item, index }) => index}
+                        />
+                    : <ActivityIndicator size={"large"} color={COLORS.secondary} />
+            }
             {/* <TouchableOpacity onPress={()=>{
                 navigation.navigate('Favourite');
             }} >
@@ -34,7 +49,7 @@ function Lawyers() {
         </View>
     );
 }
-function Card({ name, type, languages, experience }) {
+function Card({ name, type, imgSrc, languages, experience }) {
     const navigation = useNavigation();
     console.log(experience);
     return (
@@ -52,7 +67,9 @@ function Card({ name, type, languages, experience }) {
             }} >
 
             <Image
-                source={image1}
+                source={{
+                    uri: imgSrc
+                }}
                 style={styles.imgStyle}
                 />
             <View style={{ flex: 1, marginLeft: 10, justifyContent: 'center' }} >
