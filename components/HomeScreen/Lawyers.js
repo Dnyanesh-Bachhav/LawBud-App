@@ -12,6 +12,9 @@ function Lawyers() {
     async function getLawyersData1(){
         const lawyersArray = await getLawyersData();
         console.log(lawyersArray);
+        lawyersArray = lawyersArray.filter(( item )=>{
+            return item.userType == "lawyers"
+        });
         setLawyersData(lawyersArray);
     }
     useEffect(()=>{
