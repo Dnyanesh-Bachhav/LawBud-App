@@ -8,6 +8,7 @@ import FavouritesScreen from "../screens/FavouritesScreen";
 import HomeScreen from "../screens/HomeScreen";
 import NewsAlertScreen from "../screens/NewsAlertsScreen";
 import CustomDrawer from "../components/CustomDrawer";
+import ProfileScreen from "../screens/ProfileScreen";
 
 const HomeScreenStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -51,6 +52,9 @@ function HomeStack(){
               headerShown: false,
             }}/>
             <HomeScreenStack.Screen name='NewsAlert' component={NewsAlertScreen} options={{
+              headerShown: false,
+            }}/>
+            <HomeScreenStack.Screen name='Profile' component={ProfileScreen} options={{
               headerShown: false,
             }}/>
         </HomeScreenStack.Navigator>
