@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TextInput } from "react-native";
+import { View, Text, StyleSheet, Image, TextInput, ScrollView } from "react-native";
 import Header from '../components/Header';
 import image1 from '../assets/image.jpg';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -15,12 +15,14 @@ function ProfileScreen(){
                     />
                 <View style={styles.badgeStyle}><MaterialIcons name="edit" size={24} color={COLORS.white} /></View>
             </View>
-            <Field name="Name" />
-            <Field name="Contact" />
-            <Field name="Email" />
-            <Field name="Home Address" />
-            <Field name="Profession" />
-            <Report_Button />
+            <ScrollView>
+                <Field name="Name" />
+                <Field name="Contact" />
+                <Field name="Email" />
+                <Field name="Home Address" />
+                <Field name="Profession" />
+            </ScrollView>
+            <Logout_Button />
         </View>
     );
 }
@@ -36,7 +38,7 @@ function Field({name}){
     );
 }
 
-function Report_Button(){
+function Logout_Button(){
     return(
         <View style={styles.report_btn}>
             <Text> Logout </Text>
