@@ -29,11 +29,9 @@ function Tabs(){
                 headerShown: false,
                 tabBarIcon: ({focused})=>(
                     <View style={styles.tabOption}>
-                    {/* <TouchableOpacity> */}
                         <Image source={require("../assets/Home.png")} style={{
                             tintColor: focused ? COLORS.grey : COLORS.black,
                             ...styles.imgStyle}}/>
-                    {/* </TouchableOpacity> */}
                     </View>
                 )
             }} />
@@ -41,11 +39,9 @@ function Tabs(){
                 headerShown: false,
                 tabBarIcon: ({focused})=>(
                     <View style={styles.tabOption}>
-                    {/* <TouchableOpacity> */}
                         <Image source={require("../assets/messenger.png")} style={{
                             tintColor: focused ? COLORS.grey : COLORS.black,
                             ...styles.imgStyle}}/>
-                    {/* </TouchableOpacity> */}
                     </View>
                 )
             }} />
@@ -53,11 +49,9 @@ function Tabs(){
                 headerShown: false,
                 tabBarIcon: ({focused})=>(
                     <View style={styles.tabOption}>
-                    {/* <TouchableOpacity> */}
                         <Image source={require("../assets/book.png")} style={{
                             tintColor: focused ? COLORS.grey : COLORS.black,
                             ...styles.imgStyle}}/>
-                    {/* </TouchableOpacity> */}
                     </View>
                 )
             }} />
@@ -65,11 +59,9 @@ function Tabs(){
                 headerShown: false,
                 tabBarIcon: ({focused})=>(
                     <View style={styles.tabOption}>
-                    {/* <TouchableOpacity> */}
                         <Image source={require("../assets/heart.png")} style={{
                             tintColor: focused ? COLORS.grey : COLORS.black,
                             ...styles.imgStyle}}/>
-                    {/* </TouchableOpacity> */}
                     </View>
                 )
             }} />
