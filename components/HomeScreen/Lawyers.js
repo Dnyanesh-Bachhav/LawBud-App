@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
     imgStyle: {
         width: 110,
         height: 110,
-        // borderWidth: 5,
         aspectRatio: 1/1,
         borderColor: COLORS.black,
         resizeMode: "cover",
