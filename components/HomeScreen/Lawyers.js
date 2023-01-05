@@ -1,6 +1,5 @@
 import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
-import image1 from "../../assets/image.jpg";
 import { COLORS, LAWYERS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
