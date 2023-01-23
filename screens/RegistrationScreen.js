@@ -8,7 +8,8 @@ function RegistrationScreen(){
         <View style={styles.container}>
             <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
             <RegistrationProgress/>
-            <Register/>
+            {/* <Register/> */}
+            <Personal/>
         </View>
     );
 }
@@ -46,6 +47,7 @@ function Register(){
                     refRBSheet.current.open();
                 }} ><Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Get OTP</Text></TouchableOpacity>
             </View>
+            {/* Bottom Sheet */}
             <RBSheet
                 ref={refRBSheet}
                 animationType="none"
@@ -88,9 +90,24 @@ function InputComponent({title}){
 }
 
 function Personal(){
-    <View>
-        <Text>Personal</Text>
+    return(
+
+        <View style={{backgroundColor: COLORS.white,padding: 16, borderRadius: 5}} >
+        {/* <Text>Personal</Text> */}
+        <View style={{width: 100,height: 100, backgroundColor: COLORS.grey, borderRadius: 50, alignSelf: 'center' }} >
+
+        </View>
+        <InputComponent title={"Name*"} />
+        <InputComponent title={"Office/Home Address"} />
+        <InputComponent title={"Office Phone Number"} />
+
+        <View style={{backgroundColor: COLORS.black,marginTop: 10, borderRadius: 4 }} >
+                <TouchableOpacity><Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text></TouchableOpacity>
+        </View>
+
+        
     </View>
+        );
 }
 function SkillSets(){
     return(
