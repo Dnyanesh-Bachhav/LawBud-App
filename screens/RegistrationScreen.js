@@ -9,14 +9,19 @@ function RegistrationScreen(){
             <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
             <RegistrationProgress/>
             {/* <Register/> */}
-            <Personal/>
+            {/* <Personal/> */}
+            {/* <SkillSets /> */}
+            <Documents/>
         </View>
     );
 }
 function RegistrationProgress(){
     return(
-    <View>
-        <Text style={{fontSize: 16, color: COLORS.white}} >Register  Personal  SkillSets  Documents</Text>
+    <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 16, flexDirection: 'row', justifyContent: 'space-between', borderRadius: 5}} >
+        <Text style={{fontSize: 12, color: COLORS.black}}>Register</Text>
+        <Text style={{fontSize: 12, color: COLORS.black}}>Personal</Text>
+        <Text style={{fontSize: 12, color: COLORS.black}}>SkillSets</Text>
+        <Text style={{fontSize: 12, color: COLORS.black}}>Documents</Text>
     </View>
     );
 }
@@ -24,7 +29,7 @@ function Register(){
     const [currentOption,setCurrentOption] = useState("user");
     const refRBSheet = useRef();
     return(
-        <View style={{ backgroundColor: COLORS.white,padding: 16, borderRadius: 5 }}>
+        <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5 }}>
             <Text style={{fontSize: 16,color: COLORS.gray, }}>What describes you best?</Text>
             <View style={{ flexDirection: 'row', borderRadius: 5, padding: 4, marginTop: 5, backgroundColor: COLORS.lightGray }} >
                 <TouchableOpacity style={{width: '50%', borderRadius:5, backgroundColor: currentOption === "user" ? COLORS.black : COLORS.lightGray}} onPress={()=>(
@@ -92,8 +97,7 @@ function InputComponent({title}){
 function Personal(){
     return(
 
-        <View style={{backgroundColor: COLORS.white,padding: 16, borderRadius: 5}} >
-        {/* <Text>Personal</Text> */}
+        <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5}} >
         <View style={{width: 100,height: 100, backgroundColor: COLORS.grey, borderRadius: 50, alignSelf: 'center' }} >
 
         </View>
@@ -111,15 +115,34 @@ function Personal(){
 }
 function SkillSets(){
     return(
-        <View>
-            <Text>Skill Sets</Text>
+        <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5}}>
+            <Text style={{color: COLORS.gray}}>Select Your Specialization</Text>
+            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} placeholder={"Search and select your skillset"} />
+            <View style={{flexDirection: 'row', marginTop: 4, height: 200 }} >
+            <TouchableOpacity style={{backgroundColor: COLORS.black, borderRadius: 5, marginLeft: 4, paddingVertical: 2, paddingHorizontal: 5, height: 25 }} ><Text style={{color: COLORS.white}}>Notary</Text></TouchableOpacity>
+            <TouchableOpacity style={{backgroundColor: COLORS.black, borderRadius: 5, marginLeft: 4, paddingVertical: 2, paddingHorizontal: 5, height: 25 }} ><Text style={{color: COLORS.white}}>Robbery</Text></TouchableOpacity>
+
+            </View>
+
+            <View style={{backgroundColor: COLORS.black,marginTop: 10, borderRadius: 4 }} >
+                <TouchableOpacity><Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text></TouchableOpacity>
+            </View>
         </View>
     );
 }
 function Documents(){
     return(
-        <View>
-            <Text>Documents...</Text>
+        <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5}}>
+            <Text style={{fontSize: 16,color: COLORS.gray, }}>What describes you best?</Text>
+            <Text style={{color: COLORS.gray}}>Degree Certificate*</Text>
+            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} />
+            <Text style={{color: COLORS.gray}}>Bar Membership*</Text>
+            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} />
+            <InputComponent title={"Sanat Number"} />
+            <InputComponent title={"Work Experience(in years)"} />
+            <View style={{backgroundColor: COLORS.black,marginTop: 10, borderRadius: 4 }} >
+                <TouchableOpacity><Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text></TouchableOpacity>
+            </View>
         </View>
     );
 }
@@ -137,7 +160,8 @@ const styles = StyleSheet.create({
     inputStyle:{
         backgroundColor: COLORS.lightGray,
         borderRadius: 5,
-        paddingLeft: 5
+        paddingLeft: 5,
+        marginTop: 4
 
     }
 });
