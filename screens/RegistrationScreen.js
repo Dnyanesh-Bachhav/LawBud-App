@@ -8,6 +8,7 @@ function RegistrationScreen(){
         <View style={styles.container}>
             <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
             <RegistrationProgress/>
+            {/* Registration Screens */}
             {/* <Register/> */}
             {/* <Personal/> */}
             {/* <SkillSets /> */}
