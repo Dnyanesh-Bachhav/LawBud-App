@@ -10,6 +10,7 @@ import NewsAlertScreen from "../screens/NewsAlertsScreen";
 import CustomDrawer from "../components/CustomDrawer";
 import ProfileScreen from "../screens/ProfileScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
+import LoginScreen from "../screens/LoginScreen";
 
 const HomeScreenStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -60,6 +61,9 @@ function HomeStack(){
             }}/>
             
             <HomeScreenStack.Screen name='Register' component={RegistrationScreen} options={{
+              headerShown: false,
+            }}/>
+            <HomeScreenStack.Screen name='Login' component={LoginScreen} options={{
               headerShown: false,
             }}/>
         </HomeScreenStack.Navigator>

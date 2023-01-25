@@ -38,6 +38,12 @@ function Lawyers() {
             }}  >
                 <Text>Go to Registration</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity onPress={()=>{
+                navigation.navigate("Login");
+            }}  >
+                <Text>Go to Login</Text>
+            </TouchableOpacity>
         </View>
     );
 }
