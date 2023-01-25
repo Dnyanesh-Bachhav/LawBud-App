@@ -2,10 +2,12 @@ import { useRef, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { COLORS } from "../components/constants";
+import { useNavigation } from "@react-navigation/native";
 
 function LoginScreen(){
     const [currentOption,setCurrentOption] = useState("user");
     const refRBSheet = useRef();
+    const navigation = useNavigation();
     return(
         <View style={styles.container}>
             <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Login</Text>
@@ -21,7 +23,11 @@ function LoginScreen(){
             </View>
             <View style={{flexDirection: 'row', marginTop: 20, justifyContent: 'center', alignItems: 'center'}} >
                 <Text style={{color:COLORS.gray}} >Dont have an account?</Text>
+                <TouchableOpacity onPress={()=>{
+                    navigation.navigate("Register");
+                }} >
                 <Text style={{color:COLORS.gray, marginLeft: 5, textDecorationLine: 'underline' }} >Sign Up</Text>
+                </TouchableOpacity>
             </View>
             {/* Bottom Sheet */}
             <RBSheet
