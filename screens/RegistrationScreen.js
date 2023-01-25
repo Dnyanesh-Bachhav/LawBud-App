@@ -9,10 +9,10 @@ function RegistrationScreen(){
             <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
             <RegistrationProgress/>
             {/* Registration Screens */}
-            {/* <Register/> */}
+            <Register/>
             {/* <Personal/> */}
             {/* <SkillSets /> */}
-            <Documents/>
+            {/* <Documents/> */}
         </View>
     );
 }
