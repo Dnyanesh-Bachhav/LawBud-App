@@ -11,6 +11,7 @@ import CustomDrawer from "../components/CustomDrawer";
 import ProfileScreen from "../screens/ProfileScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import LoginScreen from "../screens/LoginScreen";
+import PersonalScreen from "../screens/PersonalScreen";
 
 const HomeScreenStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -58,12 +59,14 @@ function HomeStack(){
             }}/>
             <HomeScreenStack.Screen name='Profile' component={ProfileScreen} options={{
               headerShown: false,
-            }}/>
-            
+            }}/>            
             <HomeScreenStack.Screen name='Register' component={RegistrationScreen} options={{
               headerShown: false,
             }}/>
             <HomeScreenStack.Screen name='Login' component={LoginScreen} options={{
+              headerShown: false,
+            }}/>
+            <HomeScreenStack.Screen name='Personal' component={PersonalScreen} options={{
               headerShown: false,
             }}/>
         </HomeScreenStack.Navigator>

@@ -30,11 +30,11 @@ function RegistrationScreen(){
             <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
             <RegistrationProgress userType={userType} />
             {/* Registration Screens */}
-            {/* <Register userType={userType} setUserType={setUserType} /> */}
+            <Register userType={userType} setUserType={setUserType} />
             {/* <Personal/> */}
-            {
+            {/* {
                !loading ? <SkillSets lawyersCategoriesData={lawyersCategoriesData} /> : <ActivityIndicator size={"small"} color={COLORS.black} />
-            }
+            } */}
             {/* <Documents/> */}
         </View>
     );
@@ -62,6 +62,7 @@ function RegistrationProgress({userType}){
 }
 function Register({userType,setUserType}){
     const [currentOption,setCurrentOption] = useState("user");
+    const navigation = useNavigation();
     const refRBSheet = useRef();
     return(
         <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5 }}>
@@ -85,7 +86,9 @@ function Register({userType,setUserType}){
             <View style={{backgroundColor: COLORS.black,marginTop: 10, borderRadius: 4 }} >
                 <TouchableOpacity onPress={()=>{
                     refRBSheet.current.open();
-                }} ><Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Get OTP</Text></TouchableOpacity>
+                }} >
+                    <Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Get OTP</Text>
+                </TouchableOpacity>
             </View>
             {/* Bottom Sheet */}
             <View style={{flex:1, backgroundColor: 'rgba(0,0,0,0.5)' }}>
@@ -108,18 +111,25 @@ function Register({userType,setUserType}){
                 }}
             >
                 
-                <SheetComponent/>
+                <SheetComponent navigation={navigation} userType={userType} />
             </RBSheet>
                 </View>
         </View>
     );
 }
-function SheetComponent(){
+function SheetComponent({navigation,userType}){
     return(
         <View style={{padding: 10}} >
             <InputComponent title={"Enter OTP"} />
             <View style={{backgroundColor: COLORS.black,marginTop: 10, borderRadius: 4 }} >
-                <TouchableOpacity><Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text></TouchableOpacity>
+                <TouchableOpacity onPress={()=>{
+                    navigation.navigate("Personal",{
+                        userType,
+                        
+                    });
+                }} >
+                    <Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -263,7 +273,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingLeft: 5,
         marginTop: 4
-
     },
     badgeStyle:{
         position: 'absolute',
