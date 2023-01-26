@@ -34,6 +34,7 @@ function Lawyers() {
                         />
                     : <ActivityIndicator size={"large"} color={COLORS.secondary} />
             }
+            
             <TouchableOpacity onPress={()=>{
                 navigation.navigate("Register");
             }}  >

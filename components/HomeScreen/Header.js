@@ -14,18 +14,10 @@ function Header({lawyersData}) {
                 <FontAwesome name="bars" size={24} color={COLORS.white} style={{marginLeft: 10}} />
             </Pressable>
             <View style={{flexDirection: 'row',alignItems: 'center' }} >
-                {/* <TextInput
-                    placeholder="Search for lawyers in your area..."
-                    placeholderTextColor={COLORS.gray}
-                    style={styles.inputStyle} /> */}
                 
                 <SearchableDropDown
                 items={lawyersData}
                 onItemSelect={(item)=> {
-                    // console.log("Coin: "+item.id);
-                    // setCurrentCoin(item);
-                    // setSelectedCoin(item.id);
-                    // refRBSheet.current.open();
                     navigation.navigate("About",{
                     name: item.name,
                     type: item.userType,

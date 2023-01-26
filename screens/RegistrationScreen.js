@@ -1,19 +1,40 @@
-import { useRef, useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { ActivityIndicator, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { COLORS } from "../components/constants";
 import { MaterialIcons } from '@expo/vector-icons';
+import SearchableDropDown from "react-native-searchable-dropdown";
+import { useNavigation } from "@react-navigation/native";
+import { getLawyersCategories, getLawyersData } from "../Services/requests";
 
 function RegistrationScreen(){
     let[userType,setUserType] = useState("user");
+    const navigation = useNavigation();
+    const[ lawyersCategoriesData, setCategoriesLawyersData ] = useState([]);
+    const[loading,setLoading] = useState(false);
+    async function getLawyersCategoriesData1(){
+        if(loading)
+        {
+            return;
+        }
+        const lawyersCategories = await getLawyersCategories();
+        console.log("Category:"+lawyersCategories);
+        setCategoriesLawyersData(lawyersCategories);
+        setLoading(false);
+    }
+    useEffect(()=>{
+        getLawyersCategoriesData1();
+    },[]);
     return(
         <View style={styles.container}>
             <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
             <RegistrationProgress userType={userType} />
             {/* Registration Screens */}
-            <Register userType={userType} setUserType={setUserType} />
+            {/* <Register userType={userType} setUserType={setUserType} /> */}
             {/* <Personal/> */}
-            {/* <SkillSets /> */}
+            {
+               !loading ? <SkillSets lawyersCategoriesData={lawyersCategoriesData} /> : <ActivityIndicator size={"small"} color={COLORS.black} />
+            }
             {/* <Documents/> */}
         </View>
     );
@@ -133,14 +154,74 @@ function Personal(){
     </View>
         );
 }
-function SkillSets(){
+function SkillSets({lawyersCategoriesData}){
+    // console.log(lawyersCategoriesData[0]);
+    let[itemsArray,setItemsArray] = useState([]);
+    var itemsArray1 = [];
     return(
         <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5}}>
             <Text style={{color: COLORS.gray}}>Select Your Specialization</Text>
-            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} placeholder={"Search and select your skillset"} />
+            {/* <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} placeholder={"Search and select your skillset"} /> */}
+            <View style={{flexDirection: 'row',alignItems: 'center' }} >
+                
+                <SearchableDropDown
+                items={lawyersCategoriesData}
+                onItemSelect={(item)=> {
+                    setItemsArray((items)=> [...items, {name:item.name}]);
+                    // itemsArray1.push({name:item.name});
+                    // console.log(itemsArray1);
+                    // itemsArray.push({name:item.name});
+                }}
+                containerStyle={{
+                    width: '90%',
+                }}
+                itemStyle={{
+                    padding: 10,
+                    marginTop: 2,
+                    backgroundColor: COLORS.lightGray,
+                    borderWidth: 1,
+                    borderColor: COLORS.gray,
+                    borderRadius:5
+                }}
+                itemTextStyle={{
+                    color: COLORS.black
+                }}
+                resetValue={false}
+                placeholder={"Search for lawyers in your area..."}
+                placeholderTextColor={COLORS.gray}
+                listProps={
+                    {
+                      nestedScrollEnabled: true,
+                    }
+                  }
+                nestedScrollEnabled= {true}
+                textInputProps={{
+                    underlineColorAndroid: 'transparent',
+                    style:{
+                        paddingLeft: 5,
+                        borderWidth: 1.5,
+                        borderColor: COLORS.lightGray,
+                        borderRadius: 5,
+                        backgroundColor: COLORS.lightGray,
+                        color: COLORS.black,
+                    }
+                }}
+            />
+            </View>
             <View style={{flexDirection: 'row', marginTop: 4, height: 200 }} >
-            <TouchableOpacity style={{backgroundColor: COLORS.black, borderRadius: 5, marginLeft: 4, paddingVertical: 2, paddingHorizontal: 5, height: 25 }} ><Text style={{color: COLORS.white}}>Notary</Text></TouchableOpacity>
-            <TouchableOpacity style={{backgroundColor: COLORS.black, borderRadius: 5, marginLeft: 4, paddingVertical: 2, paddingHorizontal: 5, height: 25 }} ><Text style={{color: COLORS.white}}>Robbery</Text></TouchableOpacity>
+            <FlatList
+            data={itemsArray}
+            renderItem={({ item,index })=>(
+                <View style={{flexDirection: 'row'}} >
+                <TouchableOpacity style={{backgroundColor: COLORS.black, alignSelf: 'flex-start', borderRadius: 5, marginTop: 2, marginLeft: 4, paddingVertical: 2, paddingHorizontal: 5, height: 25 }} >
+                    <Text style={{color: COLORS.white}}>{item.name}</Text>
+                </TouchableOpacity>
+                </View>
+                    
+            )}
+            keyExtractor={(item,index)=>index}
+            />
+            {/* <TouchableOpacity style={{backgroundColor: COLORS.black, borderRadius: 5, marginLeft: 4, paddingVertical: 2, paddingHorizontal: 5, height: 25 }} ><Text style={{color: COLORS.white}}>Robbery</Text></TouchableOpacity> */}
 
             </View>
 

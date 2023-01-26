@@ -35,7 +35,7 @@ useEffect(()=>{
             <Text style={styles.textStyle}>Hello, User</Text>
             <Text style={{fontSize: 20,fontWeight: '400',marginLeft: 10}}>Categories</Text>
             <Categories/>
-            <Lawyers/>
+            <Lawyers lawyersData={lawyersData} />
           </ScrollView>
         </SafeAreaView>
     );
