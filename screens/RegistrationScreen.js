@@ -30,7 +30,7 @@ function RegistrationScreen(){
             <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
             <RegistrationProgress userType={userType} />
             {/* Registration Screens */}
-            <Register userType={userType} setUserType={setUserType} />
+            <Register userType={userType} setUserType={setUserType} lawyersCategoriesData={lawyersCategoriesData} />
             {/* <Personal/> */}
             {/* {
                !loading ? <SkillSets lawyersCategoriesData={lawyersCategoriesData} /> : <ActivityIndicator size={"small"} color={COLORS.black} />
@@ -60,7 +60,7 @@ function RegistrationProgress({userType}){
     </View>
     );
 }
-function Register({userType,setUserType}){
+function Register({userType,setUserType,lawyersCategoriesData}){
     const [currentOption,setCurrentOption] = useState("user");
     const navigation = useNavigation();
     const refRBSheet = useRef();
@@ -111,13 +111,13 @@ function Register({userType,setUserType}){
                 }}
             >
                 
-                <SheetComponent navigation={navigation} userType={userType} />
+                <SheetComponent navigation={navigation} userType={userType}  lawyersCategoriesData={lawyersCategoriesData} />
             </RBSheet>
                 </View>
         </View>
     );
 }
-function SheetComponent({navigation,userType}){
+function SheetComponent({navigation,userType,lawyersCategoriesData}){
     return(
         <View style={{padding: 10}} >
             <InputComponent title={"Enter OTP"} />
@@ -125,7 +125,8 @@ function SheetComponent({navigation,userType}){
                 <TouchableOpacity onPress={()=>{
                     navigation.navigate("Personal",{
                         userType,
-                        
+                        lawyersCategoriesData
+
                     });
                 }} >
                     <Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text>

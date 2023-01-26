@@ -12,6 +12,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import LoginScreen from "../screens/LoginScreen";
 import PersonalScreen from "../screens/PersonalScreen";
+import SkillScreen from "../screens/SkillsScreen";
 
 const HomeScreenStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -67,6 +68,9 @@ function HomeStack(){
               headerShown: false,
             }}/>
             <HomeScreenStack.Screen name='Personal' component={PersonalScreen} options={{
+              headerShown: false,
+            }}/>
+            <HomeScreenStack.Screen name='Skills' component={SkillScreen} options={{
               headerShown: false,
             }}/>
         </HomeScreenStack.Navigator>

@@ -1,23 +1,24 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
 import SearchableDropDown from "react-native-searchable-dropdown";
+import { useState } from "react";
 function SkillScreen({route}){
     
     const navigation = useNavigation();
-    return(
-        <View style={styles.container}>
-            // console.log(lawyersCategoriesData[0]);
+    // console.log(lawyersCategoriesData[0]);
     let[itemsArray,setItemsArray] = useState([]);
     var itemsArray1 = [];
     return(
+        <View style={styles.container}>
+        <RegistrationProgress userType={ route.params.userType} />
         <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5}}>
             <Text style={{color: COLORS.gray}}>Select Your Specialization</Text>
             <View style={{flexDirection: 'row',alignItems: 'center' }} >
                 
                 <SearchableDropDown
-                items={lawyersCategoriesData}
+                items={route.params.lawyersCategoriesData}
                 onItemSelect={(item)=> {
                     setItemsArray((items)=> [...items, {name:item.name}]);
                 }}

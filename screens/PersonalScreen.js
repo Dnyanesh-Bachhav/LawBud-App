@@ -39,7 +39,10 @@ function PersonalScreen({route}){
             : 
             <View style={{backgroundColor: COLORS.black,marginTop: 10, borderRadius: 4 }} >
                 <TouchableOpacity onPress={()=>{
-                    navigation.navigate("");
+                    navigation.navigate("Skills",{
+                        userType: route.params.userType,
+                        lawyersCategoriesData: route.params.lawyersCategoriesData
+                    });
                 }} >
                     <Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text>
                 </TouchableOpacity>
