@@ -1,56 +1,32 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
-function PersonalScreen({route}){
+import SearchableDropDown from "react-native-searchable-dropdown";
+import { useState } from "react";
+function DocumentsScreen({route}){
     
     const navigation = useNavigation();
+    let[itemsArray,setItemsArray] = useState([]);
+    var itemsArray1 = [];
     return(
         <View style={styles.container}>
         <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
-
         <RegistrationProgress userType={ route.params.userType} />
-        <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5}} >
-        <View style={{width: 100,height: 100, backgroundColor: COLORS.grey, borderRadius: 50, alignSelf: 'center' }} >
-            <TouchableOpacity style={styles.badgeStyle}>
-            <View>
-                <MaterialIcons name="edit" size={24} color={COLORS.white} />
-            </View>
-            </TouchableOpacity>
-        </View>
-        <InputComponent title={"Name*"} />
-        {
-            route.params.userType === "user" ? <InputComponent title={"Home Address*"} /> : <InputComponent title={"Office Address*"} /> 
-        }
-        <InputComponent title={"Alternate Phone Number"} />
-
-        
-
-        {
-            route.params.userType === "user" 
-            ? 
+        <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5}}>
+            <Text style={{fontSize: 16,color: COLORS.gray, }}>What describes you best?</Text>
+            <Text style={{color: COLORS.gray}}>Degree Certificate*</Text>
+            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} />
+            <Text style={{color: COLORS.gray}}>Bar Membership*</Text>
+            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} />
+            <InputComponent title={"Sanat Number*"} />
+            <InputComponent title={"Work Experience(in years)"} />
             <View style={{backgroundColor: COLORS.black,marginTop: 10, borderRadius: 4 }} >
                 <TouchableOpacity onPress={()=>{
                     navigation.navigate("Home");
-                }} >
-                    <Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text>
-                </TouchableOpacity>
+                }} ><Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text></TouchableOpacity>
             </View>
-            : 
-            <View style={{backgroundColor: COLORS.black,marginTop: 10, borderRadius: 4 }} >
-                <TouchableOpacity onPress={()=>{
-                    navigation.navigate("Skills",{
-                        userType: route.params.userType,
-                        lawyersCategoriesData: route.params.lawyersCategoriesData
-                    });
-                }} >
-                    <Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text>
-                </TouchableOpacity>
-            </View> 
-        }
-
-        
-    </View>
+        </View>
         </View>
         );
 }
@@ -105,4 +81,4 @@ const styles = StyleSheet.create({
         marginTop: 4
     },
 })
-export default PersonalScreen;
+export default DocumentsScreen;

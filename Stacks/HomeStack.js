@@ -13,6 +13,7 @@ import RegistrationScreen from "../screens/RegistrationScreen";
 import LoginScreen from "../screens/LoginScreen";
 import PersonalScreen from "../screens/PersonalScreen";
 import SkillScreen from "../screens/SkillsScreen";
+import DocumentsScreen from "../screens/DocumentsScreen";
 
 const HomeScreenStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -71,6 +72,9 @@ function HomeStack(){
               headerShown: false,
             }}/>
             <HomeScreenStack.Screen name='Skills' component={SkillScreen} options={{
+              headerShown: false,
+            }}/>
+            <HomeScreenStack.Screen name='Documents' component={DocumentsScreen} options={{
               headerShown: false,
             }}/>
         </HomeScreenStack.Navigator>

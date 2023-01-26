@@ -12,6 +12,7 @@ function SkillScreen({route}){
     var itemsArray1 = [];
     return(
         <View style={styles.container}>
+        <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
         <RegistrationProgress userType={ route.params.userType} />
         <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5}}>
             <Text style={{color: COLORS.gray}}>Select Your Specialization</Text>
@@ -76,7 +77,12 @@ function SkillScreen({route}){
             </View>
 
             <View style={{backgroundColor: COLORS.black,marginTop: 10, borderRadius: 4 }} >
-                <TouchableOpacity><Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text></TouchableOpacity>
+                <TouchableOpacity><Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} onPress={()=>{
+                    navigation.navigate("Documents",{
+                        userType: route.params.userType,
+                        
+                    })
+                }} >Next</Text></TouchableOpacity>
             </View>
         </View>
         </View>
