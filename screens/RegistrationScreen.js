@@ -67,6 +67,8 @@ function Register({userType,setUserType}){
                 }} ><Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Get OTP</Text></TouchableOpacity>
             </View>
             {/* Bottom Sheet */}
+            <View style={{flex:1, backgroundColor: 'rgba(0,0,0,0.5)' }}>
+
             <RBSheet
                 ref={refRBSheet}
                 animationType="none"
@@ -84,8 +86,10 @@ function Register({userType,setUserType}){
                 }                
                 }}
             >
+                
                 <SheetComponent/>
             </RBSheet>
+                </View>
         </View>
     );
 }

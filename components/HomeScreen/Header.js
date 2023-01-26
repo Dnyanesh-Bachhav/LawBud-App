@@ -2,8 +2,10 @@ import { Text, View, StyleSheet, TextInput, Pressable, TouchableOpacity } from "
 import { FontAwesome } from '@expo/vector-icons';
 import { COLORS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
-function Header() {
+import SearchableDropDown from "react-native-searchable-dropdown";
+function Header({lawyersData}) {
     const navigation = useNavigation();
+    console.log("In a header:"+lawyersData);
     return (
         <View style={styles.container}>
             <Pressable onPress={()=>{
@@ -12,10 +14,55 @@ function Header() {
                 <FontAwesome name="bars" size={24} color={COLORS.white} style={{marginLeft: 10}} />
             </Pressable>
             <View style={{flexDirection: 'row',alignItems: 'center' }} >
-                <TextInput
+                {/* <TextInput
                     placeholder="Search for lawyers in your area..."
                     placeholderTextColor={COLORS.gray}
-                    style={styles.inputStyle} />
+                    style={styles.inputStyle} /> */}
+                
+                <SearchableDropDown
+                items={lawyersData}
+                onItemSelect={(item)=> {
+                    // console.log("Coin: "+item.id);
+                    // setCurrentCoin(item);
+                    // setSelectedCoin(item.id);
+                    // refRBSheet.current.open();
+                    navigation.navigate("About",{
+                    name: item.name,
+                    type: item.userType,
+                    languages: ["Hindi","English"],
+                    experience: item.experience
+                    });
+                }}
+                containerStyle={{
+                    width: '90%',
+                }}
+                itemStyle={{
+                    padding: 10,
+                    marginTop: 2,
+                    backgroundColor: COLORS.lightGray,
+                    borderWidth: 1,
+                    borderColor: COLORS.gray,
+                    borderRadius:5
+                }}
+                itemTextStyle={{
+                    color: COLORS.black
+                }}
+                resetValue={false}
+                placeholder={"Search for lawyers in your area..."}
+                placeholderTextColor={COLORS.black}
+                textInputProps={{
+                    underlineColorAndroid: 'transparent',
+                    style:{
+                        padding: 2,
+                        borderWidth: 1.5,
+                        borderColor: COLORS.grey,
+                        borderRadius: 5,
+                        backgroundColor: COLORS.white,
+                        color: COLORS.black,
+                        marginLeft: 10
+                    }
+                }}
+            />
                 <TouchableOpacity onPress={()=>{
                     navigation.navigate("Profile");
                 }} >
