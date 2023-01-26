@@ -2,44 +2,57 @@ import { useRef, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { COLORS } from "../components/constants";
+import { MaterialIcons } from '@expo/vector-icons';
 
 function RegistrationScreen(){
+    let[userType,setUserType] = useState("user");
     return(
         <View style={styles.container}>
             <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
-            <RegistrationProgress/>
+            <RegistrationProgress userType={userType} />
             {/* Registration Screens */}
-            <Register/>
+            <Register userType={userType} setUserType={setUserType} />
             {/* <Personal/> */}
             {/* <SkillSets /> */}
             {/* <Documents/> */}
         </View>
     );
 }
-function RegistrationProgress(){
+function RegistrationProgress({userType}){
     return(
-    <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 16, flexDirection: 'row', justifyContent: 'space-between', borderRadius: 5}} >
+        
+    <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 16, flexDirection: 'row', justifyContent: 'space-around', borderRadius: 5}} >
+        {
+            userType === "lawyer" ?
+            <>
         <Text style={{fontSize: 12, color: COLORS.black}}>Register</Text>
         <Text style={{fontSize: 12, color: COLORS.black}}>Personal</Text>
         <Text style={{fontSize: 12, color: COLORS.black}}>SkillSets</Text>
         <Text style={{fontSize: 12, color: COLORS.black}}>Documents</Text>
+            </>
+            : 
+            <>
+        <Text style={{fontSize: 12, color: COLORS.black}}>Register</Text>
+        <Text style={{fontSize: 12, color: COLORS.black}}>Personal</Text>    
+            </>
+        }
     </View>
     );
 }
-function Register(){
+function Register({userType,setUserType}){
     const [currentOption,setCurrentOption] = useState("user");
     const refRBSheet = useRef();
     return(
         <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5 }}>
             <Text style={{fontSize: 16,color: COLORS.gray, }}>What describes you best?</Text>
             <View style={{ flexDirection: 'row', borderRadius: 5, padding: 4, marginTop: 5, backgroundColor: COLORS.lightGray }} >
-                <TouchableOpacity style={{width: '50%', borderRadius:5, backgroundColor: currentOption === "user" ? COLORS.black : COLORS.lightGray}} onPress={()=>(
-                    setCurrentOption("user")
-                    )} >
+                <TouchableOpacity style={{width: '50%', borderRadius:5, backgroundColor: userType === "user" ? COLORS.black : COLORS.lightGray}} onPress={()=>{
+                    setUserType("user");
+                }} >
                     <Text style={{color: COLORS.gray, fontSize: 16, padding: 10, textAlign: 'center' }}>User</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{width: '50%', borderRadius:5, backgroundColor: currentOption === "lawyer" ? COLORS.black : COLORS.lightGray}} onPress={()=>{
-                    setCurrentOption("lawyer")
+                <TouchableOpacity style={{width: '50%', borderRadius:5, backgroundColor: userType === "lawyer" ? COLORS.black : COLORS.lightGray}} onPress={()=>{
+                    setUserType("lawyer");
                 }}>
                     <Text style={{color: COLORS.gray, fontSize: 16, padding: 10, textAlign: 'center' }}>Lawyer</Text>
                 </TouchableOpacity>
@@ -100,11 +113,13 @@ function Personal(){
 
         <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5}} >
         <View style={{width: 100,height: 100, backgroundColor: COLORS.grey, borderRadius: 50, alignSelf: 'center' }} >
-
+            <TouchableOpacity style={styles.badgeStyle}>
+            <View><MaterialIcons name="edit" size={24} color={COLORS.white} /></View>
+            </TouchableOpacity>
         </View>
         <InputComponent title={"Name*"} />
-        <InputComponent title={"Office/Home Address"} />
-        <InputComponent title={"Office Phone Number"} />
+        <InputComponent title={"Office/Home Address*"} />
+        <InputComponent title={"Alternate Phone Number"} />
 
         <View style={{backgroundColor: COLORS.black,marginTop: 10, borderRadius: 4 }} >
                 <TouchableOpacity><Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text></TouchableOpacity>
@@ -139,7 +154,7 @@ function Documents(){
             <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} />
             <Text style={{color: COLORS.gray}}>Bar Membership*</Text>
             <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} />
-            <InputComponent title={"Sanat Number"} />
+            <InputComponent title={"Sanat Number*"} />
             <InputComponent title={"Work Experience(in years)"} />
             <View style={{backgroundColor: COLORS.black,marginTop: 10, borderRadius: 4 }} >
                 <TouchableOpacity><Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text></TouchableOpacity>
@@ -164,6 +179,14 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         marginTop: 4
 
-    }
+    },
+    badgeStyle:{
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        backgroundColor: COLORS.secondary,
+        borderRadius: 50,
+        padding: 5
+    },
 });
 export default RegistrationScreen;

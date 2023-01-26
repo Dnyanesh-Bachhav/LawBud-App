@@ -5,7 +5,6 @@ import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
 
 function LoginScreen(){
-    const [currentOption,setCurrentOption] = useState("user");
     const refRBSheet = useRef();
     const navigation = useNavigation();
     return(

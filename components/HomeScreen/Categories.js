@@ -1,15 +1,28 @@
 import { Text, View, Dimensions, FlatList, TouchableOpacity } from "react-native";
 import { CATEGORIES, COLORS } from "../constants";
 import { MaterialIcons } from '@expo/vector-icons';
+import { useEffect, useState } from "react";
+import { getLawyersCategories } from "../../Services/requests";
 const CARD_WIDTH = Dimensions.get("window").width/4.6;
 const CARD_HEIGHT = Dimensions.get("window").height/4;
 function Categories(){
+    const[ lawyersCategoriesData, setLawyersCategoriesData ] = useState([]);
+    async function getLawyersCategoriesData1(){
+        const data = await getLawyersCategories();
+        setLawyersCategoriesData(data);
+    }
+
+    
+    useEffect(()=>{
+        getLawyersCategoriesData1();
+    },[]);
     return(
         <View>
             <FlatList
-            data={CATEGORIES}
+            data={lawyersCategoriesData}
             numColumns={4}
             style={{flexWrap:"wrap" }}
+            columnWrapperStyle={{  alignContent: 'center', }}
             renderItem={({ item,index })=>(
                 <Card name={item.name} key={index} />
             )}
@@ -27,11 +40,11 @@ function Categories(){
 }
 function Card({name}){
     return(
-        <View style={{alignItems: "center",justifyContent: 'center',marginLeft: 10,marginTop: 10 }} >
+        <View style={{alignItems: "center",justifyContent: 'center',marginLeft: 10,marginTop: 10, width: 80 }} >
             <View style={{width: CARD_WIDTH, height: CARD_WIDTH, borderRadius: 50, backgroundColor: COLORS.gray, }} >
 
             </View>
-            <Text>{ name }</Text>
+            <Text numberOfLines={4} >{ name }</Text>
         </View>
     );
 }

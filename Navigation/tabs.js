@@ -30,7 +30,7 @@ function Tabs(){
                 tabBarIcon: ({focused})=>(
                     <View style={styles.tabOption}>
                         <Image source={require("../assets/Home.png")} style={{
-                            tintColor: focused ? COLORS.grey : COLORS.black,
+                            tintColor: focused ? COLORS.black : COLORS.grey,
                             ...styles.imgStyle}}/>
                     </View>
                 )
@@ -40,7 +40,7 @@ function Tabs(){
                 tabBarIcon: ({focused})=>(
                     <View style={styles.tabOption}>
                         <Image source={require("../assets/messenger.png")} style={{
-                            tintColor: focused ? COLORS.grey : COLORS.black,
+                            tintColor: focused ? COLORS.black : COLORS.grey,
                             ...styles.imgStyle}}/>
                     </View>
                 )
@@ -50,7 +50,7 @@ function Tabs(){
                 tabBarIcon: ({focused})=>(
                     <View style={styles.tabOption}>
                         <Image source={require("../assets/book.png")} style={{
-                            tintColor: focused ? COLORS.grey : COLORS.black,
+                            tintColor: focused ? COLORS.black : COLORS.grey,
                             ...styles.imgStyle}}/>
                     </View>
                 )
@@ -60,7 +60,7 @@ function Tabs(){
                 tabBarIcon: ({focused})=>(
                     <View style={styles.tabOption}>
                         <Image source={require("../assets/heart.png")} style={{
-                            tintColor: focused ? COLORS.grey : COLORS.black,
+                            tintColor: focused ? COLORS.black : COLORS.grey,
                             ...styles.imgStyle}}/>
                     </View>
                 )

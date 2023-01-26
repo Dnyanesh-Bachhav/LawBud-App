@@ -3,6 +3,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { COLORS, LAWYERS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getLawyersData } from "../../Services/requests";
 
 function Lawyers() {
@@ -11,10 +12,10 @@ function Lawyers() {
     async function getLawyersData1(){
         const lawyersArray = await getLawyersData();
         console.log(lawyersArray);
-        lawyersArray = lawyersArray.filter(( item )=>{
-            return item.userType == "lawyers"
-        });
-        setLawyersData(lawyersArray);
+        setLawyersData(lawyersArray.filter(( item )=>{
+            console.log(item.userType);
+            return item.userType === "lawyer";
+        }));
     }
     useEffect(()=>{
         getLawyersData1();
@@ -27,7 +28,7 @@ function Lawyers() {
                     data={ lawyersData }
                     style={styles.listStyle}
                     renderItem={({ item, index }) => (
-                        <Card name={item.name} type={item.type} imgSrc={item.profile_image} languages={item.ratings} experience={item.experience} key={index} />
+                        <Card name={item.name} type={item.type} userId={item.userId} imgSrc={item.profile_image} languages={item.ratings} experience={item.experience} key={index} />
                         )}
                         keyExtractor={({ item, index }) => index}
                         />
@@ -47,9 +48,37 @@ function Lawyers() {
         </View>
     );
 }
-function Card({ name, type, imgSrc, languages, experience }) {
+function Card({ name, userId, type, imgSrc, languages, experience }) {
     const navigation = useNavigation();
     console.log(experience);
+    
+    const storeUser = async (userId) => {
+        const value = {
+              userId: userId,
+            };
+            let data1 = await AsyncStorage.getItem("favourites");
+            
+            let data = [];
+            data.push(data1);
+            // let data = [...data1];
+            data.push(value);
+        try {
+          await AsyncStorage.setItem("favourites", JSON.stringify(data));
+          let cc = await AsyncStorage.getItem("favourites");
+          console.log(cc);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    const getUser = async () => {
+        try {
+          const savedUser = await AsyncStorage.getItem("favourites");
+          const currentUser = JSON.parse(savedUser);
+          console.log(currentUser);
+        } catch (error) {
+          console.log(error);
+        }
+      };
     return (
         <View style={{elevation: 2, borderRadius: 7, marginBottom: 10, marginRight: 10, overflow: 'hidden' }} >
             <View style={{flex:1, justifyContent: 'center', backgroundColor: COLORS.white}} >
@@ -73,7 +102,9 @@ function Card({ name, type, imgSrc, languages, experience }) {
             <View style={{ flex: 1, marginLeft: 10, justifyContent: 'center' }} >
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginRight: 10 }} >
                     <Text style={{ fontSize: 16, fontWeight: '500' }} >{name}</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{
+                        storeUser(userId);
+                    }} >
                         <AntDesign name="hearto" size={21} color={COLORS.gray} />
                     </TouchableOpacity>
                 </View>
