@@ -9,7 +9,8 @@ const COLORS = {
     success: "#27AE60",
     purple: "#1E293B",
     black: "#333",
-    white: "#ffffff"
+    white: "#ffffff",
+    
 };
 const CATEGORIES = [
     {
