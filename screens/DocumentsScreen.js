@@ -23,7 +23,7 @@ function DocumentsScreen({route}){
             <InputComponent title={"Work Experience(in years)"} />
             <View style={{backgroundColor: COLORS.black,marginTop: 10, borderRadius: 4 }} >
                 <TouchableOpacity onPress={()=>{
-                    navigation.navigate("Home");
+                    navigation.navigate("LawyersDashboard");
                 }} ><Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text></TouchableOpacity>
             </View>
         </View>
