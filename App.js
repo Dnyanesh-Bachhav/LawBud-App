@@ -24,9 +24,9 @@ export default function App() {
   async function getLawyersData1(){
     // await AsyncStorage.removeItem("favourites");
       const lawyersArray = await getLawyersData();
-      console.log(lawyersArray);
+      // console.log(lawyersArray);
       setLawyersData(lawyersArray.filter(( item )=>{
-          console.log(item.userType);
+          // console.log(item.userType);
           return item.userType === "lawyer";
       }));
       storeAllUser(lawyersData);

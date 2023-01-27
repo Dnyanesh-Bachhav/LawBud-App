@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import SearchableDropDown from "react-native-searchable-dropdown";
 function Header({lawyersData}) {
     const navigation = useNavigation();
-    console.log("In a header:"+lawyersData);
+    // console.log("In a header:"+lawyersData);
     return (
         <View style={styles.container}>
             <Pressable onPress={()=>{

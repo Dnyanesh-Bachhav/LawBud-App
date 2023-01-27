@@ -16,9 +16,9 @@ function HomeScreen(){
         }
         setLoading(true);
     const lawyersArray = await getLawyersData();
-    console.log("In a file:"+lawyersArray);
+    // console.log("In a file:"+lawyersArray);
     setLawyersData(lawyersArray.filter(( item )=>{
-        console.log(item.userType);
+        // console.log(item.userType);
         return item.userType === "lawyer";
     }));
     setLoading(false);

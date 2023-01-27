@@ -8,12 +8,13 @@ import { getLawyersData } from "../../Services/requests";
 
 function Lawyers() {
     const navigation = useNavigation();
+    let[favouriteLawyers,setFavouriteLawyers] = useState([]);
     const[ lawyersData, setLawyersData ] = useState(null);
     async function getLawyersData1(){
         const lawyersArray = await getLawyersData();
-        console.log(lawyersArray);
+        // console.log(lawyersArray);
         setLawyersData(lawyersArray.filter(( item )=>{
-            console.log(item.userType);
+            // console.log(item.userType);
             return item.userType === "lawyer";
         }));
     }
@@ -28,7 +29,7 @@ function Lawyers() {
                     data={ lawyersData }
                     style={styles.listStyle}
                     renderItem={({ item, index }) => (
-                        <Card name={item.name} type={item.type} userId={item.userId} imgSrc={item.profile_image} languages={item.ratings} experience={item.experience} key={index} />
+                        <Card name={item.name} type={item.type} userId={item.userId} imgSrc={item.profile_image} languages={item.ratings} experience={item.experience} key={index} favouriteLawyers={favouriteLawyers} setFavouriteLawyers={setFavouriteLawyers} />
                         )}
                         keyExtractor={({ item, index }) => index}
                         />
@@ -49,24 +50,28 @@ function Lawyers() {
         </View>
     );
 }
-function Card({ name, userId, type, imgSrc, languages, experience }) {
+function Card({ name, userId, type, imgSrc, languages, experience, favouriteLawyers, setFavouriteLawyers }) {
     const navigation = useNavigation();
-    console.log(experience);
+    // console.log(experience);
     
     const storeUser = async (userId) => {
+        console.log("Store function called...");
         const value = {
-              userId: userId,
+              "userId": `${userId}` 
             };
-            let data1 = await AsyncStorage.getItem("favourites");
+            let favoritesArray = [...favouriteLawyers,value];
+            // let data1 = await AsyncStorage.getItem("favourites");
             
-            let data = [];
-            data.push(data1);
-            // let data = [...data1];
-            data.push(value);
+            // let data = [];
+            // data.push(data1);
+            // // let data = [...data1];
+            // data.push(value);
+            // console.log("data:"+data);
+            setFavouriteLawyers(favoritesArray);
         try {
-          await AsyncStorage.setItem("favourites", JSON.stringify(data));
+          await AsyncStorage.setItem("favourites", JSON.stringify(favoritesArray));
           let cc = await AsyncStorage.getItem("favourites");
-          console.log(cc);
+          console.log("Favourites: "+cc);
         } catch (error) {
           console.log(error);
         }
@@ -75,11 +80,13 @@ function Card({ name, userId, type, imgSrc, languages, experience }) {
         try {
           const savedUser = await AsyncStorage.getItem("favourites");
           const currentUser = JSON.parse(savedUser);
-          console.log(currentUser);
+        //   console.log(currentUser[0][0]);
         } catch (error) {
           console.log(error);
         }
       };
+    getUser();
+
     return (
         <View style={{elevation: 2, borderRadius: 7, marginBottom: 10, marginRight: 10, overflow: 'hidden' }} >
             <View style={{flex:1, justifyContent: 'center', backgroundColor: COLORS.white}} >
