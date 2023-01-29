@@ -29,7 +29,7 @@ export default function App() {
           // console.log(item.userType);
           return item.userType === "lawyer";
       }));
-      storeAllUser(lawyersData);
+      await storeAllUser(lawyersData);
   }
   useEffect(()=>{
 

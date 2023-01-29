@@ -61,11 +61,12 @@ function Card({ name, userId, type, imgSrc, languages, experience, favouriteLawy
         });
     }
     const storeUser = async (userId) => {
-        console.log("Store function called...");
+            console.log("Store function called...");
 
-        const value = {
+            const value = {
               "userId": `${userId}` 
             };
+            let response = false;
             favouriteLawyers.some(item=>{
                 if( item.userId === userId)
                 {
@@ -73,25 +74,40 @@ function Card({ name, userId, type, imgSrc, languages, experience, favouriteLawy
                 //    favoritesArray = elementRemove( favoritesArray, item);
                    setFavouriteLawyers(( arr1 )=>{
                     return arr1.filter((ele)=>{
-                        return ele.userId === item.userId;
+                        return ele.userId !== item.userId;
                     });
                    });
                    
-                   console.log("Array:"+ favouriteLawyers);
-                   return;
+                   console.log("Array:"+ JSON.stringify(favouriteLawyers));
+                   response = true;
+                //    return;
                 }
             });
-            favoritesArray = [...favouriteLawyers,value];
-            setFavouriteLawyers(favoritesArray);
-        try {
-          await AsyncStorage.setItem("favourites", JSON.stringify(favoritesArray));
-          AsyncStorage.getItem("favourites").then((cc,error)=>{
+            if(response===true)
+            {
+                console.log("Response");
+                await AsyncStorage.setItem("favourites", JSON.stringify(favouriteLawyers));
+                response = false;
+                AsyncStorage.getItem("favourites").then((cc,error)=>{
 
-              console.log("Favourites1: "+cc);
-          }) ;
-        } catch (error) {
-          console.log(error);
-        }
+                    console.log("Favourites12: "+cc);
+                });
+                return;
+            }
+            else{
+
+                favoritesArray = [...favouriteLawyers,value];
+                setFavouriteLawyers(favoritesArray);
+                try {
+                  await AsyncStorage.setItem("favourites", JSON.stringify(favoritesArray));
+                  AsyncStorage.getItem("favourites").then((cc,error)=>{
+        
+                      console.log("Favourites1: "+cc);
+                  });
+                } catch (error) {
+                  console.log(error);
+                }
+            }
       };
     const getUser = async () => {
         try {

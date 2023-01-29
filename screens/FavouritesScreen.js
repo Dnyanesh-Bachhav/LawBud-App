@@ -6,32 +6,48 @@ import image1 from "../assets/image.jpg";
 import { AntDesign } from '@expo/vector-icons';
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getLawyersData } from "../Services/requests";
 
 function FavouritesScreen(){
-    const[favouritesData,setFavouritesData] = useState(null);
+    const[favouritesData,setFavouritesData] = useState([]);
+    const[lawyersData,setLawyersData] = useState(null);
     let favouritesUserFiltered = [];
     const getUser = async () => {
         try {
           const savedUser = await AsyncStorage.getItem("favourites");
-          const savedAllUsers = await AsyncStorage.getItem("usersData");
+          const lawyersArray = await getLawyersData();
+        //   const savedAllUsers = await AsyncStorage.getItem("usersData");
           const favouriteUsers = JSON.parse(savedUser);
-          const allUsers = JSON.parse(savedAllUsers);
-          let i = 0;
-          setFavouritesData(savedAllUsers.filter((item )=>{
+          console.log("Favoutirte users: "+  favouriteUsers[0].userId );
+          //   const allUsers = JSON.parse(savedAllUsers);
+          setLawyersData(lawyersArray.filter(( item )=>{
             // console.log(item.userType);
-            favouritesUserFiltered.push( item.userId === favouriteUsers[i]);
-            i++;
+            return item.userType === "lawyer";
+          }));
+        //   console.log("All:"+allUsers);
+          // console.log(lawyersArray);
+          let i = 0;
+          lawyersArray.forEach((item,index)=>{
             
-        }));
-          console.log(currentUser);
-          return favouritesData;
+            if(item.userId === favouriteUsers[i].userId)
+            {
+
+                favouritesUserFiltered.push(item);
+                i++;
+            }
+            
+        });
+          console.log("unfiltered: "+favouritesUserFiltered);
+          setFavouritesData(favouritesUserFiltered);
+          return favouritesUserFiltered;
         } catch (error) {
           console.log(error);
         }
       };
     useEffect(()=>{
 
-        setFavouritesData(getUser());
+        getUser();
+        // console.log("Favorites123:"+favouritesData);
     },[]);
     return(
         <View style={styles.container}>
@@ -40,7 +56,7 @@ function FavouritesScreen(){
                 data={favouritesData}
                 style={styles.listStyle}
                 renderItem={({ item, index }) => (
-                    <Card name={item.name} type={item.type} languages={item.languages} experience={item.experience} key={index} />
+                    <Card name={item?.name} type={item?.type} languages={item?.languages} experience={item?.experience} key={index} />
                     )}
                     keyExtractor={({ item, index }) => index}
                     />
