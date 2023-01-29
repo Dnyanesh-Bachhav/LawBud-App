@@ -6,6 +6,17 @@ import { MaterialIcons } from '@expo/vector-icons';
 import SearchableDropDown from "react-native-searchable-dropdown";
 import { useNavigation } from "@react-navigation/native";
 import { getLawyersCategories, getLawyersData } from "../Services/requests";
+import { Formik } from "formik";
+import * as Yup from 'yup';
+
+
+const SignupSchema = Yup.object().shape({
+    email: Yup.string().email('Please enter a valid email').required('Required'),
+    phone: Yup.string().min(10,"Must be exactly 10 digits").max(10,"Must be exactly 10 digits").matches(/^[0-9]+$/,"Must be only digits").required("Please enter your mobile number")
+  });
+  const SignupOTPSchema = Yup.object().shape({
+    otp: Yup.string().min(4,"Must be exactly 4 digits").max(4,"Must be exactly 4 digits").matches(/^[0-9]+$/,"Must be only digits").required("Please enter your OTP")
+  });
 
 function RegistrationScreen(){
     let[userType,setUserType] = useState("user");
@@ -80,16 +91,41 @@ function Register({userType,setUserType,lawyersCategoriesData}){
                 </TouchableOpacity>
             </View>
             {/* User Data */}
-            <InputComponent title={"Email id"} />
-            <InputComponent title={"Phone Number"} />
-            {/* Button */}
-            <View style={{backgroundColor: COLORS.black,marginTop: 10, borderRadius: 4 }} >
+            <Formik initialValues={{
+                email: '',
+                phone: ''
+            }}
+            validationSchema={SignupSchema}
+            >
+                {({values,errors,touched, handleChange, setFieldTouched, isValid,  handleSubmit})=>(
+
+                    <View style={{width: '100%', }} >
+                {/* <InputComponent title={"Email id"} /> */}
+                        <View style={{ marginTop: 10 }} >
+                            <Text style={{ color: COLORS.gray }}>Email id</Text>
+                            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.email} onChangeText={handleChange('email')} onBlur={() =>  setFieldTouched('email')} />
+                            { touched.email && errors.email && (
+                                <Text style={styles.errorText}>{errors.email}</Text>
+                            )}
+                        </View>
+                        <View style={{ marginTop: 10 }} >
+                            <Text style={{ color: COLORS.gray }}>Phone Number</Text>
+                            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.phone} onChangeText={handleChange('phone')} onBlur={() =>  setFieldTouched('phone')} />
+                            { touched.phone && errors.phone && (
+                                <Text style={styles.errorText}>{errors.phone}</Text>
+                            )}
+                        </View>
+                        
+                {/* <InputComponent title={"Phone Number"} /> */}
+                {/* Button */}
                 <TouchableOpacity onPress={()=>{
-                    refRBSheet.current.open();
-                }} >
-                    <Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Get OTP</Text>
-                </TouchableOpacity>
-            </View>
+                        refRBSheet.current.open();
+                    }} disabled={!isValid} style={{backgroundColor: isValid ? COLORS.black : COLORS.grey,marginTop: 10, borderRadius: 4 }} >
+                        <Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Get OTP</Text>
+                    </TouchableOpacity>
+                </View>
+                    )}
+            </Formik>
             {/* Bottom Sheet */}
             <View style={{flex:1, backgroundColor: 'rgba(0,0,0,0.5)' }}>
 
@@ -111,28 +147,37 @@ function Register({userType,setUserType,lawyersCategoriesData}){
                 }}
             >
                 
-                <SheetComponent navigation={navigation} userType={userType}  lawyersCategoriesData={lawyersCategoriesData} />
-            </RBSheet>
+                    <SheetComponent navigation={navigation} userType={userType}  lawyersCategoriesData={lawyersCategoriesData} />
+                </RBSheet>
                 </View>
         </View>
     );
 }
 function SheetComponent({navigation,userType,lawyersCategoriesData}){
     return(
-        <View style={{padding: 10}} >
-            <InputComponent title={"Enter OTP"} />
-            <View style={{backgroundColor: COLORS.black,marginTop: 10, borderRadius: 4 }} >
-                <TouchableOpacity onPress={()=>{
-                    navigation.navigate("Personal",{
-                        userType,
-                        lawyersCategoriesData
+        <Formik initialValues={{
+            otp: ''
+        }} validationSchema={SignupOTPSchema}>
+            {({values,errors,touched, handleChange, setFieldTouched, isValid,  handleSubmit})=>(
 
-                    });
-                }} >
-                    <Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text>
-                </TouchableOpacity>
+                <View style={{padding: 10}} >
+                <View style={{ marginTop: 10 }} >
+                    <Text style={{ color: COLORS.gray }}>Enter OTP</Text>
+                    <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.otp} onChangeText={handleChange('otp')} onBlur={() =>  setFieldTouched('otp')} />
+                </View>
+                
+                    <TouchableOpacity onPress={()=>{
+                        navigation.navigate("Personal",{
+                            userType,
+                            lawyersCategoriesData
+                            
+                        });
+                    }} style={{backgroundColor: isValid ? COLORS.black : COLORS.grey,marginTop: 10, borderRadius: 4 }} disabled={!isValid} >
+                        <Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text>
+                    </TouchableOpacity>
             </View>
-        </View>
+            )}
+        </Formik>
     );
 }
 function InputComponent({title}){
@@ -283,5 +328,9 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         padding: 5
     },
+
+    errorText:{
+        color: COLORS.red,
+    }
 });
 export default RegistrationScreen;
