@@ -1,9 +1,15 @@
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
-import SearchableDropDown from "react-native-searchable-dropdown";
 import { useState } from "react";
+import { Formik } from "formik";
+import * as Yup from 'yup';
+const DocumentsSchema = Yup.object().shape({
+    degreeCertificate: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
+    barCertificate: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
+    sanatNumber: Yup.string().min(1, "Too short number").max(100, "Too long number").required('Required'),
+    experience: Yup.string().min(1, "Must be greater than or equal to 1 digit").matches(/^[0-9]+$/, "Must be only digits").notRequired()
+});
 function DocumentsScreen({route}){
     
     const navigation = useNavigation();
@@ -13,20 +19,49 @@ function DocumentsScreen({route}){
         <View style={styles.container}>
         <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
         <RegistrationProgress userType={ route.params.userType} />
-        <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5}}>
-            <Text style={{fontSize: 16,color: COLORS.gray, }}>What describes you best?</Text>
-            <Text style={{color: COLORS.gray}}>Degree Certificate*</Text>
-            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} />
-            <Text style={{color: COLORS.gray}}>Bar Membership*</Text>
-            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} />
-            <InputComponent title={"Sanat Number*"} />
-            <InputComponent title={"Work Experience(in years)"} />
-            <View style={{backgroundColor: COLORS.black,marginTop: 10, borderRadius: 4 }} >
-                <TouchableOpacity onPress={()=>{
-                    navigation.navigate("LawyersDashboard");
-                }} ><Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text></TouchableOpacity>
+        <Formik
+        initialValues={{
+            degreeCertificate:'',
+            barCertificate:'',
+            sanatNumber:'',
+            experience:''
+        }}
+        validationSchema={DocumentsSchema}
+        >
+            {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
+                                
+            <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5}}>
+                <Text style={{fontSize: 16,color: COLORS.gray, }}>What describes you best?</Text>
+                <Text style={{color: COLORS.gray}}>Degree Certificate*</Text>
+                <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.degreeCertificate} onChangeText={handleChange('degreeCertificate')} onBlur={()=> setFieldTouched('degreeCertificate') } />
+                {touched.degreeCertificate && errors.degreeCertificate && (
+                        <Text style={styles.errorText}>{errors.degreeCertificate}</Text>
+                )}
+                <Text style={{color: COLORS.gray}}>Bar Membership*</Text>
+                <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.barCertificate} onChangeText={handleChange('barCertificate')} onBlur={()=> setFieldTouched('barCertificate') } />
+                {touched.barCertificate && errors.barCertificate && (
+                        <Text style={styles.errorText}>{errors.barCertificate}</Text>
+                )}
+                <View style={{ marginTop: 10 }} >
+                    <Text style={{ color: COLORS.gray }}>Sanat Number*</Text>
+                    <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.sanatNumber} onChangeText={handleChange('sanatNumber')} onBlur={()=> setFieldTouched('sanatNumber') } />
+                    {touched.sanatNumber && errors.sanatNumber && (
+                        <Text style={styles.errorText}>{errors.sanatNumber}</Text>
+                    )}
+                </View>
+                <View style={{ marginTop: 10 }} >
+                    <Text style={{ color: COLORS.gray }}>Work Experience(in years)</Text>
+                    <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.experience} onChangeText={handleChange('experience')} onBlur={()=> setFieldTouched('experience') } />
+                    {touched.experience && errors.experience && (
+                        <Text style={styles.errorText}>{errors.experience}</Text>
+                    )}
+                </View>
+                    <TouchableOpacity onPress={()=>{
+                        navigation.navigate("LawyersDashboard");
+                    }} disabled={!isValid} style={{backgroundColor: isValid ? COLORS.black : COLORS.grey,marginTop: 10, borderRadius: 4 }} ><Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text></TouchableOpacity>
             </View>
-        </View>
+            )}
+        </Formik>
         </View>
         );
 }
@@ -80,5 +115,8 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         marginTop: 4
     },
+    errorText: {
+        color: COLORS.red,
+    }
 })
 export default DocumentsScreen;
