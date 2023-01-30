@@ -8,6 +8,7 @@ const COLORS = {
     grey: "#D9D9D9",
     success: "#27AE60",
     purple: "#1E293B",
+    yellow: "#f0ae07",
     black: "#333",
     white: "#ffffff",
     

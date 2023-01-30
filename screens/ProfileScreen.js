@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import image1 from '../assets/image.jpg';
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from "../components/constants";
+import { Octicons } from '@expo/vector-icons';
 
 function ProfileScreen(){
     return(
@@ -18,7 +19,14 @@ function ProfileScreen(){
             <ScrollView>
                 <Field name="Name" />
                 <Field name="Contact" />
-                <Field name="Email" />
+                <Text style={{paddingHorizontal: 15,marginTop: 10}} >Email</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 15, marginTop: 10 }} >
+                    <TextInput
+                        style={{...styles.inputStyle, width: '90%' }}
+                        cursorColor={COLORS.gray}
+                    />
+                    <Octicons name="unverified" size={21} color={COLORS.yellow} style={{alignSelf: 'flex-end', marginLeft: 5 }} />
+                </View>
                 <Field name="Home Address" />
                 <Field name="Profession" />
             </ScrollView>
