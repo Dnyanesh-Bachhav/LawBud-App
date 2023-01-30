@@ -16,9 +16,22 @@ const LoginOTPSchema = Yup.object().shape({
 function LoginScreen(){
     const refRBSheet = useRef();
     const navigation = useNavigation();
+    let[userType,setUserType] = useState("user");
     return(
         <View style={styles.container}>
             <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Login</Text>
+            <View style={{ flexDirection: 'row', borderRadius: 5, padding: 4, marginTop: 5, backgroundColor: COLORS.lightGray }} >
+                <TouchableOpacity style={{width: '50%', borderRadius:5, backgroundColor: userType === "user" ? COLORS.black : COLORS.lightGray}} onPress={()=>{
+                    setUserType("user");
+                }} >
+                    <Text style={{color: COLORS.gray, fontSize: 16, padding: 10, textAlign: 'center' }}>User</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{width: '50%', borderRadius:5, backgroundColor: userType === "lawyer" ? COLORS.black : COLORS.lightGray}} onPress={()=>{
+                    setUserType("lawyer");
+                }}>
+                    <Text style={{color: COLORS.gray, fontSize: 16, padding: 10, textAlign: 'center' }}>Lawyer</Text>
+                </TouchableOpacity>
+            </View>
             <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5 }}>
             
             {/* User Data */}
@@ -70,7 +83,7 @@ function LoginScreen(){
                 }                
                 }}
             >
-                <SheetComponent navigation={navigation}/>
+                <SheetComponent navigation={navigation} userType={userType} />
             </RBSheet>
         </View>
         </View>
@@ -84,7 +97,7 @@ function InputComponent({title}){
         </View>
     );
 }
-function SheetComponent({navigation}){
+function SheetComponent({navigation, userType }){
     return(
         <Formik initialValues={{
             otp: ''
@@ -99,7 +112,13 @@ function SheetComponent({navigation}){
             )}
             </View>
             <TouchableOpacity disabled={!isValid} style={{backgroundColor: isValid ? COLORS.black : COLORS.grey,marginTop: 10, borderRadius: 4 }} onPress={()=>{
-                navigation.navigate("Home");
+                if(userType=="user")
+                {
+                    navigation.navigate("Home");
+                }
+                else{
+                    navigation.navigate("LawyersDashboard");
+                }
             }} ><Text style={{color: COLORS.white, padding: 4, textAlign: 'center'}} >Next</Text></TouchableOpacity>
         </View>
             )}

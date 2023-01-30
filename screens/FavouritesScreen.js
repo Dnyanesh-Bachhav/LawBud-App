@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { Text, View, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, FlatList, Image, TouchableOpacity, ActivityIndicator } from "react-native";
 import { LAWYERS, COLORS } from "../components/constants";
 import Header from "../components/Header";
 import image1 from "../assets/image.jpg";
@@ -15,10 +15,14 @@ function FavouritesScreen(){
     const getUser = async () => {
         try {
           const savedUser = await AsyncStorage.getItem("favourites");
+          if(favouriteUsers==null)
+          {
+            return;
+          }
           const lawyersArray = await getLawyersData();
         //   const savedAllUsers = await AsyncStorage.getItem("usersData");
           const favouriteUsers = JSON.parse(savedUser);
-          console.log("Favoutirte users: "+  favouriteUsers[0].userId );
+          console.log("Favoutirte users: "+  favouriteUsers[0].userId);
           //   const allUsers = JSON.parse(savedAllUsers);
           setLawyersData(lawyersArray.filter(( item )=>{
             // console.log(item.userType);
@@ -41,7 +45,7 @@ function FavouritesScreen(){
           setFavouritesData(favouritesUserFiltered);
           return favouritesUserFiltered;
         } catch (error) {
-          console.log(error);
+          console.log("Error:"+error);
         }
       };
     useEffect(()=>{
@@ -52,15 +56,18 @@ function FavouritesScreen(){
     return(
         <View style={styles.container}>
             <Header headerText={"Favourites"} />
-            <FlatList
+            {
+                favouritesData != null ? <ActivityIndicator size={"small"} color={COLORS.black} ></ActivityIndicator>
+                : <FlatList
                 data={favouritesData}
                 style={styles.listStyle}
                 renderItem={({ item, index }) => (
-                    <Card name={item?.name} type={item?.type} languages={item?.languages} experience={item?.experience} key={index} />
+                    <Card name={item?.name} type={item?.type} languages={item?.languages || []} experience={item?.experience} key={index} />
                     )}
                     keyExtractor={({ item, index }) => index}
                     />
-            
+                    
+                }
         </View>
     );
 }

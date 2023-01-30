@@ -9,6 +9,14 @@ import NewsStack from "../Stacks/NewsStack";
 
 const Tab = createBottomTabNavigator();
 function Tabs(){
+    const getTabBarVisibility = (route)=>{
+        const routeName = route.state ? route.state.routes[ route.state.index ].name : '';
+        if( routeName == "Chat")
+        {
+            return false;
+        }
+        return true;
+    }
     return(
         <Tab.Navigator
         initialRouteName="HomeScreen"
@@ -26,8 +34,9 @@ function Tabs(){
 
         
         >
-            <Tab.Screen name="HomeScreen" component={HomeStack} options={{
+            <Tab.Screen name="HomeScreen" component={HomeStack} options={({route})=>({
                 headerShown: false,
+                tabBarVisible: getTabBarVisibility(route),
                 tabBarIcon: ({focused})=>(
                     <View style={styles.tabOption}>
                         <Image source={require("../assets/Home.png")} style={{
@@ -35,7 +44,7 @@ function Tabs(){
                             ...styles.imgStyle}}/>
                     </View>
                 )
-            }} />
+            })} />
             <Tab.Screen name="ChatScreen" component={ChatStack} options={{
                 headerShown: false,
                 tabBarIcon: ({focused})=>(

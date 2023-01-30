@@ -2,15 +2,100 @@ import { Text, View, StyleSheet, TextInput } from "react-native";
 import Header from "../components/ChatScreen/Header";
 import { COLORS } from "../components/constants";
 import { Feather } from '@expo/vector-icons';
-
+import { Bubble, GiftedChat } from 'react-native-gifted-chat';
+import { useCallback, useEffect, useState } from "react";
+import { FontAwesome } from '@expo/vector-icons';
 // Chat Screen
 function ChatScreen({route}){
+    const [messages, setMessages] = useState([]);
+    const onSend = useCallback((messages = []) => {
+        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+      }, []);
+    
+    const renderBubble = (props)=>{
+        return(
+
+            <Bubble
+            {...props}
+            wrapperStyle={{
+                right:{
+                    backgroundColor: COLORS.purple,
+                    padding: 5,
+                    borderRadius: 5,
+                    elevation: 2,
+                },
+                left:{
+                    backgroundColor: COLORS.white,
+                    padding: 5,
+                    borderRadius: 5,
+                    elevation: 2,
+                }
+            }}
+            textStyle={{
+                right:{
+                    color: COLORS.gray,
+                },
+                left:{
+                    color: COLORS.gray,
+                }
+            }}
+            
+            />
+            );
+    }
+    const scrollToBottomComponent = ()=>{
+        return(
+            <FontAwesome name="angle-double-down" size={24} color="black" />
+        );
+    }
+    useEffect(() => {
+      setMessages([
+        {
+          _id: 1,
+          text: 'Hello developer',
+          createdAt: new Date(),
+          user: {
+            _id: 2,
+            name: 'React Native',
+            avatar: 'https://placeimg.com/140/140/any',
+          },
+        },
+        {
+            _id: 2,
+            text: 'Hello World...!!!',
+            createdAt: new Date(),
+            user: {
+              _id: 1,
+              name: 'React Native',
+              avatar: 'https://placeimg.com/140/140/any',
+            },
+          },
+      ])
+    }, []);
+    
     return(
         <View style={styles.container}>
             <Header headerText={ route.params.name } imgSrc={ route.params.imgSrc }  />
-            <SentMessage/>
+             
+            {/* <SentMessage/>
             <ReceiveMessage />
-            <InputMessage/>
+            <InputMessage/> */}
+            <GiftedChat
+                messages={messages}
+                onSend={messages => onSend(messages)}
+                user={{
+                    _id: 1,
+                }}
+                renderBubble={renderBubble}
+                scrollToBottom
+                scrollToBottomComponent={scrollToBottomComponent}
+                // textInputStyle={{
+                //     borderWidth: 1,
+                //     padding: 5,
+                //     borderRadius: 8,
+                //     borderColor: COLORS.grey,
+                // }}
+            />
         </View>
     );
 }
