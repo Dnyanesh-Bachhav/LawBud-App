@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TextInput, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Image, TextInput, ScrollView, TouchableOpacity } from "react-native";
 import Header from '../components/Header';
 import image1 from '../assets/image.jpg';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -25,7 +25,9 @@ function ProfileScreen(){
                         style={{...styles.inputStyle, width: '90%' }}
                         cursorColor={COLORS.gray}
                     />
-                    <Octicons name="unverified" size={21} color={COLORS.yellow} style={{alignSelf: 'flex-end', marginLeft: 5 }} />
+                    <TouchableOpacity style={{ backgroundColor: COLORS.lightGray, marginLeft: 5, padding: 2, borderRadius: 50 }} >
+                        <Octicons name="unverified" size={21} color={COLORS.yellow} style={{alignSelf: 'flex-end' }} />
+                    </TouchableOpacity>
                 </View>
                 <Field name="Home Address" />
                 <Field name="Profession" />

@@ -1,9 +1,11 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
+import * as ImagePicker from 'expo-image-picker';
 import { Formik } from "formik";
 import * as Yup from 'yup';
+import { useState } from "react";
 const UserPersonalSchema = Yup.object().shape({
     name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
     HAddress: Yup.string().min(2, "Too short address").max(100, "Too long address").required('Required'),
@@ -17,6 +19,23 @@ const LawyerPersonalSchema = Yup.object().shape({
 function PersonalScreen({ route }) {
 
     const navigation = useNavigation();
+    const [image, setImage] = useState(null);
+
+    const pickImage = async () => {
+      // No permissions request is necessary for launching the image library
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+  
+      console.log(result);
+  
+      if (!result.canceled) {
+        setImage(result.assets[0].uri);
+      }
+    };
     return (
         <View style={styles.container}>
             <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
@@ -25,11 +44,18 @@ function PersonalScreen({ route }) {
 
             <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5 }} >
                 <View style={{ width: 100, height: 100, backgroundColor: COLORS.grey, borderRadius: 50, alignSelf: 'center' }} >
-                    <TouchableOpacity style={styles.badgeStyle}>
+                    <View style={{width: '100%', height: '100%', borderWidth: 2, borderRadius: 50, overflow: 'hidden' }}  >
+                    { image && <Image
+                    source={{ uri: image }}
+                    style={styles.imageStyle}
+                    />}
+                    </View>
+                    <TouchableOpacity style={styles.badgeStyle} onPress={pickImage}>
                         <View>
                             <MaterialIcons name="edit" size={24} color={COLORS.white} />
                         </View>
                     </TouchableOpacity>
+            
                 </View>
                 {
                     route.params.userType === "user"
@@ -164,6 +190,11 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.secondary,
         borderRadius: 50,
         padding: 5
+    },
+    imageStyle:{
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover'
     },
     inputStyle: {
         backgroundColor: COLORS.lightGray,
