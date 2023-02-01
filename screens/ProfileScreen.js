@@ -1,21 +1,50 @@
 import { View, Text, StyleSheet, Image, TextInput, ScrollView, TouchableOpacity } from "react-native";
 import Header from '../components/Header';
-import image1 from '../assets/image.jpg';
+import image1 from '../assets/default_user.jpg';
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from "../components/constants";
 import { Octicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import { useState } from "react";
 
 function ProfileScreen(){
+    const [image, setImage] = useState(null);
+
+    const pickImage = async () => {
+      // No permissions request is necessary for launching the image library
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+  
+      console.log(result);
+  
+      if (!result.canceled) {
+        setImage(result.assets[0].uri);
+      }
+    };
     return(
         <View style={styles.container}>
             <Header headerText={"My Account"} />
-            <View style={styles.imgContainer}>
-                <Image
+            <View style={{ width: 100, height: 100, backgroundColor: COLORS.grey, borderRadius: 50, alignSelf: 'center',flexDirection: 'row', alignSelf: 'center', }} >
+                    <View style={{width: '100%', height: '100%', borderWidth: 2, borderRadius: 50, overflow: 'hidden' }}  >
+                    { image!=null ? <Image
+                    source={{ uri: image }}
+                    style={styles.imageStyle}
+                    /> : <Image
                     source={image1}
-                    style={styles.imgStyle} 
-                    />
-                <View style={styles.badgeStyle}><MaterialIcons name="edit" size={24} color={COLORS.white} /></View>
-            </View>
+                    style={styles.imageStyle} 
+                    /> }
+                    </View>
+                    <TouchableOpacity style={styles.badgeStyle} onPress={pickImage}>
+                        <View>
+                            <MaterialIcons name="edit" size={24} color={COLORS.white} />
+                        </View>
+                    </TouchableOpacity>
+            
+                </View>
             <ScrollView>
                 <Field name="Name" />
                 <Field name="Contact" />
@@ -100,6 +129,11 @@ const styles = StyleSheet.create({
         borderColor: COLORS.red,
         borderWidth: 1,
         borderRadius: 5,
+    },
+    imageStyle:{
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover'
     },
 });
 export default ProfileScreen;

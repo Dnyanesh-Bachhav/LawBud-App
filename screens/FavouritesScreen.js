@@ -10,59 +10,69 @@ import { getLawyersData } from "../Services/requests";
 
 function FavouritesScreen(){
     const[favouritesData,setFavouritesData] = useState([]);
+    const[loading,setLoading] = useState(false);
     const[lawyersData,setLawyersData] = useState(null);
     let favouritesUserFiltered = [];
     const getUser = async () => {
-        try {
+        // try {
+            console.log("Get called...");
+            setLoading(true);
           const savedUser = await AsyncStorage.getItem("favourites");
-          if(favouriteUsers==null)
+          let data1 = JSON.parse(savedUser);
+          console.log("Data:"+data1[0].userId);
+          setFavouritesData(data1);
+          setLoading(false);
+          if(savedUser==null)
           {
             return;
           }
-          const lawyersArray = await getLawyersData();
-        //   const savedAllUsers = await AsyncStorage.getItem("usersData");
-          const favouriteUsers = JSON.parse(savedUser);
-          console.log("Favoutirte users: "+  favouriteUsers[0].userId);
+          //   const lawyersArray = await getLawyersData();
+        // //   const savedAllUsers = await AsyncStorage.getItem("usersData");
+        //   const favouriteUsers = JSON.parse(savedUser);
+        //   console.log("Favoutirte users: "+  favouriteUsers[0].userId);
+        //   setLawyersData(favouriteUsers);
           //   const allUsers = JSON.parse(savedAllUsers);
-          setLawyersData(lawyersArray.filter(( item )=>{
-            // console.log(item.userType);
-            return item.userType === "lawyer";
-          }));
+        //   setLawyersData(lawyersArray.filter(( item )=>{
+        //     // console.log(item.userType);
+        //     return item.userType === "lawyer";
+        //   }));
         //   console.log("All:"+allUsers);
           // console.log(lawyersArray);
-          let i = 0;
-          lawyersArray.forEach((item,index)=>{
+        //   let i = 0;
+        //   lawyersArray.forEach((item,index)=>{
             
-            if(item.userId === favouriteUsers[i].userId)
-            {
+        //     if(item.userId === favouriteUsers[i].userId)
+        //     {
 
-                favouritesUserFiltered.push(item);
-                i++;
-            }
+        //         favouritesUserFiltered.push(item);
+        //         i++;
+        //     }
             
-        });
-          console.log("unfiltered: "+favouritesUserFiltered);
-          setFavouritesData(favouritesUserFiltered);
-          return favouritesUserFiltered;
-        } catch (error) {
-          console.log("Error:"+error);
-        }
+        // });
+        //   console.log("unfiltered: "+favouritesUserFiltered);
+        //   setFavouritesData(favouritesUserFiltered);
+        //   return favouritesUserFiltered;
+        // } catch (error) {
+        //   console.log("Error:"+error);
+        // }
       };
     useEffect(()=>{
 
         getUser();
         // console.log("Favorites123:"+favouritesData);
     },[]);
+
     return(
         <View style={styles.container}>
             <Header headerText={"Favourites"} />
             {
-                favouritesData != null ? <ActivityIndicator size={"small"} color={COLORS.black} ></ActivityIndicator>
+                !loading ? <ActivityIndicator size={"small"} color={COLORS.black} ></ActivityIndicator>
                 : <FlatList
                 data={favouritesData}
                 style={styles.listStyle}
                 renderItem={({ item, index }) => (
-                    <Card name={item?.name} type={item?.type} languages={item?.languages || []} experience={item?.experience} key={index} />
+                    <Text>{item.userId }</Text>
+                    // <Card name={item?.name} type={item?.type} languages={item?.languages || []} experience={item?.experience} key={index} />
                     )}
                     keyExtractor={({ item, index }) => index}
                     />
