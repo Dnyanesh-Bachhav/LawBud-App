@@ -28,8 +28,8 @@ function ProfileScreen(){
     return(
         <View style={styles.container}>
             <Header headerText={"My Account"} />
-            <View style={{ width: 100, height: 100, backgroundColor: COLORS.grey, borderRadius: 50, alignSelf: 'center',flexDirection: 'row', alignSelf: 'center', }} >
-                    <View style={{width: '100%', height: '100%', borderWidth: 2, borderRadius: 50, overflow: 'hidden' }}  >
+            <View style={{ width: 100, height: 100, backgroundColor: COLORS.grey, borderRadius: 50, marginTop: 10, alignSelf: 'center',flexDirection: 'row', alignSelf: 'center', }} >
+                    <View style={{width: '100%', height: '100%', borderRadius: 50, overflow: 'hidden' }}  >
                     { image!=null ? <Image
                     source={{ uri: image }}
                     style={styles.imageStyle}
