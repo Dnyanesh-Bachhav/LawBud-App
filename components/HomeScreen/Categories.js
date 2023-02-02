@@ -44,7 +44,7 @@ function Card({name}){
             <View style={{width: CARD_WIDTH, height: CARD_WIDTH, borderRadius: 50, backgroundColor: COLORS.gray, }} >
 
             </View>
-            <Text numberOfLines={4} >{ name }</Text>
+            <Text numberOfLines={2} >{ name }</Text>
         </View>
     );
 }

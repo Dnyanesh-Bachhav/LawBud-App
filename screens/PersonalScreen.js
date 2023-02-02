@@ -6,6 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Formik } from "formik";
 import * as Yup from 'yup';
 import { useState } from "react";
+import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 const UserPersonalSchema = Yup.object().shape({
     name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
     HAddress: Yup.string().min(2, "Too short address").max(100, "Too long address").required('Required'),
@@ -22,19 +23,19 @@ function PersonalScreen({ route }) {
     const [image, setImage] = useState(null);
 
     const pickImage = async () => {
-      // No permissions request is necessary for launching the image library
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-  
-      console.log(result);
-  
-      if (!result.canceled) {
-        setImage(result.assets[0].uri);
-      }
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        console.log(result);
+
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+        }
     };
     return (
         <View style={styles.container}>
@@ -44,18 +45,18 @@ function PersonalScreen({ route }) {
 
             <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5 }} >
                 <View style={{ width: 100, height: 100, backgroundColor: COLORS.grey, borderRadius: 50, alignSelf: 'center' }} >
-                    <View style={{width: '100%', height: '100%', borderWidth: 2, borderRadius: 50, overflow: 'hidden' }}  >
-                    { image && <Image
-                    source={{ uri: image }}
-                    style={styles.imageStyle}
-                    />}
+                    <View style={{ width: '100%', height: '100%', borderWidth: 2, borderRadius: 50, overflow: 'hidden' }}  >
+                        {image && <Image
+                            source={{ uri: image }}
+                            style={styles.imageStyle}
+                        />}
                     </View>
                     <TouchableOpacity style={styles.badgeStyle} onPress={pickImage}>
                         <View>
                             <MaterialIcons name="edit" size={24} color={COLORS.white} />
                         </View>
                     </TouchableOpacity>
-            
+
                 </View>
                 {
                     route.params.userType === "user"
@@ -117,7 +118,7 @@ function PersonalScreen({ route }) {
                                     </View>
                                     <View style={{ marginTop: 10 }} >
                                         <Text style={{ color: COLORS.gray }}>Office address*</Text>
-                                        <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.OAddress} onChangeText={handleChange('OAddress')} onBlur={()=> setFieldTouched('OAddress') } />
+                                        <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.OAddress} onChangeText={handleChange('OAddress')} onBlur={() => setFieldTouched('OAddress')} />
                                         {touched.OAddress && errors.OAddress && (
                                             <Text style={styles.errorText}>{errors.OAddress}</Text>
                                         )}
@@ -148,6 +149,15 @@ function PersonalScreen({ route }) {
     );
 }
 function RegistrationProgress({ userType }) {
+    const progressStepsStyle = {
+        activeStepIconBorderColor: '#686868',
+        activeLabelColor: '#686868',
+        activeStepNumColor: 'white',
+        activeStepIconColor: '#686868',
+        completedStepIconColor: '#686868',
+        completedProgressBarColor: '#686868',
+        completedCheckColor: '#4bb543'
+    };
     return (
 
         <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 16, flexDirection: 'row', justifyContent: 'space-around', borderRadius: 5 }} >
@@ -161,8 +171,17 @@ function RegistrationProgress({ userType }) {
                     </>
                     :
                     <>
-                        <Text style={{ fontSize: 12, color: COLORS.black }}>Register</Text>
-                        <Text style={{ fontSize: 12, color: COLORS.black }}>Personal</Text>
+                        {/* <Text style={{ fontSize: 12, color: COLORS.black }}>Register</Text>
+                        <Text style={{ fontSize: 12, color: COLORS.black }}>Personal</Text> */}
+                        <ProgressSteps {...progressStepsStyle} activeStep={2}>
+                            <ProgressStep label="Register" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}>
+                            </ProgressStep>
+                            <ProgressStep label="Personal" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}>
+                                {/* <View style={{ alignItems: 'center' }}>
+                    <Text></Text>
+                </View> */}
+                            </ProgressStep>
+                        </ProgressSteps>
                     </>
             }
         </View>
@@ -191,7 +210,7 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         padding: 5
     },
-    imageStyle:{
+    imageStyle: {
         width: '100%',
         height: '100%',
         resizeMode: 'cover'

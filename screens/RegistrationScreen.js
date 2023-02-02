@@ -8,6 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { getLawyersCategories, getLawyersData } from "../Services/requests";
 import { Formik } from "formik";
 import * as Yup from 'yup';
+import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 
 
 const SignupSchema = Yup.object().shape({
@@ -51,23 +52,43 @@ function RegistrationScreen(){
     );
 }
 function RegistrationProgress({userType}){
+  const progressStepsStyle = {
+    activeStepIconBorderColor: '#686868',
+    activeLabelColor: '#686868',
+    activeStepNumColor: 'white',
+    activeStepIconColor: '#686868',
+    completedStepIconColor: '#686868',
+    completedProgressBarColor: '#686868',
+    completedCheckColor: '#4bb543'
+  };
     return(
         
-    <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 16, flexDirection: 'row', justifyContent: 'space-around', borderRadius: 5}} >
+    <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 2, flexDirection: 'row', justifyContent: 'space-around', borderRadius: 5}} >
         {
             userType === "lawyer" ?
             <>
-        <Text style={{fontSize: 12, color: COLORS.black}}>Register</Text>
+        {/* <Text style={{fontSize: 12, color: COLORS.black}}>Register</Text>
         <Text style={{fontSize: 12, color: COLORS.black}}>Personal</Text>
         <Text style={{fontSize: 12, color: COLORS.black}}>SkillSets</Text>
-        <Text style={{fontSize: 12, color: COLORS.black}}>Documents</Text>
+        <Text style={{fontSize: 12, color: COLORS.black}}>Documents</Text> */}
+        
             </>
             : 
             <>
-        <Text style={{fontSize: 12, color: COLORS.black}}>Register</Text>
-        <Text style={{fontSize: 12, color: COLORS.black}}>Personal</Text>    
+        {/* <Text style={{fontSize: 12, color: COLORS.black}}>Register</Text>
+        <Text style={{fontSize: 12, color: COLORS.black}}>Personal</Text>     */}
+        <ProgressSteps { ...progressStepsStyle }>
+            <ProgressStep label="Register" nextBtnTextStyle={ styles.buttonTextStyle} previousBtnTextStyle={ styles.buttonTextStyle}>
+            </ProgressStep>
+            <ProgressStep label="Personal" nextBtnTextStyle={ styles.buttonTextStyle} previousBtnTextStyle={ styles.buttonTextStyle}>
+                {/* <View style={{ alignItems: 'center' }}>
+                    <Text></Text>
+                </View> */}
+            </ProgressStep>
+        </ProgressSteps>
             </>
         }
+        
     </View>
     );
 }
@@ -218,6 +239,11 @@ const styles = StyleSheet.create({
 
     errorText:{
         color: COLORS.red,
+    },
+    buttonTextStyle:{
+        color: '#393939',
+        padding: 0,
+        margin: 0
     }
 });
 export default RegistrationScreen;

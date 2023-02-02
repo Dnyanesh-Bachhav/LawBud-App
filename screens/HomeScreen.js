@@ -5,6 +5,8 @@ import Categories from "../components/HomeScreen/Categories";
 import Header from "../components/HomeScreen/Header";
 import Lawyers from "../components/HomeScreen/Lawyers";
 import { getLawyersData } from "../Services/requests";
+// import MarqueeText from 'react-native-marquee';
+
 
 function HomeScreen(){
   const[lawyersData,setLawyersData] = useState([]);
@@ -28,6 +30,15 @@ useEffect(()=>{
 },[]);
     return(
       <SafeAreaView style={styles.container}>
+        {/* <MarqueeText
+          style={{ fontSize: 24 }}
+          speed={1}
+          marqueeOnStart={true}
+          loop={true}
+          delay={1000}
+        >
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry and typesetting industry.
+        </MarqueeText> */}
         {
           !loading ? <Header lawyersData={lawyersData} /> : <ActivityIndicator size={"small"} color={COLORS.black} />
         }
