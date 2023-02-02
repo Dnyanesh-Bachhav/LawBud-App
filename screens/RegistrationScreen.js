@@ -13,33 +13,32 @@ import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email('Please enter a valid email').required('Required'),
-    phone: Yup.string().min(10,"Must be exactly 10 digits").max(10,"Must be exactly 10 digits").matches(/^[0-9]+$/,"Must be only digits").required("Please enter your mobile number")
-  });
-  const SignupOTPSchema = Yup.object().shape({
-    otp: Yup.string().min(4,"Must be exactly 4 digits").max(4,"Must be exactly 4 digits").matches(/^[0-9]+$/,"Must be only digits").required("Please enter your OTP")
-  });
+    phone: Yup.string().min(10, "Must be exactly 10 digits").max(10, "Must be exactly 10 digits").matches(/^[0-9]+$/, "Must be only digits").required("Please enter your mobile number")
+});
+const SignupOTPSchema = Yup.object().shape({
+    otp: Yup.string().min(4, "Must be exactly 4 digits").max(4, "Must be exactly 4 digits").matches(/^[0-9]+$/, "Must be only digits").required("Please enter your OTP")
+});
 
-function RegistrationScreen(){
-    let[userType,setUserType] = useState("user");
+function RegistrationScreen() {
+    let [userType, setUserType] = useState("user");
     const navigation = useNavigation();
-    const[ lawyersCategoriesData, setCategoriesLawyersData ] = useState([]);
-    const[loading,setLoading] = useState(false);
-    async function getLawyersCategoriesData1(){
-        if(loading)
-        {
+    const [lawyersCategoriesData, setCategoriesLawyersData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    async function getLawyersCategoriesData1() {
+        if (loading) {
             return;
         }
         const lawyersCategories = await getLawyersCategories();
-        console.log("Category:"+lawyersCategories);
+        console.log("Category:" + lawyersCategories);
         setCategoriesLawyersData(lawyersCategories);
         setLoading(false);
     }
-    useEffect(()=>{
+    useEffect(() => {
         getLawyersCategoriesData1();
-    },[]);
-    return(
+    }, []);
+    return (
         <View style={styles.container}>
-            <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
+            <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
             <RegistrationProgress userType={userType} />
             {/* Registration Screens */}
             <Register userType={userType} setUserType={setUserType} lawyersCategoriesData={lawyersCategoriesData} />
@@ -51,64 +50,65 @@ function RegistrationScreen(){
         </View>
     );
 }
-function RegistrationProgress({userType}){
-  const progressStepsStyle = {
-    activeStepIconBorderColor: '#686868',
-    activeLabelColor: '#686868',
-    activeStepNumColor: 'white',
-    activeStepIconColor: '#686868',
-    completedStepIconColor: '#686868',
-    completedProgressBarColor: '#686868',
-    completedCheckColor: '#4bb543'
-  };
-    return(
-        
-    <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 2, flexDirection: 'row', justifyContent: 'space-around', borderRadius: 5}} >
-        {
-            userType === "lawyer" ?
-            <>
-        {/* <Text style={{fontSize: 12, color: COLORS.black}}>Register</Text>
+function RegistrationProgress({ userType }) {
+    const progressStepsStyle = {
+        activeStepIconBorderColor: '#686868',
+        activeLabelColor: '#686868',
+        activeStepNumColor: 'white',
+        activeStepIconColor: '#686868',
+        completedStepIconColor: '#686868',
+        completedProgressBarColor: '#686868',
+        completedCheckColor: '#4bb543'
+    };
+    return (
+
+        <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 2, flexDirection: 'row', justifyContent: 'space-around', borderRadius: 5 }} >
+            {/* <Text style={{fontSize: 12, color: COLORS.black}}>Register</Text>
         <Text style={{fontSize: 12, color: COLORS.black}}>Personal</Text>
         <Text style={{fontSize: 12, color: COLORS.black}}>SkillSets</Text>
-        <Text style={{fontSize: 12, color: COLORS.black}}>Documents</Text> */}
-        
-            </>
-            : 
-            <>
-        {/* <Text style={{fontSize: 12, color: COLORS.black}}>Register</Text>
+    <Text style={{fontSize: 12, color: COLORS.black}}>Documents</Text> */}
+            {
+                userType === "lawyer" ?
+                <View style={{flexDirection: 'row', width: '100%' }} >
+
+                    <ProgressSteps {...progressStepsStyle}>
+                        <ProgressStep label="Register" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                        <ProgressStep label="Personal" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                        <ProgressStep label="SkillSets" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                        <ProgressStep label="Documents" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                    </ProgressSteps>
+                </View>
+                    :
+                    <ProgressSteps {...progressStepsStyle}>
+                        <ProgressStep label="Register" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                        <ProgressStep label="Personal" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                    </ProgressSteps>
+                    
+            }
+
+            {/* <Text style={{fontSize: 12, color: COLORS.black}}>Register</Text>
         <Text style={{fontSize: 12, color: COLORS.black}}>Personal</Text>     */}
-        <ProgressSteps { ...progressStepsStyle }>
-            <ProgressStep label="Register" nextBtnTextStyle={ styles.buttonTextStyle} previousBtnTextStyle={ styles.buttonTextStyle}>
-            </ProgressStep>
-            <ProgressStep label="Personal" nextBtnTextStyle={ styles.buttonTextStyle} previousBtnTextStyle={ styles.buttonTextStyle}>
-                {/* <View style={{ alignItems: 'center' }}>
-                    <Text></Text>
-                </View> */}
-            </ProgressStep>
-        </ProgressSteps>
-            </>
-        }
-        
-    </View>
+
+        </View >
     );
 }
-function Register({userType,setUserType,lawyersCategoriesData}){
-    const [currentOption,setCurrentOption] = useState("user");
+function Register({ userType, setUserType, lawyersCategoriesData }) {
+    const [currentOption, setCurrentOption] = useState("user");
     const navigation = useNavigation();
     const refRBSheet = useRef();
-    return(
+    return (
         <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5 }}>
-            <Text style={{fontSize: 16,color: COLORS.gray, }}>What describes you best?</Text>
+            <Text style={{ fontSize: 16, color: COLORS.gray, }}>What describes you best?</Text>
             <View style={{ flexDirection: 'row', borderRadius: 5, padding: 4, marginTop: 5, backgroundColor: COLORS.lightGray }} >
-                <TouchableOpacity style={{width: '50%', borderRadius:5, backgroundColor: userType === "user" ? COLORS.black : COLORS.lightGray}} onPress={()=>{
+                <TouchableOpacity style={{ width: '50%', borderRadius: 5, backgroundColor: userType === "user" ? COLORS.black : COLORS.lightGray }} onPress={() => {
                     setUserType("user");
                 }} >
-                    <Text style={{color: COLORS.gray, fontSize: 16, padding: 10, textAlign: 'center' }}>User</Text>
+                    <Text style={{ color: COLORS.gray, fontSize: 16, padding: 10, textAlign: 'center' }}>User</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{width: '50%', borderRadius:5, backgroundColor: userType === "lawyer" ? COLORS.black : COLORS.lightGray}} onPress={()=>{
+                <TouchableOpacity style={{ width: '50%', borderRadius: 5, backgroundColor: userType === "lawyer" ? COLORS.black : COLORS.lightGray }} onPress={() => {
                     setUserType("lawyer");
                 }}>
-                    <Text style={{color: COLORS.gray, fontSize: 16, padding: 10, textAlign: 'center' }}>Lawyer</Text>
+                    <Text style={{ color: COLORS.gray, fontSize: 16, padding: 10, textAlign: 'center' }}>Lawyer</Text>
                 </TouchableOpacity>
             </View>
             {/* User Data */}
@@ -116,95 +116,95 @@ function Register({userType,setUserType,lawyersCategoriesData}){
                 email: '',
                 phone: ''
             }}
-            validationSchema={SignupSchema}
+                validationSchema={SignupSchema}
             >
-                {({values,errors,touched, handleChange, setFieldTouched, isValid,  handleSubmit})=>(
+                {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
 
-                    <View style={{width: '100%', }} >
-                {/* <InputComponent title={"Email id"} /> */}
+                    <View style={{ width: '100%', }} >
+                        {/* <InputComponent title={"Email id"} /> */}
                         <View style={{ marginTop: 10 }} >
                             <Text style={{ color: COLORS.gray }}>Email id</Text>
-                            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.email} onChangeText={handleChange('email')} onBlur={() =>  setFieldTouched('email')} />
-                            { touched.email && errors.email && (
+                            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.email} onChangeText={handleChange('email')} onBlur={() => setFieldTouched('email')} />
+                            {touched.email && errors.email && (
                                 <Text style={styles.errorText}>{errors.email}</Text>
                             )}
                         </View>
                         <View style={{ marginTop: 10 }} >
                             <Text style={{ color: COLORS.gray }}>Phone Number</Text>
-                            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.phone} onChangeText={handleChange('phone')} onBlur={() =>  setFieldTouched('phone')} />
-                            { touched.phone && errors.phone && (
+                            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.phone} onChangeText={handleChange('phone')} onBlur={() => setFieldTouched('phone')} />
+                            {touched.phone && errors.phone && (
                                 <Text style={styles.errorText}>{errors.phone}</Text>
                             )}
                         </View>
-                        
-                {/* <InputComponent title={"Phone Number"} /> */}
-                {/* Button */}
-                <TouchableOpacity onPress={()=>{
-                        refRBSheet.current.open();
-                    }} disabled={!isValid} style={{backgroundColor: isValid ? COLORS.black : COLORS.grey,marginTop: 10, borderRadius: 4 }} >
-                        <Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Get OTP</Text>
-                    </TouchableOpacity>
-                </View>
-                    )}
+
+                        {/* <InputComponent title={"Phone Number"} /> */}
+                        {/* Button */}
+                        <TouchableOpacity onPress={() => {
+                            refRBSheet.current.open();
+                        }} disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }} >
+                            <Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Get OTP</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
             </Formik>
             {/* Bottom Sheet */}
-            <View style={{flex:1, backgroundColor: 'rgba(0,0,0,0.5)' }}>
+            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }}>
 
-            <RBSheet
-                ref={refRBSheet}
-                animationType="none"
-                closeOnDragDown={true}
-                closeOnPressMask={true}
-                customStyles={{
-                    container:{
-                        backgroundColor: COLORS.white,
-                    },
-                wrapper: {
-                    backgroundColor: "transparent",
-                },
-                draggableIcon: {
-                    backgroundColor: "#000"
-                }                
-                }}
-            >
-                
-                    <SheetComponent navigation={navigation} userType={userType}  lawyersCategoriesData={lawyersCategoriesData} />
+                <RBSheet
+                    ref={refRBSheet}
+                    animationType="none"
+                    closeOnDragDown={true}
+                    closeOnPressMask={true}
+                    customStyles={{
+                        container: {
+                            backgroundColor: COLORS.white,
+                        },
+                        wrapper: {
+                            backgroundColor: "transparent",
+                        },
+                        draggableIcon: {
+                            backgroundColor: "#000"
+                        }
+                    }}
+                >
+
+                    <SheetComponent navigation={navigation} userType={userType} lawyersCategoriesData={lawyersCategoriesData} />
                 </RBSheet>
-                </View>
+            </View>
         </View>
     );
 }
-function SheetComponent({navigation,userType,lawyersCategoriesData}){
-    return(
+function SheetComponent({ navigation, userType, lawyersCategoriesData }) {
+    return (
         <Formik initialValues={{
             otp: ''
         }} validationSchema={SignupOTPSchema}>
-            {({values,errors,touched, handleChange, setFieldTouched, isValid,  handleSubmit})=>(
+            {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
 
-                <View style={{padding: 10}} >
-                <View style={{ marginTop: 10 }} >
-                    <Text style={{ color: COLORS.gray }}>Enter OTP</Text>
-                    <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.otp} onChangeText={handleChange('otp')} onBlur={() =>  setFieldTouched('otp')} />
-                </View>
-                
-                    <TouchableOpacity onPress={()=>{
-                        navigation.navigate("Personal",{
+                <View style={{ padding: 10 }} >
+                    <View style={{ marginTop: 10 }} >
+                        <Text style={{ color: COLORS.gray }}>Enter OTP</Text>
+                        <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.otp} onChangeText={handleChange('otp')} onBlur={() => setFieldTouched('otp')} />
+                    </View>
+
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate("Personal", {
                             userType,
                             lawyersCategoriesData
-                            
+
                         });
-                    }} style={{backgroundColor: isValid ? COLORS.black : COLORS.grey,marginTop: 10, borderRadius: 4 }} disabled={!isValid} >
-                        <Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Next</Text>
+                    }} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }} disabled={!isValid} >
+                        <Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Next</Text>
                     </TouchableOpacity>
-            </View>
+                </View>
             )}
         </Formik>
     );
 }
-function InputComponent({title}){
-    return(
-        <View style={{marginTop: 10}} >
-            <Text style={{color: COLORS.gray}}>{title}</Text>
+function InputComponent({ title }) {
+    return (
+        <View style={{ marginTop: 10 }} >
+            <Text style={{ color: COLORS.gray }}>{title}</Text>
             <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} />
         </View>
     );
@@ -212,23 +212,23 @@ function InputComponent({title}){
 
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         flex: 1,
         backgroundColor: COLORS.black,
         paddingHorizontal: 20,
         paddingTop: 10
     },
-    
-    btn:{
+
+    btn: {
         backgroundColor: COLORS.white,
     },
-    inputStyle:{
+    inputStyle: {
         backgroundColor: COLORS.lightGray,
         borderRadius: 5,
         paddingLeft: 5,
         marginTop: 4
     },
-    badgeStyle:{
+    badgeStyle: {
         position: 'absolute',
         bottom: 0,
         right: 0,
@@ -237,10 +237,10 @@ const styles = StyleSheet.create({
         padding: 5
     },
 
-    errorText:{
+    errorText: {
         color: COLORS.red,
     },
-    buttonTextStyle:{
+    buttonTextStyle: {
         color: '#393939',
         padding: 0,
         margin: 0

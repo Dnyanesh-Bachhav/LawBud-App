@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from 'yup';
+import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 const DocumentsSchema = Yup.object().shape({
     degreeCertificate: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
     barCertificate: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
@@ -66,23 +67,36 @@ function DocumentsScreen({route}){
         );
 }
 function RegistrationProgress({userType}){
+    const progressStepsStyle = {
+        activeStepIconBorderColor: '#686868',
+        activeLabelColor: '#686868',
+        activeStepNumColor: 'white',
+        activeStepIconColor: '#686868',
+        completedStepIconColor: '#686868',
+        completedProgressBarColor: '#686868',
+        completedCheckColor: '#4bb543'
+    };
     return(
         
     <View style={{backgroundColor: COLORS.white, marginTop: 10, padding: 16, flexDirection: 'row', justifyContent: 'space-around', borderRadius: 5}} >
         {
-            userType === "lawyer" ?
-            <>
-        <Text style={{fontSize: 12, color: COLORS.black}}>Register</Text>
-        <Text style={{fontSize: 12, color: COLORS.black}}>Personal</Text>
-        <Text style={{fontSize: 12, color: COLORS.black}}>SkillSets</Text>
-        <Text style={{fontSize: 12, color: COLORS.black}}>Documents</Text>
-            </>
-            : 
-            <>
-        <Text style={{fontSize: 12, color: COLORS.black}}>Register</Text>
-        <Text style={{fontSize: 12, color: COLORS.black}}>Personal</Text>    
-            </>
-        }
+                userType === "lawyer" ?
+                <View style={{flexDirection: 'row', width: '100%' }} >
+
+                    <ProgressSteps {...progressStepsStyle} activeStep={3}>
+                        <ProgressStep label="Register" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                        <ProgressStep label="Personal" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                        <ProgressStep label="SkillSets" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                        <ProgressStep label="Documents" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                    </ProgressSteps>
+                </View>
+                    :
+                    <ProgressSteps {...progressStepsStyle} activeStep={3}>
+                        <ProgressStep label="Register" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                        <ProgressStep label="Personal" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                    </ProgressSteps>
+                    
+            }
     </View>
     );
 }
@@ -117,6 +131,11 @@ const styles = StyleSheet.create({
     },
     errorText: {
         color: COLORS.red,
+    },
+    buttonTextStyle:{
+        color: '#393939',
+        padding: 0,
+        margin: 0
     }
 })
 export default DocumentsScreen;

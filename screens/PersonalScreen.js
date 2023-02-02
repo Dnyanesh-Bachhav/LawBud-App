@@ -163,26 +163,21 @@ function RegistrationProgress({ userType }) {
         <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 16, flexDirection: 'row', justifyContent: 'space-around', borderRadius: 5 }} >
             {
                 userType === "lawyer" ?
-                    <>
-                        <Text style={{ fontSize: 12, color: COLORS.black }}>Register</Text>
-                        <Text style={{ fontSize: 12, color: COLORS.black }}>Personal</Text>
-                        <Text style={{ fontSize: 12, color: COLORS.black }}>SkillSets</Text>
-                        <Text style={{ fontSize: 12, color: COLORS.black }}>Documents</Text>
-                    </>
+                <View style={{flexDirection: 'row', width: '100%' }} >
+
+                    <ProgressSteps {...progressStepsStyle} activeStep={1}>
+                        <ProgressStep label="Register" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                        <ProgressStep label="Personal" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                        <ProgressStep label="SkillSets" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                        <ProgressStep label="Documents" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                    </ProgressSteps>
+                </View>
                     :
-                    <>
-                        {/* <Text style={{ fontSize: 12, color: COLORS.black }}>Register</Text>
-                        <Text style={{ fontSize: 12, color: COLORS.black }}>Personal</Text> */}
-                        <ProgressSteps {...progressStepsStyle} activeStep={2}>
-                            <ProgressStep label="Register" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}>
-                            </ProgressStep>
-                            <ProgressStep label="Personal" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}>
-                                {/* <View style={{ alignItems: 'center' }}>
-                    <Text></Text>
-                </View> */}
-                            </ProgressStep>
-                        </ProgressSteps>
-                    </>
+                    <ProgressSteps {...progressStepsStyle} activeStep={1}>
+                        <ProgressStep label="Register" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                        <ProgressStep label="Personal" nextBtnTextStyle={styles.buttonTextStyle} previousBtnTextStyle={styles.buttonTextStyle}></ProgressStep>
+                    </ProgressSteps>
+                    
             }
         </View>
     );
@@ -223,6 +218,11 @@ const styles = StyleSheet.create({
     },
     errorText: {
         color: COLORS.red,
+    },
+    buttonTextStyle:{
+        color: '#393939',
+        padding: 0,
+        margin: 0
     }
 })
 export default PersonalScreen;
