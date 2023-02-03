@@ -20,12 +20,12 @@ function DocumentsScreen({ route }) {
 
         if (response.type == "cancel") {
             console.log("no file picked...");
+            return;
         }
 
     }
     const navigation = useNavigation();
     let [itemsArray, setItemsArray] = useState([]);
-    var itemsArray1 = [];
     return (
         <View style={styles.container}>
             <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
