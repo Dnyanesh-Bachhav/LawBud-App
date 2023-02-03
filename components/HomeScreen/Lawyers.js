@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getLawyersData } from "../../Services/requests";
 
-function Lawyers() {
+function Lawyers({lawyersData}) {
     const navigation = useNavigation();
     let[favouriteLawyers,setFavouriteLawyers] = useState([]);
-    const[ lawyersData, setLawyersData ] = useState(null);
+    // const[ lawyersData, setLawyersData ] = useState(null);
     async function getLawyersData1(){
        await  AsyncStorage.setItem("favourites",JSON.stringify([]));
         const lawyersArray = await getLawyersData();
@@ -20,22 +20,22 @@ function Lawyers() {
         }));
     }
     useEffect(()=>{
-        getLawyersData1();
+        // getLawyersData1();
     },[]);
     return (
         <View style={{ flex: 1, marginTop: 10 }} >
             {
-                lawyersData ?
-                <FlatList
+                lawyersData && 
+                (<FlatList
                     data={ lawyersData }
                     style={styles.listStyle}
                     renderItem={({ item, index }) => (
-                        <Card name={item.name} type={item.type} userId={item.userId} imgSrc={item.profile_image} languages={item.ratings} experience={item.experience} key={index} favouriteLawyers={favouriteLawyers} setFavouriteLawyers={setFavouriteLawyers} />
+                        <Card name={item.name} type={item.type} userId={item.userId} imgSrc={item.profile_image} languages={item.user_law_data.languages||["Marathi","Hindi","English"]} experience={item?.experience||0} key={index} favouriteLawyers={favouriteLawyers} setFavouriteLawyers={setFavouriteLawyers} />
                         )}
                         keyExtractor={({ item, index }) => index}
-                        />
-                    : <ActivityIndicator size={"large"} color={COLORS.secondary} />
-            }
+                        />)
+                    }
+            {/* <ActivityIndicator size={"large"} color={COLORS.secondary} /> */}
             
             <TouchableOpacity onPress={()=>{
                 navigation.navigate("Register");
@@ -160,7 +160,7 @@ function Card({ name, userId, type, imgSrc, languages, experience, favouriteLawy
                     }
                 } )}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',marginRight: 10 }} >
-                    <Text style={{ color: COLORS.gray }} >Exp: {experience}</Text>
+                    <Text style={{ color: COLORS.gray }}>Exp: {experience}yrs</Text>
                     <View style={{ flexDirection: 'row' }} >
                         <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
                         <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
