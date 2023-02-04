@@ -82,7 +82,7 @@ function DocumentsScreen({ route }) {
                             )}
                         </View>
                         <TouchableOpacity onPress={() => {
-                            navigation.navigate("LawyersDashboard");
+                            // navigation.navigate("LawyersDashboard");
                             signIn();
                         }} disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }} ><Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Next</Text></TouchableOpacity>
                     </View>

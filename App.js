@@ -9,11 +9,13 @@ import { useEffect, useMemo, useState } from 'react';
 import { getLawyersData } from './Services/requests';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from './components/context';
+import RootStackScreen from './screens/RootStackScreen';
 const Stack = createNativeStackNavigator();
 export default function App() {
   const [lawyersData, setLawyersData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
+  const [ usersType , setUsersType] = useState("user");
 
   const storeAllUser = async (lawyersData) => {
 
@@ -46,7 +48,9 @@ export default function App() {
     signUp:()=>{
       setUserToken("userToken");
       setIsLoading(false);
-    }
+    },
+    setUsersType: setUsersType,
+    usersType: usersType
   }))
   useEffect(() => {
     setTimeout(() => {
@@ -66,7 +70,11 @@ export default function App() {
 
     <View style={styles.container}>
       <NavigationContainer>
-        <Tabs />
+        {
+          userToken !== null ?
+          <Tabs />
+          : <RootStackScreen/>
+        }
       </NavigationContainer>
       <StatusBar style="auto" />
     </View>

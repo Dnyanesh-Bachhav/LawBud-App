@@ -15,6 +15,8 @@ import PersonalScreen from "../screens/PersonalScreen";
 import SkillScreen from "../screens/SkillsScreen";
 import DocumentsScreen from "../screens/DocumentsScreen";
 import LawyersDashboardScreen from "../screens/LawyersDashboardScreen";
+import { useContext } from "react";
+import { AuthContext } from "../components/context";
 
 const HomeScreenStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -40,11 +42,19 @@ function DrawerStack(){
 }
 
 function HomeStack(){
+  
+    const { usersType } = useContext(AuthContext);
     return(
         <HomeScreenStack.Navigator>
+          {
+            usersType === "user" ?
             <HomeScreenStack.Screen name='Home' component={DrawerStack} options={{
               headerShown: false,
             }} />
+           : <HomeScreenStack.Screen name='LawyersDashboard' component={LawyersDashboardScreen} options={{
+              headerShown: false,
+            }}/>
+          }
             <HomeScreenStack.Screen name='About' component={AboutScreen} options={{
               headerShown: false,
             }}/>
@@ -62,25 +72,8 @@ function HomeStack(){
             }}/>
             <HomeScreenStack.Screen name='Profile' component={ProfileScreen} options={{
               headerShown: false,
-            }}/>            
-            <HomeScreenStack.Screen name='Register' component={RegistrationScreen} options={{
-              headerShown: false,
             }}/>
-            <HomeScreenStack.Screen name='Login' component={LoginScreen} options={{
-              headerShown: false,
-            }}/>
-            <HomeScreenStack.Screen name='Personal' component={PersonalScreen} options={{
-              headerShown: false,
-            }}/>
-            <HomeScreenStack.Screen name='Skills' component={SkillScreen} options={{
-              headerShown: false,
-            }}/>
-            <HomeScreenStack.Screen name='Documents' component={DocumentsScreen} options={{
-              headerShown: false,
-            }}/>
-            <HomeScreenStack.Screen name='LawyersDashboard' component={LawyersDashboardScreen} options={{
-              headerShown: false,
-            }}/>
+            
         </HomeScreenStack.Navigator>
     );
 

@@ -1,10 +1,11 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import * as Yup from 'yup';
+import { AuthContext } from "../components/context";
 const LoginSchema = Yup.object().shape({
     phone: Yup.string().min(10,"Must be exactly 10 digits").max(10,"Must be exactly 10 digits").matches(/^[0-9]+$/,"Must be only digits").required("Please enter your mobile number")
 });
@@ -16,6 +17,7 @@ const LoginOTPSchema = Yup.object().shape({
 function LoginScreen(){
     const refRBSheet = useRef();
     const navigation = useNavigation();
+    const { usersType, setUsersType, signIn } = useContext(AuthContext);
     let[userType,setUserType] = useState("user");
     return(
         <View style={styles.container}>
@@ -23,11 +25,13 @@ function LoginScreen(){
             <View style={{ flexDirection: 'row', borderRadius: 5, padding: 4, marginTop: 5, backgroundColor: COLORS.lightGray }} >
                 <TouchableOpacity style={{width: '50%', borderRadius:5, backgroundColor: userType === "user" ? COLORS.black : COLORS.lightGray}} onPress={()=>{
                     setUserType("user");
+                    setUsersType("user");
                 }} >
                     <Text style={{color: COLORS.gray, fontSize: 16, padding: 10, textAlign: 'center' }}>User</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{width: '50%', borderRadius:5, backgroundColor: userType === "lawyer" ? COLORS.black : COLORS.lightGray}} onPress={()=>{
                     setUserType("lawyer");
+                    setUsersType("lawyer");
                 }}>
                     <Text style={{color: COLORS.gray, fontSize: 16, padding: 10, textAlign: 'center' }}>Lawyer</Text>
                 </TouchableOpacity>
@@ -83,7 +87,7 @@ function LoginScreen(){
                 }                
                 }}
             >
-                <SheetComponent navigation={navigation} userType={userType} />
+                <SheetComponent navigation={navigation} userType={userType} setUsersType={setUsersType} usersType={usersType} signIn={signIn} />
             </RBSheet>
         </View>
         </View>
@@ -97,7 +101,7 @@ function InputComponent({title}){
         </View>
     );
 }
-function SheetComponent({navigation, userType }){
+function SheetComponent({navigation, userType, usersType, setUsersType, signIn }){
     return(
         <Formik initialValues={{
             otp: ''
@@ -112,13 +116,16 @@ function SheetComponent({navigation, userType }){
             )}
             </View>
             <TouchableOpacity disabled={!isValid} style={{backgroundColor: isValid ? COLORS.black : COLORS.grey,marginTop: 10, borderRadius: 4 }} onPress={()=>{
-                if(userType=="user")
-                {
-                    navigation.navigate("Home");
-                }
-                else{
-                    navigation.navigate("LawyersDashboard");
-                }
+                // if(userType=="user")
+                // {
+                //     navigation.navigate("Home");
+                // }
+                // else{
+                //     // setUsersType
+                    
+                //     // navigation.navigate("LawyersDashboard");
+                // }
+                signIn();
             }} ><Text style={{color: COLORS.white, padding: 4, textAlign: 'center'}} >Next</Text></TouchableOpacity>
         </View>
             )}

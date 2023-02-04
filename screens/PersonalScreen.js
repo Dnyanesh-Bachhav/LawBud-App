@@ -5,8 +5,9 @@ import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
 import { Formik } from "formik";
 import * as Yup from 'yup';
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
+import { AuthContext } from "../components/context";
 const UserPersonalSchema = Yup.object().shape({
     name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
     HAddress: Yup.string().min(2, "Too short address").max(100, "Too long address").required('Required'),
@@ -18,6 +19,7 @@ const LawyerPersonalSchema = Yup.object().shape({
     AlternatePhone: Yup.string().min(10, "Must be exactly 10 digits").max(10, "Must be exactly 10 digits").matches(/^[0-9]+$/, "Must be only digits").notRequired()
 });
 function PersonalScreen({ route }) {
+    const { signIn } = useContext(AuthContext);
 
     const navigation = useNavigation();
     const [image, setImage] = useState(null);
@@ -92,7 +94,8 @@ function PersonalScreen({ route }) {
                                         )}
                                     </View>
                                     <TouchableOpacity onPress={() => {
-                                        navigation.navigate("Home");
+                                        // navigation.navigate("Home");
+                                        signIn();
                                     }} disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }}>
                                         <Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Next</Text>
                                     </TouchableOpacity>

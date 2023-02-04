@@ -1,14 +1,17 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useContext } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { COLORS } from "../components/constants";
+import { AuthContext } from "../components/context";
 import ChatStack from "../Stacks/ChatStack";
 import FavouriteStack from "../Stacks/FavouriteStack";
 import HomeStack from "../Stacks/HomeStack";
 import NewsStack from "../Stacks/NewsStack";
 
 const Tab = createBottomTabNavigator();
-function  Tabs(){
+function Tabs(){
+    const { usersType, setLawyerUser } = useContext(AuthContext);
     const getTabBarVisibility = (route)=>{
         const routeName = route.state ? route.state.routes[ route.state.index ].name : '';
         if( routeName == "Chat")
@@ -34,6 +37,7 @@ function  Tabs(){
 
         
         >
+            
             <Tab.Screen name="HomeScreen" component={HomeStack} options={({route})=>({
                 headerShown: false,
                 tabBarVisible: getTabBarVisibility(route),

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { COLORS } from "../components/constants";
@@ -9,6 +9,7 @@ import { getLawyersCategories, getLawyersData } from "../Services/requests";
 import { Formik } from "formik";
 import * as Yup from 'yup';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
+import { AuthContext } from "../components/context";
 
 
 const SignupSchema = Yup.object().shape({
@@ -21,6 +22,7 @@ const SignupOTPSchema = Yup.object().shape({
 
 function RegistrationScreen() {
     let [userType, setUserType] = useState("user");
+    const { usersType, setUsersType } = useContext(AuthContext);
     const navigation = useNavigation();
     const [lawyersCategoriesData, setCategoriesLawyersData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -41,7 +43,7 @@ function RegistrationScreen() {
             <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
             <RegistrationProgress userType={userType} />
             {/* Registration Screens */}
-            <Register userType={userType} setUserType={setUserType} lawyersCategoriesData={lawyersCategoriesData} />
+            <Register userType={userType} setUserType={setUserType} setUsersType={setUsersType} lawyersCategoriesData={lawyersCategoriesData} />
             {/* <Personal/> */}
             {/* {
                !loading ? <SkillSets lawyersCategoriesData={lawyersCategoriesData} /> : <ActivityIndicator size={"small"} color={COLORS.black} />
@@ -92,7 +94,7 @@ function RegistrationProgress({ userType }) {
         </View >
     );
 }
-function Register({ userType, setUserType, lawyersCategoriesData }) {
+function Register({ userType, setUserType, setUsersType, lawyersCategoriesData }) {
     const [currentOption, setCurrentOption] = useState("user");
     const navigation = useNavigation();
     const refRBSheet = useRef();
@@ -102,11 +104,13 @@ function Register({ userType, setUserType, lawyersCategoriesData }) {
             <View style={{ flexDirection: 'row', borderRadius: 5, padding: 4, marginTop: 5, backgroundColor: COLORS.lightGray }} >
                 <TouchableOpacity style={{ width: '50%', borderRadius: 5, backgroundColor: userType === "user" ? COLORS.black : COLORS.lightGray }} onPress={() => {
                     setUserType("user");
+                    setUsersType("user");
                 }} >
                     <Text style={{ color: COLORS.gray, fontSize: 16, padding: 10, textAlign: 'center' }}>User</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{ width: '50%', borderRadius: 5, backgroundColor: userType === "lawyer" ? COLORS.black : COLORS.lightGray }} onPress={() => {
                     setUserType("lawyer");
+                    setUsersType("lawyer");
                 }}>
                     <Text style={{ color: COLORS.gray, fontSize: 16, padding: 10, textAlign: 'center' }}>Lawyer</Text>
                 </TouchableOpacity>
