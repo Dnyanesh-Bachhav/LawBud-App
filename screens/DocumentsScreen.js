@@ -1,12 +1,13 @@
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from 'yup';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import * as DocumentPicker from 'expo-document-picker';
 import { Entypo } from '@expo/vector-icons';
+import { AuthContext } from "../components/context";
 const DocumentsSchema = Yup.object().shape({
     degreeCertificate: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
     barCertificate: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
@@ -14,6 +15,7 @@ const DocumentsSchema = Yup.object().shape({
     experience: Yup.string().min(1, "Must be greater than or equal to 1 digit").matches(/^[0-9]+$/, "Must be only digits").notRequired()
 });
 function DocumentsScreen({ route }) {
+    const { signIn } = useContext(AuthContext);
     const handleUpload = async () => {
         let response = await DocumentPicker.getDocumentAsync();
         console.log("File URI: " + response.uri);
@@ -81,6 +83,7 @@ function DocumentsScreen({ route }) {
                         </View>
                         <TouchableOpacity onPress={() => {
                             navigation.navigate("LawyersDashboard");
+                            signIn();
                         }} disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }} ><Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Next</Text></TouchableOpacity>
                     </View>
                 )}

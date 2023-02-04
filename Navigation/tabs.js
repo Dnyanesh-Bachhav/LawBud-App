@@ -8,7 +8,7 @@ import HomeStack from "../Stacks/HomeStack";
 import NewsStack from "../Stacks/NewsStack";
 
 const Tab = createBottomTabNavigator();
-function Tabs(){
+function  Tabs(){
     const getTabBarVisibility = (route)=>{
         const routeName = route.state ? route.state.routes[ route.state.index ].name : '';
         if( routeName == "Chat")
