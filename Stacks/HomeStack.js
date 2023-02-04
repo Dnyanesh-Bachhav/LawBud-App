@@ -20,62 +20,82 @@ import { AuthContext } from "../components/context";
 
 const HomeScreenStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
-function DrawerStack(){
-  return(
-    <Drawer.Navigator initialRouteName="Home1" drawerContent={(props)=> <CustomDrawer {...props} />} screenOptions={{
+function DrawerStack() {
+  return (
+    <Drawer.Navigator initialRouteName="Home1" drawerContent={(props) => <CustomDrawer {...props} />} screenOptions={{
       headerShown: false,
       drawerActiveBackgroundColor: COLORS.purple,
       drawerActiveTintColor: COLORS.white,
       drawerInactiveTintColor: COLORS.black,
-      drawerLabelStyle:{
-          marginLeft: 0
+      drawerLabelStyle: {
+        marginLeft: 0
       }
-      
-  }} >
-    <Drawer.Screen name="Home " component={HomeScreen}  />
-            <Drawer.Screen name="Feedback" component={HomeScreen} />
-            <Drawer.Screen name="Contact us" component={HomeScreen}/>
-            <Drawer.Screen name="Privacy Policy" component={HomeScreen} />
-            
-        </Drawer.Navigator>
+
+    }} >
+      <Drawer.Screen name="Home " component={HomeScreen} />
+      <Drawer.Screen name="Feedback" component={HomeScreen} />
+      <Drawer.Screen name="Contact us" component={HomeScreen} />
+      <Drawer.Screen name="Privacy Policy" component={HomeScreen} />
+
+    </Drawer.Navigator>
+  );
+}
+function DrawerStackLawyers() {
+  return (
+    <Drawer.Navigator initialRouteName="Home1" drawerContent={(props) => <CustomDrawer {...props} />} screenOptions={{
+      headerShown: false,
+      drawerActiveBackgroundColor: COLORS.purple,
+      drawerActiveTintColor: COLORS.white,
+      drawerInactiveTintColor: COLORS.black,
+      drawerLabelStyle: {
+        marginLeft: 0
+      }
+
+    }} >
+      <Drawer.Screen name="Home " component={LawyersDashboardScreen} />
+      <Drawer.Screen name="Feedback" component={LawyersDashboardScreen} />
+      <Drawer.Screen name="Contact us" component={LawyersDashboardScreen} />
+      <Drawer.Screen name="Privacy Policy" component={LawyersDashboardScreen} />
+
+    </Drawer.Navigator>
   );
 }
 
-function HomeStack(){
-  
-    const { usersType } = useContext(AuthContext);
-    return(
-        <HomeScreenStack.Navigator>
-          {
-            usersType === "user" ?
-            <HomeScreenStack.Screen name='Home' component={DrawerStack} options={{
-              headerShown: false,
-            }} />
-           : <HomeScreenStack.Screen name='LawyersDashboard' component={LawyersDashboardScreen} options={{
-              headerShown: false,
-            }}/>
-          }
-            <HomeScreenStack.Screen name='About' component={AboutScreen} options={{
-              headerShown: false,
-            }}/>
-            <HomeScreenStack.Screen name='Chat' component={ChatScreen} options={{
-              headerShown: false,
-            }}/>
-            <HomeScreenStack.Screen name='Favourite' component={FavouritesScreen} options={{
-              headerShown: false,
-            }}/>
-            <HomeScreenStack.Screen name='ChatsList' component={ChatsListScreen} options={{
-              headerShown: false,
-            }}/>
-            <HomeScreenStack.Screen name='NewsAlert' component={NewsAlertScreen} options={{
-              headerShown: false,
-            }}/>
-            <HomeScreenStack.Screen name='Profile' component={ProfileScreen} options={{
-              headerShown: false,
-            }}/>
-            
-        </HomeScreenStack.Navigator>
-    );
+function HomeStack() {
+
+  const { usersType } = useContext(AuthContext);
+  return (
+    <HomeScreenStack.Navigator>
+      {
+        usersType === "user" ?
+          <HomeScreenStack.Screen name='Home' component={DrawerStack} options={{
+            headerShown: false,
+          }} />
+          : <HomeScreenStack.Screen name='LawyersDashboard' component={DrawerStackLawyers} options={{
+            headerShown: false,
+          }} />
+      }
+      <HomeScreenStack.Screen name='About' component={AboutScreen} options={{
+        headerShown: false,
+      }} />
+      <HomeScreenStack.Screen name='Chat' component={ChatScreen} options={{
+        headerShown: false,
+      }} />
+      <HomeScreenStack.Screen name='Favourite' component={FavouritesScreen} options={{
+        headerShown: false,
+      }} />
+      <HomeScreenStack.Screen name='ChatsList' component={ChatsListScreen} options={{
+        headerShown: false,
+      }} />
+      <HomeScreenStack.Screen name='NewsAlert' component={NewsAlertScreen} options={{
+        headerShown: false,
+      }} />
+      <HomeScreenStack.Screen name='Profile' component={ProfileScreen} options={{
+        headerShown: false,
+      }} />
+
+    </HomeScreenStack.Navigator>
+  );
 
 }
 export default HomeStack;

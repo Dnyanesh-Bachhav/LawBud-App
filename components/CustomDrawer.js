@@ -1,15 +1,24 @@
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from "@react-navigation/drawer";
+import { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS } from "./constants";
+import { AuthContext } from "./context";
 
 function CustomDrawer(props) {
-   
+   const { signOut } = useContext(AuthContext);
     return (
         <View style={styles.container}>
             <DrawerContentScrollView {...props} contentContainerStyle={{ backgroundColor: COLORS.secondary }}>
                 
                 <View style={styles.listContainer}>
                     <DrawerItemList {...props} />
+                    <View style={{ marginLeft: 16 }}>
+                        <TouchableOpacity onPress={()=>{
+                            signOut();
+                        }} >
+                            <Text>Logout</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </DrawerContentScrollView>
             
