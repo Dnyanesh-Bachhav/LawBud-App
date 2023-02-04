@@ -5,11 +5,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from "../components/constants";
 import { Octicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../components/context";
 
 function ProfileScreen(){
     const [image, setImage] = useState(null);
-
+    const { signOut } = useContext(AuthContext);
     const pickImage = async () => {
       // No permissions request is necessary for launching the image library
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -61,7 +62,7 @@ function ProfileScreen(){
                 <Field name="Home Address" />
                 <Field name="Profession" />
             </ScrollView>
-            <Logout_Button />
+            <Logout_Button signOut={signOut} />
         </View>
     );
 }
@@ -77,18 +78,21 @@ function Field({name}){
     );
 }
 
-function Logout_Button(){
+function Logout_Button({signOut}){
     return(
+        <TouchableOpacity onPress={()=>{
+            signOut();
+        }} >
         <View style={styles.report_btn}>
             <Text> Logout </Text>
         </View>
+        </TouchableOpacity>
     );
 }
 const styles = StyleSheet.create({
     container:{
         flex: 1
     },
-    
     imgContainer:{
         flexDirection: 'row',
         alignSelf: 'center',

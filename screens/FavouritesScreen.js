@@ -14,47 +14,48 @@ function FavouritesScreen(){
     const[lawyersData,setLawyersData] = useState(null);
     let favouritesUserFiltered = [];
     const getUser = async () => {
-        // try {
+        try {
             console.log("Get called...");
             setLoading(true);
           const savedUser = await AsyncStorage.getItem("favourites");
-          let data1 = JSON.parse(savedUser);
-          console.log("Data:"+data1[0].userId);
-          setFavouritesData(data1);
-          setLoading(false);
           if(savedUser==null)
           {
             return;
           }
-          //   const lawyersArray = await getLawyersData();
+          let data1 = JSON.parse(savedUser);
+          console.log("Data:"+data1[0].userId);
+        //   setFavouritesData(data1);
+        let lawyersArray = await getLawyersData();
+        lawyersArray = lawyersArray.data;
         // //   const savedAllUsers = await AsyncStorage.getItem("usersData");
         //   const favouriteUsers = JSON.parse(savedUser);
         //   console.log("Favoutirte users: "+  favouriteUsers[0].userId);
         //   setLawyersData(favouriteUsers);
           //   const allUsers = JSON.parse(savedAllUsers);
-        //   setLawyersData(lawyersArray.filter(( item )=>{
-        //     // console.log(item.userType);
-        //     return item.userType === "lawyer";
-        //   }));
-        //   console.log("All:"+allUsers);
+          setLawyersData(lawyersArray.filter(( item )=>{
+            // console.log(item.userType);
+            return item.userType === "lawyer";
+          }));
+            console.log("All:"+ data1.includes({ userId: "tW_EaVsJ" }));
           // console.log(lawyersArray);
-        //   let i = 0;
-        //   lawyersArray.forEach((item,index)=>{
-            
-        //     if(item.userId === favouriteUsers[i].userId)
-        //     {
-
-        //         favouritesUserFiltered.push(item);
-        //         i++;
-        //     }
-            
-        // });
-        //   console.log("unfiltered: "+favouritesUserFiltered);
-        //   setFavouritesData(favouritesUserFiltered);
-        //   return favouritesUserFiltered;
-        // } catch (error) {
-        //   console.log("Error:"+error);
-        // }
+          let i = 0;
+          lawyersArray.forEach((item,index)=>{
+              
+              if(data1.some(item1 => item1.userId == item.userId))
+              {
+                  
+                  favouritesUserFiltered.push(item);
+                  i++;
+                }
+                
+            });
+            //   console.log("unfiltered: "+favouritesUserFiltered);
+            setFavouritesData(favouritesUserFiltered);
+            setLoading(false);
+            return favouritesUserFiltered;
+        } catch (error) {
+          console.log("Error:"+error);
+        }
       };
     useEffect(()=>{
 
@@ -66,22 +67,24 @@ function FavouritesScreen(){
         <View style={styles.container}>
             <Header headerText={"Favourites"} />
             {
-                !loading ? <ActivityIndicator size={"small"} color={COLORS.black} ></ActivityIndicator>
-                : <FlatList
-                data={favouritesData}
-                style={styles.listStyle}
-                renderItem={({ item, index }) => (
-                    <Text>{item.userId }</Text>
-                    // <Card name={item?.name} type={item?.type} languages={item?.languages || []} experience={item?.experience} key={index} />
-                    )}
-                    keyExtractor={({ item, index }) => index}
-                    />
+                loading && <ActivityIndicator size={"small"} color={COLORS.black} ></ActivityIndicator>}
+                {
+                    favouritesData && <FlatList
+                    data={favouritesData}
+                    style={styles.listStyle}
+                    renderItem={({ item, index }) => (
+                        // <Text>{item.userId }</Text>
+                        <Card name={item?.name} type={item?.type} languages={item?.languages || ["Marathi","Hindi","English"]} profile_image={item.profile_image} experience={item?.experience || 0 } key={index} />
+                        )}
+                        keyExtractor={({ item, index }) => index}
+                        />
+                    }
                     
-                }
+                
         </View>
     );
 }
-function Card({ name, type, languages, experience }) {
+function Card({ name, type, languages, profile_image, experience }) {
     const navigation = useNavigation();
     console.log(experience);
     
@@ -100,7 +103,9 @@ function Card({ name, type, languages, experience }) {
             }} >
 
             <Image
-                source={image1}
+                source={{
+                    uri: profile_image
+                }}
                 style={styles.imgStyle}
                 />
             <View style={{ flex: 1, marginLeft: 10, justifyContent: 'center' }} >
