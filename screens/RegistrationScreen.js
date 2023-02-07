@@ -41,7 +41,8 @@ function RegistrationScreen() {
     return (
         <View style={styles.container}>
             <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
-            <RegistrationProgress userType={userType} />
+            { loading && <ActivityIndicator size={"small"} color={COLORS.black} />}
+            { lawyersCategoriesData && <RegistrationProgress userType={userType} />}
             {/* Registration Screens */}
             <Register userType={userType} setUserType={setUserType} setUsersType={setUsersType} lawyersCategoriesData={lawyersCategoriesData} />
             {/* <Personal/> */}

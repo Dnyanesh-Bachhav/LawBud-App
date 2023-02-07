@@ -5,18 +5,57 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, Text, View, StatusBar, ActivityIndicator } from 'react-native';
 import { COLORS } from './components/constants';
 import Tabs from './Navigation/tabs';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useReducer, useState } from 'react';
 import { getLawyersData } from './Services/requests';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from './components/context';
 import RootStackScreen from './screens/RootStackScreen';
 const Stack = createNativeStackNavigator();
 export default function App() {
+
   const [lawyersData, setLawyersData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
   const [ usersType , setUsersType] = useState("user");
 
+  const initialLoginState = {
+    isLoading: true,
+    userName: null,
+    userToken: null,
+  }
+
+  const loginReducer = (prevState,action)=>{
+    switch(action.type)
+    {
+      case "RETRIEVE_TOKEN":
+        return {
+          ...prevState,
+          userToken: action.token,
+          isLoading: false
+        };
+      case "LOGIN":
+        return{
+          ...prevState,
+          userName: action.id,
+          userToken: action.token,
+          isLoading: false
+        };
+        case "LOGOUT":
+          return{
+            ...prevState,
+            userName: null,
+            userToken: null,
+            isLoading: false
+          }
+        case "REGISTER":
+          return{
+            ...prevState,
+            userName: action.id,
+            userToken: action.token,
+            isLoading: false
+          }
+    }
+  }
   const storeAllUser = async (lawyersData) => {
 
     try {
@@ -36,14 +75,37 @@ export default function App() {
     }));
     await storeAllUser(lawyersData);
   }
+  const [loginState,dispatch] = useReducer(loginReducer,initialLoginState);
   const authContext = useMemo(()=>({
-    signIn:()=>{
-      setUserToken("userToken");
-      setIsLoading(false);
+    signIn: async (userName,otp)=>{
+      let userToken;
+      userToken = null;
+      if(userName=="7757801496" && otp=="1234")
+      {
+        try{
+          userToken = "sdsdSDE";
+          await AsyncStorage.setItem("userToken",userToken);
+        }
+        catch(e)
+        {
+          console.log(e);
+        }
+      }
+      dispatch({ type: "LOGIN", token: userToken });
+      // setUserToken("userToken");
+      // setIsLoading(false);
     },
-    signOut:()=>{
-      setUserToken(null);
-      setIsLoading(false);
+    signOut: async ()=>{
+      // setUserToken(null);
+      // setIsLoading(false);
+      try{
+        await AsyncStorage.removeItem("userToken");
+      }
+      catch(e)
+      {
+        console.log(e);
+      }
+      dispatch({ type: "LOGOUT" }); 
     },
     signUp:()=>{
       setUserToken("userToken");
@@ -53,12 +115,23 @@ export default function App() {
     usersType: usersType
   }))
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
+    setTimeout( async() => {
+      // setIsLoading(false);
+      let userToken;
+      userToken = null;
+      try{
+        userToken = await AsyncStorage.getItem("userToken");
+      }
+      catch(e)
+      {
+        console.log(e);
+      }
+      dispatch({ type: "REGISTER", token: userToken });
+
     }, 1000);
     getLawyersData1();
   }, []);
-  if (isLoading) {
+  if (loginState.isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size={"small"} color={COLORS.black} />
@@ -71,7 +144,7 @@ export default function App() {
     <View style={styles.container}>
       <NavigationContainer>
         {
-          userToken !== null ?
+          loginState.userToken !== null ?
           <Tabs />
           : <RootStackScreen/>
         }

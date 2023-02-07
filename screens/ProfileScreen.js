@@ -80,12 +80,10 @@ function Field({name}){
 
 function Logout_Button({signOut}){
     return(
-        <TouchableOpacity onPress={()=>{
+        <TouchableOpacity style={styles.report_btn} onPress={()=>{
             signOut();
         }} >
-        <View style={styles.report_btn}>
             <Text> Logout </Text>
-        </View>
         </TouchableOpacity>
     );
 }

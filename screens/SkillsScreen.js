@@ -1,16 +1,32 @@
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
 import SearchableDropDown from "react-native-searchable-dropdown";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
+import { getLawyersCategories } from "../Services/requests";
 function SkillScreen({ route }) {
 
     const navigation = useNavigation();
     // console.log(lawyersCategoriesData[0]);
     let [itemsArray, setItemsArray] = useState([]);
     var itemsArray1 = [];
+    const [lawyersCategoriesData, setCategoriesLawyersData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    async function getLawyersCategoriesData1() {
+        if (loading) {
+            return;
+        }
+        const lawyersCategories = await getLawyersCategories();
+        console.log("Category:" + lawyersCategories);
+        setCategoriesLawyersData(lawyersCategories);
+        setLoading(false);
+    }
+    useEffect(() => {
+        getLawyersCategoriesData1();
+    }, []);
+
     return (
         <View style={styles.container}>
             <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
@@ -19,8 +35,9 @@ function SkillScreen({ route }) {
                 <Text style={{ color: COLORS.gray }}>Select Your Specialization</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }} >
 
-                    <SearchableDropDown
-                        items={route.params.lawyersCategoriesData}
+                   { loading && <ActivityIndicator size={"small"} color={COLORS.black} />}
+                   { lawyersCategoriesData && <SearchableDropDown
+                        items={lawyersCategoriesData}
                         onItemSelect={(item) => {
                             setItemsArray((items) => [...items, { name: item.name }]);
                         }}
@@ -46,7 +63,7 @@ function SkillScreen({ route }) {
                                 nestedScrollEnabled: true,
                             }
                         }
-                        nestedScrollEnabled={true}
+                        // nestedScrollEnabled={true}
                         textInputProps={{
                             underlineColorAndroid: 'transparent',
                             style: {
@@ -58,7 +75,7 @@ function SkillScreen({ route }) {
                                 color: COLORS.black,
                             }
                         }}
-                    />
+                    /> }
                 </View>
                 <View style={{ flexDirection: 'row', marginTop: 4, height: 200 }} >
                     <FlatList

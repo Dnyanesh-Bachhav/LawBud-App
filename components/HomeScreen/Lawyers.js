@@ -37,7 +37,7 @@ function Lawyers({lawyersData}) {
                     }
             {/* <ActivityIndicator size={"large"} color={COLORS.secondary} /> */}
             
-            <TouchableOpacity onPress={()=>{
+            {/* <TouchableOpacity onPress={()=>{
                 navigation.navigate("Register");
             }}  >
                 <Text>Go to Registration</Text>
@@ -47,7 +47,7 @@ function Lawyers({lawyersData}) {
                 navigation.navigate("Login");
             }}  >
                 <Text>Go to Login</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </View>
     );
 }

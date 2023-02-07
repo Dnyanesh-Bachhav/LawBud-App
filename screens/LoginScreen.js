@@ -1,9 +1,9 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
-import { Formik } from "formik";
+import { Formik, useFormik } from "formik";
 import * as Yup from 'yup';
 import { AuthContext } from "../components/context";
 const LoginSchema = Yup.object().shape({
@@ -16,9 +16,14 @@ const LoginOTPSchema = Yup.object().shape({
 
 function LoginScreen(){
     const refRBSheet = useRef();
+    const formikRef = useRef();
     const navigation = useNavigation();
     const { usersType, setUsersType, signIn } = useContext(AuthContext);
     let[userType,setUserType] = useState("user");
+    let[phone,setPhone] = useState();
+    useEffect(()=>{
+        setUsersType("user");
+    },[]);
     return(
         <View style={styles.container}>
             <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Login</Text>
@@ -42,6 +47,11 @@ function LoginScreen(){
             <Formik initialValues={{
                 phone: ''
             }}
+            innerRef={formikRef}
+            onSubmit={(state)=>{
+                setPhone(state.phone);
+                // console.log("State:"+ JSON.stringify(state));
+            }}
             validationSchema={LoginSchema}
             >
                 {({values,errors,touched, handleChange, setFieldTouched, isValid,  handleSubmit})=>(
@@ -54,9 +64,13 @@ function LoginScreen(){
             )}
         </View>
                 {/* Button */}
-                    <TouchableOpacity onPress={()=>{
+                    <TouchableOpacity 
+                    onPress={()=>{
+                        formikRef.current.submitForm();
                         refRBSheet.current.open();
-                    }} disabled={!isValid} style={{backgroundColor: isValid ? COLORS.black : COLORS.grey,marginTop: 10, borderRadius: 4 }} ><Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Send OTP</Text></TouchableOpacity>
+                    }} disabled={!isValid} style={{backgroundColor: isValid ? COLORS.black : COLORS.grey,marginTop: 10, borderRadius: 4 }} >
+                        <Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Send OTP</Text>
+                    </TouchableOpacity>
                 <View style={{flexDirection: 'row', marginTop: 20, justifyContent: 'center', alignItems: 'center'}} >
                     <Text style={{color:COLORS.gray}} >Dont have an account?</Text>
                     <TouchableOpacity onPress={()=>{
@@ -87,7 +101,7 @@ function LoginScreen(){
                 }                
                 }}
             >
-                <SheetComponent navigation={navigation} userType={userType} setUsersType={setUsersType} usersType={usersType} signIn={signIn} />
+                <SheetComponent navigation={navigation} userType={userType} setUsersType={setUsersType} usersType={usersType} signIn={signIn} phone={phone} />
             </RBSheet>
         </View>
         </View>
@@ -101,7 +115,7 @@ function InputComponent({title}){
         </View>
     );
 }
-function SheetComponent({navigation, userType, usersType, setUsersType, signIn }){
+function SheetComponent({navigation, userType, usersType, setUsersType, signIn, phone }){
     return(
         <Formik initialValues={{
             otp: ''
@@ -125,7 +139,7 @@ function SheetComponent({navigation, userType, usersType, setUsersType, signIn }
                     
                 //     // navigation.navigate("LawyersDashboard");
                 // }
-                signIn();
+                signIn(phone, "1234");
             }} ><Text style={{color: COLORS.white, padding: 4, textAlign: 'center'}} >Next</Text></TouchableOpacity>
         </View>
             )}
