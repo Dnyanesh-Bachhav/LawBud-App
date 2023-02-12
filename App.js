@@ -17,6 +17,70 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
   const [ usersType , setUsersType] = useState("user");
+  const [ newUserData, setNewUserData ] = useState({
+    languages: [],
+    user_law_data: {
+      experience: {},
+      specialisation :{
+        default: {
+          id: {},
+          category: {}
+        }
+      },
+      sanat:{},
+      degree:{
+        default:{
+          id:{},
+          file:{},
+        }
+      },
+      bar_membership:{
+        default:{
+          id:{},
+          category:{}
+        }
+      },
+      ratings:{
+        default:{
+          from_user_id:{},
+          rate:{}
+        }
+      },
+      reviews:{
+        default:{
+          from_user_id:{},
+          review:{}
+        }
+      }
+    },
+    _id: null,
+    userId: null,
+    name: null,
+    email: null,
+    password: null,
+    profile_image: null,
+    notification: [],
+    oldnotification: [],
+    reports: [],
+    refer: false,
+    seenIntro: "notseen",
+    conversations: [],
+    userType: "",
+    sanatNumber: "",
+    degree: "",
+    bar: "",
+    experience: "",
+    specilization: [],
+    address: "",
+    phone: "",
+    ratings: [],
+    reviews: [],
+    verified: false,
+    createdAt: "",
+    updatedAt: "",
+    __v: "",
+    tokens: []
+  });
 
   const initialLoginState = {
     isLoading: true,
@@ -111,8 +175,10 @@ export default function App() {
       setIsLoading(false);
     },
     setUsersType: setUsersType,
-    usersType: usersType
-  }))
+    usersType: usersType,
+    newUserData: newUserData,
+    setNewUserData: setNewUserData,
+  }),[]);
   useEffect(() => {
     setTimeout( async() => {
       // setIsLoading(false);
@@ -120,6 +186,7 @@ export default function App() {
       userToken = null;
       try{
         userToken = await AsyncStorage.getItem("userToken");
+        console.log("Usertoken in useEffect: "+userToken);
       }
       catch(e)
       {
@@ -128,6 +195,7 @@ export default function App() {
       dispatch({ type: "REGISTER", token: userToken });
 
     }, 1000);
+    console.log("userToken: "+loginState.userToken);
     getLawyersData1();
   }, []);
   if (loginState.isLoading) {

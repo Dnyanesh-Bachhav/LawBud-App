@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import { useContext, useState } from "react";
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import { AuthContext } from "../components/context";
+import { useEffect } from "react";
 const UserPersonalSchema = Yup.object().shape({
     name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
     HAddress: Yup.string().min(2, "Too short address").max(100, "Too long address").required('Required'),
@@ -19,7 +20,7 @@ const LawyerPersonalSchema = Yup.object().shape({
     AlternatePhone: Yup.string().min(10, "Must be exactly 10 digits").max(10, "Must be exactly 10 digits").matches(/^[0-9]+$/, "Must be only digits").notRequired()
 });
 function PersonalScreen({ route }) {
-    const { signIn } = useContext(AuthContext);
+    const { signIn, newUserData } = useContext(AuthContext);
 
     const navigation = useNavigation();
     const [image, setImage] = useState(null);
@@ -39,6 +40,9 @@ function PersonalScreen({ route }) {
             setImage(result.assets[0].uri);
         }
     };
+    useEffect(()=>{
+        console.log("New data"+ JSON.stringify(newUserData));
+    },[]);
     return (
         <View style={styles.container}>
             <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>

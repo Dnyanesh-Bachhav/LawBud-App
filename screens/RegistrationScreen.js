@@ -22,7 +22,7 @@ const SignupOTPSchema = Yup.object().shape({
 
 function RegistrationScreen() {
     let [userType, setUserType] = useState("user");
-    const { usersType, setUsersType } = useContext(AuthContext);
+    const { usersType, setUsersType, newUserData, setNewUserData } = useContext(AuthContext);
     const navigation = useNavigation();
     const [userData,setUserData] = useState({
         type: '',
@@ -50,7 +50,7 @@ function RegistrationScreen() {
             { loading && <ActivityIndicator size={"small"} color={COLORS.black} />}
             { lawyersCategoriesData && <RegistrationProgress userType={userType} />}
             {/* Registration Screens */}
-            <Register userType={userType} setUserType={setUserType} setUsersType={setUsersType} lawyersCategoriesData={lawyersCategoriesData} />
+            <Register userType={userType} setUserType={setUserType} setUsersType={setUsersType} setNewUserData={setNewUserData} newUserData={newUserData} lawyersCategoriesData={lawyersCategoriesData} />
             {/* <Personal/> */}
             {/* {
                !loading ? <SkillSets lawyersCategoriesData={lawyersCategoriesData} /> : <ActivityIndicator size={"small"} color={COLORS.black} />
@@ -101,10 +101,13 @@ function RegistrationProgress({ userType }) {
         </View >
     );
 }
-function Register({ userType, setUserType, setUsersType, lawyersCategoriesData }) {
+function Register({ userType, setUserType, setUsersType, newUserData, setNewUserData, lawyersCategoriesData }) {
     const [currentOption, setCurrentOption] = useState("user");
+    const [email,setEmail] = useState(null);
+    const [phone,setPhone] = useState(null);
     const navigation = useNavigation();
     const refRBSheet = useRef();
+    const formikRef = useRef();
     return (
         <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5 }}>
             <Text style={{ fontSize: 16, color: COLORS.gray, }}>What describes you best?</Text>
@@ -126,6 +129,17 @@ function Register({ userType, setUserType, setUsersType, lawyersCategoriesData }
             <Formik initialValues={{
                 email: '',
                 phone: ''
+            }}
+            innerRef={formikRef}
+            onSubmit={(state)=>{
+                setEmail(state.email);
+                setPhone(state.phone);
+                setNewUserData((prev)=>{
+                    return { ...prev,
+                    email:"hello",
+                    phone }
+                })
+                console.log("Email and phone: "+email+" "+phone);
             }}
                 validationSchema={SignupSchema}
             >
@@ -151,6 +165,7 @@ function Register({ userType, setUserType, setUsersType, lawyersCategoriesData }
                         {/* <InputComponent title={"Phone Number"} /> */}
                         {/* Button */}
                         <TouchableOpacity onPress={() => {
+                            formikRef.current.submitForm();
                             refRBSheet.current.open();
                         }} disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }} >
                             <Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Get OTP</Text>
@@ -179,17 +194,28 @@ function Register({ userType, setUserType, setUsersType, lawyersCategoriesData }
                     }}
                 >
 
-                    <SheetComponent navigation={navigation} userType={userType} lawyersCategoriesData={lawyersCategoriesData} />
+                    <SheetComponent navigation={navigation} userType={userType} email={email} phone={phone} setNewUserData={setNewUserData} newUserData={newUserData} lawyersCategoriesData={lawyersCategoriesData} />
                 </RBSheet>
             </View>
         </View>
     );
 }
-function SheetComponent({ navigation, userType, lawyersCategoriesData }) {
+function SheetComponent({ navigation, userType, email, phone, newUserData, setNewUserData, lawyersCategoriesData }) {
+    const formikRef = useRef();
     return (
         <Formik initialValues={{
             otp: ''
-        }} validationSchema={SignupOTPSchema}>
+        }}
+        onSubmit={()=>{
+            setNewUserData({
+                ...newUserData,
+                email: "hello", 
+                phone: phone
+            });
+            console.log( JSON.stringify(newUserData));
+        }}
+        innerRef={formikRef}
+        validationSchema={SignupOTPSchema}>
             {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
 
                 <View style={{ padding: 10 }} >
@@ -199,6 +225,7 @@ function SheetComponent({ navigation, userType, lawyersCategoriesData }) {
                     </View>
 
                     <TouchableOpacity onPress={() => {
+                        formikRef.current.submitForm();
                         navigation.navigate("Personal", {
                             userType,
                             lawyersCategoriesData

@@ -10,17 +10,18 @@ function Lawyers({lawyersData}) {
     const navigation = useNavigation();
     let[favouriteLawyers,setFavouriteLawyers] = useState([]);
     // const[ lawyersData, setLawyersData ] = useState(null);
-    async function getLawyersData1(){
-       await  AsyncStorage.setItem("favourites",JSON.stringify([]));
-        const lawyersArray = await getLawyersData();
-        // console.log(lawyersArray);
-        setLawyersData(lawyersArray.filter(( item )=>{
-            // console.log(item.userType);
-            return item.userType === "lawyer";
-        }));
-    }
+    // async function getLawyersData1(){
+    //    await  AsyncStorage.setItem("favourites",JSON.stringify([]));
+    //     const lawyersArray = await getLawyersData();
+    //     // console.log(lawyersArray);
+    //     setLawyersData(lawyersArray.filter(( item )=>{
+    //         // console.log(item.userType);
+    //         return item.userType === "lawyer";
+    //     }));
+    // }
     useEffect(()=>{
         // getLawyersData1();
+        console.log(lawyersData.length);
     },[]);
     return (
         <View style={{ flex: 1, marginTop: 10 }} >
@@ -121,7 +122,7 @@ function Card({ name, userId, type, imgSrc, languages, experience, favouriteLawy
     getUser();
 
     return (
-        <View style={{elevation: 2, borderRadius: 7, marginBottom: 10, marginRight: 10, overflow: 'hidden' }} >
+        <View style={{elevation: 2, borderRadius: 7, marginBottom: 10, marginRight: 10, overflow: 'hidden' }}>
             <View style={{flex:1, justifyContent: 'center', backgroundColor: COLORS.white}} >
                 
             
