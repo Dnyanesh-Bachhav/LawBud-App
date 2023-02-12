@@ -24,6 +24,12 @@ function RegistrationScreen() {
     let [userType, setUserType] = useState("user");
     const { usersType, setUsersType } = useContext(AuthContext);
     const navigation = useNavigation();
+    const [userData,setUserData] = useState({
+        type: '',
+        email_id: '',
+        phone: '',
+
+    })
     const [lawyersCategoriesData, setCategoriesLawyersData] = useState([]);
     const [loading, setLoading] = useState(false);
     async function getLawyersCategoriesData1() {
