@@ -91,7 +91,7 @@ function LoginScreen(){
                             <Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Send OTP</Text>
                         </TouchableOpacity>
                     <View style={{flexDirection: 'row', marginTop: 20, justifyContent: 'center', alignItems: 'center'}} >
-                        <Text style={{color:COLORS.gray}} >Dont have an account?</Text>
+                        <Text style={{color:COLORS.gray}} >Don't have an account?</Text>
                         <TouchableOpacity onPress={()=>{
                             navigation.navigate("Register");
                         }} >

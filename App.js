@@ -177,7 +177,14 @@ export default function App() {
     setUsersType: setUsersType,
     usersType: usersType,
     newUserData: newUserData,
-    setNewUserData: setNewUserData,
+    setNewUserData1: (data)=>{
+      // console.log(data);
+      let data1 = data;
+      setNewUserData(data1);
+      // console.log("In a App: "+ JSON.stringify(data));
+      console.log(newUserData);
+      console.log("Apps...");
+    }
   }),[]);
   useEffect(() => {
     setTimeout( async() => {

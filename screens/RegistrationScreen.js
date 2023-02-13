@@ -22,7 +22,7 @@ const SignupOTPSchema = Yup.object().shape({
 
 function RegistrationScreen() {
     let [userType, setUserType] = useState("user");
-    const { usersType, setUsersType, newUserData, setNewUserData } = useContext(AuthContext);
+    const { usersType, setUsersType, newUserData, setNewUserData1 } = useContext(AuthContext);
     const navigation = useNavigation();
     const [userData,setUserData] = useState({
         type: '',
@@ -50,7 +50,7 @@ function RegistrationScreen() {
             { loading && <ActivityIndicator size={"small"} color={COLORS.black} />}
             { lawyersCategoriesData && <RegistrationProgress userType={userType} />}
             {/* Registration Screens */}
-            <Register userType={userType} setUserType={setUserType} setUsersType={setUsersType} setNewUserData={setNewUserData} newUserData={newUserData} lawyersCategoriesData={lawyersCategoriesData} />
+            <Register userType={userType} setUserType={setUserType} setUsersType={setUsersType} setNewUserData1={setNewUserData1} newUserData={newUserData} lawyersCategoriesData={lawyersCategoriesData} />
             {/* <Personal/> */}
             {/* {
                !loading ? <SkillSets lawyersCategoriesData={lawyersCategoriesData} /> : <ActivityIndicator size={"small"} color={COLORS.black} />
@@ -101,7 +101,7 @@ function RegistrationProgress({ userType }) {
         </View >
     );
 }
-function Register({ userType, setUserType, setUsersType, newUserData, setNewUserData, lawyersCategoriesData }) {
+function Register({ userType, setUserType, setUsersType, newUserData, setNewUserData1, lawyersCategoriesData }) {
     const [currentOption, setCurrentOption] = useState("user");
     const [email,setEmail] = useState(null);
     const [phone,setPhone] = useState(null);
@@ -132,14 +132,20 @@ function Register({ userType, setUserType, setUsersType, newUserData, setNewUser
             }}
             innerRef={formikRef}
             onSubmit={(state)=>{
-                setEmail(state.email);
-                setPhone(state.phone);
-                setNewUserData((prev)=>{
-                    return { ...prev,
-                    email:"hello",
-                    phone }
-                })
-                console.log("Email and phone: "+email+" "+phone);
+                console.log("State"+JSON.stringify(state));
+                if(state.email!==null && state.phone!==null)
+                {
+                    let email1 = state.email;
+                    let phone1 = state.phone;
+                    setEmail(email1);
+                    setPhone(phone1);
+                    console.log("Email and phone: "+email+" "+phone);
+                }
+                // setNewUserData1((prev)=>{
+                //     return { ...prev,
+                //     email: state.email,
+                //     phone: state.phone }
+                // })
             }}
                 validationSchema={SignupSchema}
             >
@@ -194,25 +200,36 @@ function Register({ userType, setUserType, setUsersType, newUserData, setNewUser
                     }}
                 >
 
-                    <SheetComponent navigation={navigation} userType={userType} email={email} phone={phone} setNewUserData={setNewUserData} newUserData={newUserData} lawyersCategoriesData={lawyersCategoriesData} />
+                    <SheetComponent navigation={navigation} userType={userType} email={email} phone={phone} setNewUserData1={setNewUserData1} newUserData={newUserData} lawyersCategoriesData={lawyersCategoriesData} />
                 </RBSheet>
             </View>
         </View>
     );
 }
-function SheetComponent({ navigation, userType, email, phone, newUserData, setNewUserData, lawyersCategoriesData }) {
+function SheetComponent({ navigation, userType, email, phone, newUserData, setNewUserData1, lawyersCategoriesData }) {
     const formikRef = useRef();
+    const [data,setData] = useState();
+    useEffect(()=>{
+        // data.email = email;
+        // data.phone = phone;
+        // setData({...newUserData, email, phone });
+        // console.log("In a sheet:");
+        // console.log(data);
+        
+    },[]);
     return (
         <Formik initialValues={{
             otp: ''
         }}
         onSubmit={()=>{
-            setNewUserData({
-                ...newUserData,
-                email: "hello", 
-                phone: phone
-            });
-            console.log( JSON.stringify(newUserData));
+            // setData((prev)=>({
+            //     ...prev,
+            //     email: "hello", 
+            //     phone: phone
+            // }));
+            setNewUserData1({...newUserData,email:email,phone:phone});
+            console.log("In a register"+JSON.stringify(newUserData));
+            // console.log( JSON.stringify(newUserData));
         }}
         innerRef={formikRef}
         validationSchema={SignupOTPSchema}>
