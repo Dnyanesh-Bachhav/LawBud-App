@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import { Formik } from "formik";
 import * as Yup from 'yup';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
@@ -15,10 +15,27 @@ const DocumentsSchema = Yup.object().shape({
     experience: Yup.string().min(1, "Must be greater than or equal to 1 digit").matches(/^[0-9]+$/, "Must be only digits").notRequired()
 });
 function DocumentsScreen({ route }) {
-    const { signIn } = useContext(AuthContext);
-    const handleUpload = async () => {
+    const { signIn, newUserData, updateUser } = useContext(AuthContext);
+    const [degreeCertificateName, setDegreeCertificateName] = useState(null);
+    const [degreeCertificateUri, setDegreeCertificateUri] = useState(null);
+    const [barMembership, setBarMembership] = useState(null);
+    const [barMembershipUri, setBarMembershipUri] = useState(null);
+    const [sanatNumber, setSanatNumber] = useState(null);
+    const [workExperience, setWorkExperience] = useState(null);
+    const formikRef = useRef();
+    const handleUpload = async (name) => {
         let response = await DocumentPicker.getDocumentAsync();
-        console.log("File URI: " + response.uri);
+        console.log("File URI: " + JSON.stringify(response));
+        if (name === "degreeCertificate") {
+            console.log("Called......");
+            setDegreeCertificateName(response.name);
+            setDegreeCertificateUri(response.uri);
+        }
+        else if (name === "barMembership") {
+            console.log("Called......");
+            setBarMembership(response.name);
+            setBarMembershipUri(response.uri);
+        }
 
         if (response.type == "cancel") {
             console.log("no file picked...");
@@ -39,6 +56,43 @@ function DocumentsScreen({ route }) {
                     sanatNumber: '',
                     experience: ''
                 }}
+                innerRef={formikRef}
+                onSubmit={
+                    (state) => {
+                        updateUser((prev) => ({
+                            ...prev,
+                            user_law_data: {
+                                degree: {
+                                    default: {
+                                        id: {
+                                            id: state.degreeCertificate
+                                        },
+                                        file: {
+                                            file: degreeCertificateUri
+                                        }
+                                    }
+                                },
+                                bar_membership: {
+                                    default: {
+                                        id: {
+                                            id: state.barCertificate
+                                        },
+                                        file: {
+                                            file: barMembershipUri
+                                        }
+                                    }
+                                },
+                                sanat:{
+                                    sanat: state.sanatNumber
+                                },
+                                experience:{
+                                    experience: state.experience
+                                }
+                            }
+                        }
+                        ));
+                    }
+                }
                 validationSchema={DocumentsSchema}
             >
                 {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
@@ -47,8 +101,10 @@ function DocumentsScreen({ route }) {
                         <Text style={{ fontSize: 16, color: COLORS.gray, }}>What describes you best?</Text>
                         <Text style={{ color: COLORS.gray }}>Degree Certificate*</Text>
                         <View style={{ flexDirection: 'row', backgroundColor: COLORS.lightGray, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
-                            <TextInput style={{ ...styles.inputStyle, width: '74%' }} cursorColor={COLORS.gray} value={values.degreeCertificate} onChangeText={handleChange('degreeCertificate')} onBlur={() => setFieldTouched('degreeCertificate')} />
-                            <TouchableOpacity onPress={handleUpload} style={styles.attachmentBtnStyle}>
+                            <TextInput style={{ ...styles.inputStyle, width: '74%' }} cursorColor={COLORS.gray} value={values.degreeCertificate || degreeCertificateName} placeholder={degreeCertificateUri} onChangeText={handleChange('degreeCertificate')} onBlur={() => setFieldTouched('degreeCertificate')} />
+                            <TouchableOpacity onPress={() => {
+                                handleUpload("degreeCertificate");
+                            }} style={styles.attachmentBtnStyle}>
                                 <Entypo name="attachment" size={16} color={COLORS.white} />
                                 <Text style={{ color: COLORS.white, marginLeft: 5, fontSize: 13 }} >Upload</Text>
                             </TouchableOpacity>
@@ -58,8 +114,10 @@ function DocumentsScreen({ route }) {
                         )}
                         <Text style={{ color: COLORS.gray }}>Bar Membership*</Text>
                         <View style={{ flexDirection: 'row', backgroundColor: COLORS.lightGray, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
-                            <TextInput style={{ ...styles.inputStyle, width: '74%' }} cursorColor={COLORS.gray} value={values.barCertificate} onChangeText={handleChange('barCertificate')} onBlur={() => setFieldTouched('barCertificate')} />
-                            <TouchableOpacity onPress={handleUpload} style={styles.attachmentBtnStyle}>
+                            <TextInput style={{ ...styles.inputStyle, width: '74%' }} cursorColor={COLORS.gray} value={values.barCertificate || barMembership} placeholder={barMembership} onChangeText={handleChange('barCertificate')} onBlur={() => setFieldTouched('barCertificate')} />
+                            <TouchableOpacity onPress={() => {
+                                handleUpload("barMembership");
+                            }} style={styles.attachmentBtnStyle}>
                                 <Entypo name="attachment" size={16} color={COLORS.white} />
                                 <Text style={{ color: COLORS.white, marginLeft: 5, fontSize: 13 }} >Upload</Text>
                             </TouchableOpacity>
@@ -82,8 +140,9 @@ function DocumentsScreen({ route }) {
                             )}
                         </View>
                         <TouchableOpacity onPress={() => {
-                            // navigation.navigate("LawyersDashboard");
-                            signIn();
+                            // signIn();
+                            formikRef.current.submitForm();
+                            navigation.navigate("SignIn");
                         }} disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }} ><Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Next</Text></TouchableOpacity>
                     </View>
                 )}
