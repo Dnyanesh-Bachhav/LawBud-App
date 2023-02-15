@@ -3,13 +3,15 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
 import SearchableDropDown from "react-native-searchable-dropdown";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import { getLawyersCategories } from "../Services/requests";
+import { AuthContext } from "../components/Context";
 function SkillScreen({ route }) {
 
     const navigation = useNavigation();
     // console.log(lawyersCategoriesData[0]);
+    const { newUserData, updateUser } = useContext(AuthContext);
     let [itemsArray, setItemsArray] = useState([]);
     var itemsArray1 = [];
     const [lawyersCategoriesData, setCategoriesLawyersData] = useState([]);
@@ -19,14 +21,16 @@ function SkillScreen({ route }) {
             return;
         }
         const lawyersCategories = await getLawyersCategories();
-        console.log("Category:" + lawyersCategories);
-        setCategoriesLawyersData(lawyersCategories);
+        console.log("Category:" + JSON.stringify(lawyersCategories.data));
+        setCategoriesLawyersData(lawyersCategories.data);
         setLoading(false);
     }
     useEffect(() => {
         getLawyersCategoriesData1();
     }, []);
-
+    useEffect(()=>{
+        console.log("In a Skills Screen: "+ JSON.stringify(newUserData));
+    },[newUserData]);
     return (
         <View style={styles.container}>
             <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
@@ -35,11 +39,17 @@ function SkillScreen({ route }) {
                 <Text style={{ color: COLORS.gray }}>Select Your Specialization</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }} >
 
-                   { loading && <ActivityIndicator size={"small"} color={COLORS.black} />}
-                   { lawyersCategoriesData && <SearchableDropDown
+                   { !loading ? 
+                     <SearchableDropDown
                         items={lawyersCategoriesData}
                         onItemSelect={(item) => {
-                            setItemsArray((items) => [...items, { name: item.name }]);
+                            updateUser(( prev )=> ( { ...prev, specialisation:{
+                                default:{
+                                    id: { id: item.specialisation_id },
+                                    category: { category: item.name }
+                                }
+                            }}));
+                            setItemsArray((prev) => [...prev, { name: item.name }]);
                         }}
                         containerStyle={{
                             width: '90%',
@@ -75,7 +85,9 @@ function SkillScreen({ route }) {
                                 color: COLORS.black,
                             }
                         }}
-                    /> }
+                    />
+                : <ActivityIndicator size={"small"} color={COLORS.black} />
+                }
                 </View>
                 <View style={{ flexDirection: 'row', marginTop: 4, height: 200 }} >
                     <FlatList
