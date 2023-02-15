@@ -56,7 +56,7 @@ function RegistrationScreen(){
             { loading && <ActivityIndicator size={"small"} color={COLORS.black} />}
             { lawyersCategoriesData && <RegistrationProgress userType={userType} />}
             {/* Registration Screens */}
-            <Register userType={userType} State={State} setUserType={State.setUserType} setUsersType={State.setUsersType} setNewUserData1={State.updateUser} newUserData={State.newUserData} lawyersCategoriesData={lawyersCategoriesData} />
+            <Register userType={userType} State={State} usersType={State.usersType} setUserType={setUserType} setUsersType={State.setUsersType} setNewUserData1={State.updateUser} newUserData={State.newUserData} lawyersCategoriesData={lawyersCategoriesData} />
             {/* <Personal/> */}
             {/* {
                !loading ? <SkillSets lawyersCategoriesData={lawyersCategoriesData} /> : <ActivityIndicator size={"small"} color={COLORS.black} />
@@ -106,7 +106,7 @@ function RegistrationProgress({ userType }) {
         </View >
     );
 }
-function Register({ userType, State, setUserType, setUsersType, newUserData, setNewUserData1, lawyersCategoriesData }) {
+function Register({ userType, State, usersType, setUserType, setUsersType, newUserData, setNewUserData1, lawyersCategoriesData }) {
     const [currentOption, setCurrentOption] = useState("user");
     const [email,setEmail] = useState("");
     const [phone,setPhone] = useState("");
@@ -123,7 +123,7 @@ function Register({ userType, State, setUserType, setUsersType, newUserData, set
     useEffect(()=>{
         if(email!==null && phone!==null)
         notifyData();
-    },[email,phone]);
+    },[email,phone,usersType]);
     return (
         <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5 }}>
             <Text style={{ fontSize: 16, color: COLORS.gray, }}>What describes you best?</Text>
@@ -153,7 +153,7 @@ function Register({ userType, State, setUserType, setUsersType, newUserData, set
                 {
                     let email1 = state.email;
                     let phone1 = state.phone;
-                    State.updateUser({...newUserData,email: email1,phone:phone1});
+                    State.updateUser({...newUserData,email: email1,phone:phone1,type: State.usersType });
                 }
                
             }}

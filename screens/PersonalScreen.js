@@ -26,6 +26,7 @@ function PersonalScreen({ route }) {
     const navigation = useNavigation();
     const [image, setImage] = useState(null);
     const [name, setName] = useState(null);
+    // const [ profileImageUri, setProfileImageUri] = useState(null);
     const  [HAddress, setHAddress] = useState(null);
     const formikRef = useRef();
 
@@ -81,7 +82,7 @@ function PersonalScreen({ route }) {
                             onSubmit={(state)=>{
                                 setName(state.name);
                                 setHAddress(state.HAddress);
-                                updateUser({...newUserData,name:state.name, address:state.HAddress });
+                                updateUser({...newUserData,name:state.name, address:state.HAddress, profile_image: image });
                             }}
                             validationSchema={UserPersonalSchema}>
                             {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
@@ -110,7 +111,7 @@ function PersonalScreen({ route }) {
                                     <TouchableOpacity onPress={() => {
                                         // navigation.navigate("Home");
                                         formikRef.current.submitForm();
-                                        signUp(newUserData.phone);
+                                        signUp(newUserData);
                                     }} disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }}>
                                         <Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Next</Text>
                                     </TouchableOpacity>
@@ -123,6 +124,12 @@ function PersonalScreen({ route }) {
                                 name: '',
                                 OAddress: '',
                                 AlternatePhone: ''
+                            }}
+                            innerRef={formikRef}
+                            onSubmit={(state)=>{
+                                setName(state.name);
+                                setHAddress(state.OAddress);
+                                updateUser({...newUserData,name:state.name, address:state.OAddress, profile_image: image });
                             }}
                             validationSchema={LawyerPersonalSchema}>
                             {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
@@ -149,6 +156,7 @@ function PersonalScreen({ route }) {
                                         )}
                                     </View>
                                     <TouchableOpacity onPress={() => {
+                                        formikRef.current.submitForm();
                                         navigation.navigate("Skills", {
                                             userType: route.params.userType,
                                             lawyersCategoriesData: route.params.lawyersCategoriesData
@@ -197,14 +205,6 @@ function RegistrationProgress({ userType }) {
                     </ProgressSteps>
                     
             }
-        </View>
-    );
-}
-function InputComponent({ title }) {
-    return (
-        <View style={{ marginTop: 10 }} >
-            <Text style={{ color: COLORS.gray }}>{title}</Text>
-            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} />
         </View>
     );
 }

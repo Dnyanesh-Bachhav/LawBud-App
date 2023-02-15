@@ -3,6 +3,7 @@ import React, { createContext } from "react";
 import { useReducer } from "react";
 import { useState } from "react";
 import { useMemo } from "react";
+import axios from "axios";
 export const AuthContext = createContext();
 
 const Store = (props)=>{
@@ -62,7 +63,7 @@ const Store = (props)=>{
       refer: false,
       seenIntro: "notseen",
       conversations: [],
-      userType: "",
+      type: "",
       sanatNumber: "",
       degree: "",
       bar: "",
@@ -148,9 +149,31 @@ const Store = (props)=>{
       }
       dispatch({ type: "LOGOUT" }); 
     };
-     const signUp=()=>{
-      setUserToken("userToken");
+     const signUp = async (data)=>{
+      setIsLoading(true);
+      setUserToken(`${data.phone}`);
+      console.log("Signup called...");
+      let data1;
+      try{
+
+        data1 = await axios.post("https://lawbud-backend.onrender.com/user/addUser", data);
+      }
+      catch(e){
+        console.log("Error:"+e);
+      }
+      console.log(data1);
+      // {
+      //   "content-type": "application/json"
+      // }
       setIsLoading(false);
+      //  .then((response)=>{
+      //   console.log(response);
+      // }).catch((e)=>{
+      //   console.log("Error"+e);
+      // }).finally(()=>{
+      //   console.log("Finally...");
+      // });
+
     };
     const setNewUserData1 = (data)=>{
       notifyUserData(data);
