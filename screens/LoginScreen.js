@@ -5,7 +5,7 @@ import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
 import { Formik, useFormik } from "formik";
 import * as Yup from 'yup';
-import { AuthContext } from "../components/context";
+import { AuthContext } from "../components/Context";
 import { getLawyersData } from "../Services/requests";
 const LoginSchema = Yup.object().shape({
     phone: Yup.string().min(10,"Must be exactly 10 digits").max(10,"Must be exactly 10 digits").matches(/^[0-9]+$/,"Must be only digits").required("Please enter your mobile number")

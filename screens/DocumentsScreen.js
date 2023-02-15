@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import * as DocumentPicker from 'expo-document-picker';
 import { Entypo } from '@expo/vector-icons';
-import { AuthContext } from "../components/context";
+import { AuthContext } from "../components/Context";
 const DocumentsSchema = Yup.object().shape({
     degreeCertificate: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
     barCertificate: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),

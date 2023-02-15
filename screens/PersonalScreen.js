@@ -7,8 +7,9 @@ import { Formik } from "formik";
 import * as Yup from 'yup';
 import { useContext, useState } from "react";
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
-import { AuthContext } from "../components/context";
+import { AuthContext } from "../components/Context";
 import { useEffect } from "react";
+import { useRef } from "react";
 const UserPersonalSchema = Yup.object().shape({
     name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
     HAddress: Yup.string().min(2, "Too short address").max(100, "Too long address").required('Required'),
@@ -20,10 +21,13 @@ const LawyerPersonalSchema = Yup.object().shape({
     AlternatePhone: Yup.string().min(10, "Must be exactly 10 digits").max(10, "Must be exactly 10 digits").matches(/^[0-9]+$/, "Must be only digits").notRequired()
 });
 function PersonalScreen({ route }) {
-    const { signIn, newUserData } = useContext(AuthContext);
+    const { newUserData, updateUser, signUp } = useContext(AuthContext);
 
     const navigation = useNavigation();
     const [image, setImage] = useState(null);
+    const [name, setName] = useState(null);
+    const  [HAddress, setHAddress] = useState(null);
+    const formikRef = useRef();
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -41,8 +45,8 @@ function PersonalScreen({ route }) {
         }
     };
     useEffect(()=>{
-        console.log("New data"+ JSON.stringify(newUserData));
-    },[]);
+        console.log("New data:"+ JSON.stringify(newUserData));
+    },[name,HAddress]);
     return (
         <View style={styles.container}>
             <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
@@ -73,6 +77,12 @@ function PersonalScreen({ route }) {
                                 HAddress: '',
                                 AlternatePhone: ''
                             }}
+                            innerRef={formikRef}
+                            onSubmit={(state)=>{
+                                setName(state.name);
+                                setHAddress(state.HAddress);
+                                updateUser({...newUserData,name:state.name, address:state.HAddress });
+                            }}
                             validationSchema={UserPersonalSchema}>
                             {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
                                 <>
@@ -99,7 +109,8 @@ function PersonalScreen({ route }) {
                                     </View>
                                     <TouchableOpacity onPress={() => {
                                         // navigation.navigate("Home");
-                                        signIn();
+                                        formikRef.current.submitForm();
+                                        signUp(newUserData.phone);
                                     }} disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }}>
                                         <Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Next</Text>
                                     </TouchableOpacity>

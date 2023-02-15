@@ -6,7 +6,7 @@ import { COLORS } from "../components/constants";
 import { Octicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useContext, useState } from "react";
-import { AuthContext } from "../components/context";
+import { AuthContext } from "../components/Context";
 
 function ProfileScreen(){
     const [image, setImage] = useState(null);

@@ -9,7 +9,8 @@ import { getLawyersCategories, getLawyersData } from "../Services/requests";
 import { Formik } from "formik";
 import * as Yup from 'yup';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
-import { AuthContext } from "../components/context";
+import { AuthContext } from "../components/Context";
+import { State } from "react-native-gesture-handler";
 
 
 const SignupSchema = Yup.object().shape({
@@ -20,9 +21,10 @@ const SignupOTPSchema = Yup.object().shape({
     otp: Yup.string().min(4, "Must be exactly 4 digits").max(4, "Must be exactly 4 digits").matches(/^[0-9]+$/, "Must be only digits").required("Please enter your OTP")
 });
 
-function RegistrationScreen() {
+function RegistrationScreen(){
     let [userType, setUserType] = useState("user");
     const { usersType, setUsersType, newUserData, setNewUserData1 } = useContext(AuthContext);
+    const State = useContext(AuthContext);
     const navigation = useNavigation();
     const [userData,setUserData] = useState({
         type: '',
@@ -43,19 +45,22 @@ function RegistrationScreen() {
     }
     useEffect(() => {
         getLawyersCategoriesData1();
+        
     }, []);
+    useEffect(()=>{
+        console.log("In a useEffect:"+JSON.stringify(State.newUserData));
+    },[State.newUserData]);
     return (
         <View style={styles.container}>
             <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
             { loading && <ActivityIndicator size={"small"} color={COLORS.black} />}
             { lawyersCategoriesData && <RegistrationProgress userType={userType} />}
             {/* Registration Screens */}
-            <Register userType={userType} setUserType={setUserType} setUsersType={setUsersType} setNewUserData1={setNewUserData1} newUserData={newUserData} lawyersCategoriesData={lawyersCategoriesData} />
+            <Register userType={userType} State={State} setUserType={State.setUserType} setUsersType={State.setUsersType} setNewUserData1={State.updateUser} newUserData={State.newUserData} lawyersCategoriesData={lawyersCategoriesData} />
             {/* <Personal/> */}
             {/* {
                !loading ? <SkillSets lawyersCategoriesData={lawyersCategoriesData} /> : <ActivityIndicator size={"small"} color={COLORS.black} />
             } */}
-            {/* <Documents/> */}
         </View>
     );
 }
@@ -101,26 +106,37 @@ function RegistrationProgress({ userType }) {
         </View >
     );
 }
-function Register({ userType, setUserType, setUsersType, newUserData, setNewUserData1, lawyersCategoriesData }) {
+function Register({ userType, State, setUserType, setUsersType, newUserData, setNewUserData1, lawyersCategoriesData }) {
     const [currentOption, setCurrentOption] = useState("user");
-    const [email,setEmail] = useState(null);
-    const [phone,setPhone] = useState(null);
+    const [email,setEmail] = useState("");
+    const [phone,setPhone] = useState("");
     const navigation = useNavigation();
     const refRBSheet = useRef();
     const formikRef = useRef();
+
+    function notifyData(){
+        // setNewUserData1({...newUserData,email:email,phone:phone});
+        // State.updateDatabase({...newUserData,email: email,phone:phone});
+        console.log("Email and phone: "+email+" "+phone);
+    }
+
+    useEffect(()=>{
+        if(email!==null && phone!==null)
+        notifyData();
+    },[email,phone]);
     return (
         <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5 }}>
             <Text style={{ fontSize: 16, color: COLORS.gray, }}>What describes you best?</Text>
             <View style={{ flexDirection: 'row', borderRadius: 5, padding: 4, marginTop: 5, backgroundColor: COLORS.lightGray }} >
                 <TouchableOpacity style={{ width: '50%', borderRadius: 5, backgroundColor: userType === "user" ? COLORS.black : COLORS.lightGray }} onPress={() => {
                     setUserType("user");
-                    setUsersType("user");
+                    State.setUsersType("user");
                 }} >
                     <Text style={{ color: COLORS.gray, fontSize: 16, padding: 10, textAlign: 'center' }}>User</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{ width: '50%', borderRadius: 5, backgroundColor: userType === "lawyer" ? COLORS.black : COLORS.lightGray }} onPress={() => {
                     setUserType("lawyer");
-                    setUsersType("lawyer");
+                    State.setUsersType("lawyer");
                 }}>
                     <Text style={{ color: COLORS.gray, fontSize: 16, padding: 10, textAlign: 'center' }}>Lawyer</Text>
                 </TouchableOpacity>
@@ -137,15 +153,9 @@ function Register({ userType, setUserType, setUsersType, newUserData, setNewUser
                 {
                     let email1 = state.email;
                     let phone1 = state.phone;
-                    setEmail(email1);
-                    setPhone(phone1);
-                    console.log("Email and phone: "+email+" "+phone);
+                    State.updateUser({...newUserData,email: email1,phone:phone1});
                 }
-                // setNewUserData1((prev)=>{
-                //     return { ...prev,
-                //     email: state.email,
-                //     phone: state.phone }
-                // })
+               
             }}
                 validationSchema={SignupSchema}
             >
@@ -200,13 +210,13 @@ function Register({ userType, setUserType, setUsersType, newUserData, setNewUser
                     }}
                 >
 
-                    <SheetComponent navigation={navigation} userType={userType} email={email} phone={phone} setNewUserData1={setNewUserData1} newUserData={newUserData} lawyersCategoriesData={lawyersCategoriesData} />
+                    <SheetComponent navigation={navigation} State={State} userType={userType} email={email} phone={phone} setNewUserData1={setNewUserData1} newUserData={newUserData} lawyersCategoriesData={lawyersCategoriesData} />
                 </RBSheet>
             </View>
         </View>
     );
 }
-function SheetComponent({ navigation, userType, email, phone, newUserData, setNewUserData1, lawyersCategoriesData }) {
+function SheetComponent({ navigation, State, userType, email, phone, newUserData, setNewUserData1, lawyersCategoriesData }) {
     const formikRef = useRef();
     const [data,setData] = useState();
     useEffect(()=>{
@@ -215,7 +225,7 @@ function SheetComponent({ navigation, userType, email, phone, newUserData, setNe
         // setData({...newUserData, email, phone });
         // console.log("In a sheet:");
         // console.log(data);
-        
+        // setNewUserData1({...newUserData,email:email,phone:phone});
     },[]);
     return (
         <Formik initialValues={{
@@ -227,8 +237,8 @@ function SheetComponent({ navigation, userType, email, phone, newUserData, setNe
             //     email: "hello", 
             //     phone: phone
             // }));
-            setNewUserData1({...newUserData,email:email,phone:phone});
-            console.log("In a register"+JSON.stringify(newUserData));
+            // State.updateUser({...newUserData,email:email,phone:phone});
+            // console.log("In a register"+JSON.stringify(newUserData));
             // console.log( JSON.stringify(newUserData));
         }}
         innerRef={formikRef}
@@ -254,14 +264,6 @@ function SheetComponent({ navigation, userType, email, phone, newUserData, setNe
                 </View>
             )}
         </Formik>
-    );
-}
-function InputComponent({ title }) {
-    return (
-        <View style={{ marginTop: 10 }} >
-            <Text style={{ color: COLORS.gray }}>{title}</Text>
-            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} />
-        </View>
     );
 }
 

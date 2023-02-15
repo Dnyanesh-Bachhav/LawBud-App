@@ -8,8 +8,9 @@ import Tabs from './Navigation/tabs';
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { getLawyersData } from './Services/requests';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AuthContext } from './components/context';
+import { AuthContext } from './components/Context';
 import RootStackScreen from './screens/RootStackScreen';
+import Store from './components/Context';
 const Stack = createNativeStackNavigator();
 export default function App() {
 
@@ -140,52 +141,53 @@ export default function App() {
     await storeAllUser(lawyersData);
   }
   const [loginState,dispatch] = useReducer(loginReducer,initialLoginState);
-  const authContext = useMemo(()=>({
-    signIn: async (foundUser)=>{
-      let userToken;
-      userToken = String(foundUser[0].userId);
-      let userName = foundUser[0].name;
+  // function notifyUserData(data){
+  //   let data1 = data;
+  //     setNewUserData(data1);
+  //     console.log(newUserData);
+  //     console.log("Apps...");
+  // }
+  // const authContext = useMemo(()=>({
+  //   signIn: async (foundUser)=>{
+  //     let userToken;
+  //     userToken = String(foundUser[0].userId);
+  //     let userName = foundUser[0].name;
       
-        try{
-          // userToken = "sdsdSDE";
-          await AsyncStorage.setItem("userToken",userToken);
-        }
-        catch(e)
-        {
-          console.log(e);
-        }
-      dispatch({ type: "LOGIN", id: userName, token: userToken });
-      // setUserToken("userToken");
-      // setIsLoading(false);
-    },
-    signOut: async ()=>{
-      // setUserToken(null);
-      // setIsLoading(false);
-      try{
-        await AsyncStorage.removeItem("userToken");
-      }
-      catch(e)
-      {
-        console.log(e);
-      }
-      dispatch({ type: "LOGOUT" }); 
-    },
-    signUp:()=>{
-      setUserToken("userToken");
-      setIsLoading(false);
-    },
-    setUsersType: setUsersType,
-    usersType: usersType,
-    newUserData: newUserData,
-    setNewUserData1: (data)=>{
-      // console.log(data);
-      let data1 = data;
-      setNewUserData(data1);
-      // console.log("In a App: "+ JSON.stringify(data));
-      console.log(newUserData);
-      console.log("Apps...");
-    }
-  }),[]);
+  //       try{
+  //         // userToken = "sdsdSDE";
+  //         await AsyncStorage.setItem("userToken",userToken);
+  //       }
+  //       catch(e)
+  //       {
+  //         console.log(e);
+  //       }
+  //     dispatch({ type: "LOGIN", id: userName, token: userToken });
+  //     // setUserToken("userToken");
+  //     // setIsLoading(false);
+  //   },
+  //   signOut: async ()=>{
+  //     // setUserToken(null);
+  //     // setIsLoading(false);
+  //     try{
+  //       await AsyncStorage.removeItem("userToken");
+  //     }
+  //     catch(e)
+  //     {
+  //       console.log(e);
+  //     }
+  //     dispatch({ type: "LOGOUT" }); 
+  //   },
+  //   signUp:()=>{
+  //     setUserToken("userToken");
+  //     setIsLoading(false);
+  //   },
+  //   setUsersType: setUsersType,
+  //   usersType: usersType,
+  //   newUserData: newUserData,
+  //   setNewUserData1: (data)=>{
+  //     notifyUserData(data);
+  //   }
+  // }),[]);
   useEffect(() => {
     setTimeout( async() => {
       // setIsLoading(false);
@@ -213,8 +215,7 @@ export default function App() {
     );
   }
   return (
-    <AuthContext.Provider value={authContext}>
-
+    <Store data={
     <View style={styles.container}>
       <NavigationContainer>
         {
@@ -224,8 +225,8 @@ export default function App() {
         }
       </NavigationContainer>
       <StatusBar style="auto" />
-    </View>
-    </AuthContext.Provider>
+    </View>}>
+    </Store>
   );
 }
 

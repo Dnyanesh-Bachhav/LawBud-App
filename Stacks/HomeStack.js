@@ -16,7 +16,7 @@ import SkillScreen from "../screens/SkillsScreen";
 import DocumentsScreen from "../screens/DocumentsScreen";
 import LawyersDashboardScreen from "../screens/LawyersDashboardScreen";
 import { useContext } from "react";
-import { AuthContext } from "../components/context";
+import { AuthContext } from "../components/Context";
 
 const HomeScreenStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
