@@ -111,7 +111,7 @@ function PersonalScreen({ route }) {
                                             )}
                                         </View>
                                         <TouchableOpacity onPress={() => {
-                                            // navigation.navigate("Home");
+                                            navigation.navigate("SignIn");
                                             formikRef.current.submitForm();
                                             signUp(newUserData);
                                         }} disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }}>
