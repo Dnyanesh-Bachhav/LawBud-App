@@ -10,6 +10,7 @@ import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import { AuthContext } from "../components/context";
 import { useEffect } from "react";
 import { useRef } from "react";
+import { loginContext } from "../components/context1";
 const UserPersonalSchema = Yup.object().shape({
     name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
     HAddress: Yup.string().min(2, "Too short address").max(100, "Too long address").required('Required'),
@@ -21,7 +22,8 @@ const LawyerPersonalSchema = Yup.object().shape({
     AlternatePhone: Yup.string().min(10, "Must be exactly 10 digits").max(10, "Must be exactly 10 digits").matches(/^[0-9]+$/, "Must be only digits").notRequired()
 });
 function PersonalScreen({ route }) {
-    const { newUserData, updateUser, signUp } = useContext(AuthContext);
+    const { newUserData, updateUser } = useContext(AuthContext);
+    const { signUp } = useContext(loginContext);
 
     const navigation = useNavigation();
     const [image, setImage] = useState(null);

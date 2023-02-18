@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Store, { AuthContext } from './components/context';
 import RootStackScreen from './screens/RootStackScreen';
 import { loginContext } from './components/context1';
+import axios from 'axios';
 // import Store from './components/context';
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -178,9 +179,26 @@ export default function App() {
       }
       dispatch({ type: "LOGOUT" });
     },
-    signUp: () => {
-      setUserToken("userToken");
+    signUp: async (data) => {
+      // setUserToken("userToken");
+      // setIsLoading(false);
+      setIsLoading(true);
+      setUserToken(`${data.phone}`);
+      console.log("Signup called...here");
+      console.log("Data: ");
+      console.log(data);
+      let data1;
+      try {
+
+        data1 = await axios.post("https://lawbud-backend.onrender.com/user/addUser", data);
+      }
+      catch (e) {
+        console.log("Error:" + e);
+      }
+      console.log("Response: ");
+      console.log(data1);
       setIsLoading(false);
+
     },
     setUsersType: setUsersType,
     setNewUserData1: (data) => {

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TextInput, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TextInput, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
 import Header from '../components/Header';
 import image1 from '../assets/default_user.jpg';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -14,7 +14,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 function ProfileScreen(){
     const [image, setImage] = useState(null);
     const { signOut } = useContext(loginContext);
+    const { usersType } = useContext(AuthContext);
     const [currentUserData,setCurrentUserData] = useState(null);
+    const [loading,setLoading] = useState(false);
     const pickImage = async () => {
       // No permissions request is necessary for launching the image library
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -31,21 +33,23 @@ function ProfileScreen(){
       }
     };
     async function getData(){
+        setLoading(true);
         let userData = await AsyncStorage.getItem("currentUserData");
-        console.log(userData);
-        setCurrentUserData(userData);
-
+        console.log("In a profile:"+ JSON.parse(userData));
+        setCurrentUserData(JSON.parse(userData));
+        setLoading(false);
     }
     useEffect(()=>{
         getData();
-    });
+        console.log(usersType==="user");
+    },[]);
     return(
         <View style={styles.container}>
             <Header headerText={"My Account"} />
             <View style={{ width: 100, height: 100, backgroundColor: COLORS.grey, borderRadius: 50, marginTop: 10, alignSelf: 'center',flexDirection: 'row', alignSelf: 'center', }} >
                     <View style={{width: '100%', height: '100%', borderRadius: 50, overflow: 'hidden' }}  >
                     { image!=null ? <Image
-                    source={{ uri: image }}
+                    source={{ uri: currentUserData[0].profile_image || image }}
                     style={styles.imageStyle}
                     /> : <Image
                     source={image1}
@@ -59,33 +63,45 @@ function ProfileScreen(){
                     </TouchableOpacity>
             
                 </View>
-            <ScrollView>
-                <Field name="Name" />
-                <Field name="Contact" />
+                { currentUserData && <ScrollView>
+                <Field name="Name" value={currentUserData[0].name} />
+                <Field name="Contact" value={ String(currentUserData[0].contact)} />
                 <Text style={{paddingHorizontal: 15,marginTop: 10}} >Email</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 15, marginTop: 10 }} >
                     <TextInput
                         style={{...styles.inputStyle, width: '90%' }}
                         cursorColor={COLORS.gray}
+                        value={currentUserData[0].email_id}
                     />
                     <TouchableOpacity style={{ backgroundColor: COLORS.lightGray, marginLeft: 5, padding: 2, borderRadius: 50 }} >
                         <Octicons name="unverified" size={21} color={COLORS.yellow} style={{alignSelf: 'flex-end' }} />
                     </TouchableOpacity>
                 </View>
-                <Field name="Home Address" />
-                <Field name="Profession" />
+                {
+                    usersType === "user" ?
+                    <Field name="Home Address" value={currentUserData[0].address} />
+                    : <Field name="Office Address" value={currentUserData[0].address} />
+                }
+                <Field name="Profession" value={currentUserData[0].type} />
             </ScrollView>
+}
+                {
+                    loading &&
+                <ActivityIndicator size={"small"} color={COLORS.black} />               
+            
+            }
             <Logout_Button signOut={signOut} />
         </View>
     );
 }
-function Field({name}){
+function Field({name,value}){
     return(
         <View style={styles.fieldContainer}>
             <Text>{name}</Text>
             <TextInput
                 style={styles.inputStyle}
                 cursorColor={COLORS.gray}
+                value={value||"hi"}
             />
         </View>
     );

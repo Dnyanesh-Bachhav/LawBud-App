@@ -8,6 +8,7 @@ import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import * as DocumentPicker from 'expo-document-picker';
 import { Entypo } from '@expo/vector-icons';
 import { AuthContext } from "../components/context";
+import { loginContext } from "../components/context1";
 const DocumentsSchema = Yup.object().shape({
     degreeCertificate: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
     barCertificate: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
@@ -15,7 +16,8 @@ const DocumentsSchema = Yup.object().shape({
     experience: Yup.string().min(1, "Must be greater than or equal to 1 digit").matches(/^[0-9]+$/, "Must be only digits").notRequired()
 });
 function DocumentsScreen({ route }) {
-    const { signUp, newUserData, updateUser } = useContext(AuthContext);
+    const { newUserData, updateUser } = useContext(AuthContext);
+    const { signUp } = useContext(loginContext);
     const [degreeCertificateName, setDegreeCertificateName] = useState(null);
     const [degreeCertificateUri, setDegreeCertificateUri] = useState(null);
     const [barMembership, setBarMembership] = useState(null);

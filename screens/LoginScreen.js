@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ActivityIndicator, Alert } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ActivityIndicator, Alert, ToastAndroid } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
@@ -24,24 +24,27 @@ function LoginScreen(){
     const { signIn } = useContext(loginContext);
     let[userType,setUserType] = useState("user");
     let[phone,setPhone] = useState();
-    let[lawyersData,setLawyersData] = useState([]);
+    let[usersData,setUsersData] = useState([]);
     let[loading,setLoading] = useState(false);
-    async function getLawyersData1() {
+    async function getUsersData() {
         // await AsyncStorage.removeItem("favourites");
         if(loading)
         {
             return;
         }
         setLoading(true);
-        const lawyersArray = await getLawyersData();
-        setLawyersData(lawyersArray);
+        const data1 = await getLawyersData();
+        console.log(data1.data);
+        setUsersData(data1.data.filter((item,index)=>{
+            return item.type === usersType;
+        }));
         setLoading(false);
       }
     useEffect(()=>{
-        setUsersType("user");
-        getLawyersData1();
+        // setUsersType("user");
+        getUsersData();
         
-    },[]);
+    },[usersType]);
     return(
         <View style={styles.container}>
             <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Login</Text>
@@ -59,11 +62,15 @@ function LoginScreen(){
                     <Text style={{color: COLORS.gray, fontSize: 16, padding: 10, textAlign: 'center' }}>Lawyer</Text>
                 </TouchableOpacity>
             </View>
+            {
+                loading && <ActivityIndicator size={"small"} color={COLORS.black} />
+            }
+            { usersData &&
             <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5 }}>
             
             {/* User Data */}
             {
-                lawyersData && 
+                usersData && 
                 <>
                 <Formik initialValues={{
                     phone: ''
@@ -79,7 +86,7 @@ function LoginScreen(){
                 <>
                 <View style={{marginTop: 10}} >
                 <Text style={{color: COLORS.gray}}>Phone Number</Text>
-                <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.phone} onChangeText={handleChange('phone')} onBlur={() =>  setFieldTouched('phone')} />
+                <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.phone} keyboardType={"number-pad"} onChangeText={handleChange('phone')} onBlur={() =>  setFieldTouched('phone')} />
                 { touched.phone && errors.phone && (
                     <Text style={styles.errorText}>{errors.phone}</Text>
                 )}
@@ -88,6 +95,7 @@ function LoginScreen(){
                         <TouchableOpacity 
                         onPress={()=>{
                             formikRef.current.submitForm();
+                            ToastAndroid.show("1234",ToastAndroid.SHORT);
                             refRBSheet.current.open();
                         }} disabled={!isValid} style={{backgroundColor: isValid ? COLORS.black : COLORS.grey,marginTop: 10, borderRadius: 4 }} >
                             <Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Send OTP</Text>
@@ -125,15 +133,14 @@ function LoginScreen(){
                 }                
                 }}
             >
-                <SheetComponent navigation={navigation} userType={userType} setUsersType={setUsersType} usersType={usersType} signIn={signIn} phone={phone} lawyersData={lawyersData} />
+                <SheetComponent navigation={navigation} userType={userType} setUsersType={setUsersType} usersType={usersType} signIn={signIn} phone={phone} usersData={usersData} />
             </RBSheet>
             </>
 
             }
-            {
-                loading && <ActivityIndicator size={"small"} color={COLORS.black} />
-            }
+            
         </View>
+        }
         </View>
     );
 }
@@ -145,13 +152,13 @@ function InputComponent({title}){
         </View>
     );
 }
-function SheetComponent({navigation, userType, usersType, setUsersType, signIn, phone, lawyersData }){
+function SheetComponent({navigation, userType, usersType, setUsersType, signIn, phone, usersData }){
     const formikRef1 = useRef();
     const [otp,setOtp] = useState();
     // const navigation = useNavigation();
     function loginHandle(){
         // console.log("In a sheet component..."+ JSON.stringify(lawyersData));
-        let usersArray = lawyersData.data;
+        let usersArray = usersData;
         console.log(usersArray);
         let foundUser = usersArray.filter((item,index)=>{
             console.log( item.contact === phone);
