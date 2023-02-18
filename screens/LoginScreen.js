@@ -5,7 +5,8 @@ import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
 import { Formik, useFormik } from "formik";
 import * as Yup from 'yup';
-import { AuthContext } from "../components/Context";
+import { AuthContext } from "../components/context";
+import { loginContext } from "../components/context1";
 import { getLawyersData } from "../Services/requests";
 const LoginSchema = Yup.object().shape({
     phone: Yup.string().min(10,"Must be exactly 10 digits").max(10,"Must be exactly 10 digits").matches(/^[0-9]+$/,"Must be only digits").required("Please enter your mobile number")
@@ -19,7 +20,8 @@ function LoginScreen(){
     const refRBSheet = useRef();
     const formikRef = useRef();
     const navigation = useNavigation();
-    const { usersType, setUsersType, signIn } = useContext(AuthContext);
+    const { usersType, setUsersType } = useContext(AuthContext);
+    const { signIn } = useContext(loginContext);
     let[userType,setUserType] = useState("user");
     let[phone,setPhone] = useState();
     let[lawyersData,setLawyersData] = useState([]);
@@ -146,14 +148,16 @@ function InputComponent({title}){
 function SheetComponent({navigation, userType, usersType, setUsersType, signIn, phone, lawyersData }){
     const formikRef1 = useRef();
     const [otp,setOtp] = useState();
+    // const navigation = useNavigation();
     function loginHandle(){
         // console.log("In a sheet component..."+ JSON.stringify(lawyersData));
         let usersArray = lawyersData.data;
-        // console.log(usersArray);
+        console.log(usersArray);
         let foundUser = usersArray.filter((item,index)=>{
-            return item.phone === phone;
+            console.log( item.contact === phone);
+            return String(item.contact) === phone;
         });
-        // console.log("Found user: "+ JSON.stringify(foundUser));
+        console.log("Found user: "+ JSON.stringify(foundUser));
         if(foundUser.length===0)
         {
             Alert.alert("Invalid user!","Username or password is incorrect...",[
@@ -162,7 +166,7 @@ function SheetComponent({navigation, userType, usersType, setUsersType, signIn, 
             return;
         }
         signIn(foundUser);
-
+        
     }
     return(
         <Formik initialValues={{

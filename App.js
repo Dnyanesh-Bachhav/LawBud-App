@@ -8,80 +8,82 @@ import Tabs from './Navigation/tabs';
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { getLawyersData } from './Services/requests';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AuthContext } from './components/Context';
+import Store, { AuthContext } from './components/context';
 import RootStackScreen from './screens/RootStackScreen';
-import Store from './components/Context';
+import { loginContext } from './components/context1';
+// import Store from './components/context';
 const Stack = createNativeStackNavigator();
 export default function App() {
 
   const [lawyersData, setLawyersData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
-  const [ usersType , setUsersType] = useState("user");
-  const [ newUserData, setNewUserData ] = useState({
-    languages: [],
-    user_law_data: {
-      experience: {},
-      specialisation :{
-        default: {
-          id: {},
-          category: {}
-        }
-      },
-      sanat:{},
-      degree:{
-        default:{
-          id:{},
-          file:{},
-        }
-      },
-      bar_membership:{
-        default:{
-          id:{},
-          category:{}
-        }
-      },
-      ratings:{
-        default:{
-          from_user_id:{},
-          rate:{}
-        }
-      },
-      reviews:{
-        default:{
-          from_user_id:{},
-          review:{}
-        }
-      }
-    },
-    _id: null,
-    userId: null,
-    name: null,
-    email: null,
-    password: null,
-    profile_image: null,
-    notification: [],
-    oldnotification: [],
-    reports: [],
-    refer: false,
-    seenIntro: "notseen",
-    conversations: [],
-    userType: "",
-    sanatNumber: "",
-    degree: "",
-    bar: "",
-    experience: "",
-    specilization: [],
-    address: "",
-    phone: "",
-    ratings: [],
-    reviews: [],
-    verified: false,
-    createdAt: "",
-    updatedAt: "",
-    __v: "",
-    tokens: []
-  });
+  const [usersType, setUsersType] = useState("user");
+  // const []
+  // const [ newUserData, setNewUserData ] = useState({
+  //   languages: [],
+  //   user_law_data: {
+  //     experience: {},
+  //     specialisation :{
+  //       default: {
+  //         id: {},
+  //         category: {}
+  //       }
+  //     },
+  //     sanat:{},
+  //     degree:{
+  //       default:{
+  //         id:{},
+  //         file:{},
+  //       }
+  //     },
+  //     bar_membership:{
+  //       default:{
+  //         id:{},
+  //         category:{}
+  //       }
+  //     },
+  //     ratings:{
+  //       default:{
+  //         from_user_id:{},
+  //         rate:{}
+  //       }
+  //     },
+  //     reviews:{
+  //       default:{
+  //         from_user_id:{},
+  //         review:{}
+  //       }
+  //     }
+  //   },
+  //   _id: null,
+  //   userId: null,
+  //   name: null,
+  //   email: null,
+  //   password: null,
+  //   profile_image: null,
+  //   notification: [],
+  //   oldnotification: [],
+  //   reports: [],
+  //   refer: false,
+  //   seenIntro: "notseen",
+  //   conversations: [],
+  //   userType: "",
+  //   sanatNumber: "",
+  //   degree: "",
+  //   bar: "",
+  //   experience: "",
+  //   specilization: [],
+  //   address: "",
+  //   phone: "",
+  //   ratings: [],
+  //   reviews: [],
+  //   verified: false,
+  //   createdAt: "",
+  //   updatedAt: "",
+  //   __v: "",
+  //   tokens: []
+  // });
 
   const initialLoginState = {
     isLoading: true,
@@ -89,9 +91,8 @@ export default function App() {
     userToken: null,
   }
 
-  const loginReducer = (prevState,action)=>{
-    switch(action.type)
-    {
+  const loginReducer = (prevState, action) => {
+    switch (action.type) {
       case "RETRIEVE_TOKEN":
         return {
           ...prevState,
@@ -99,26 +100,26 @@ export default function App() {
           isLoading: false
         };
       case "LOGIN":
-        return{
+        return {
           ...prevState,
           userName: action.id,
           userToken: action.token,
           isLoading: false
         };
-        case "LOGOUT":
-          return{
-            ...prevState,
-            userName: null,
-            userToken: null,
-            isLoading: false
-          }
-        case "REGISTER":
-          return{
-            ...prevState,
-            userName: action.id,
-            userToken: action.token,
-            isLoading: false
-          }
+      case "LOGOUT":
+        return {
+          ...prevState,
+          userName: null,
+          userToken: null,
+          isLoading: false
+        }
+      case "REGISTER":
+        return {
+          ...prevState,
+          userName: action.id,
+          userToken: action.token,
+          isLoading: false
+        }
     }
   }
   const storeAllUser = async (lawyersData) => {
@@ -140,71 +141,68 @@ export default function App() {
     }));
     await storeAllUser(lawyersData);
   }
-  const [loginState,dispatch] = useReducer(loginReducer,initialLoginState);
-  // function notifyUserData(data){
-  //   let data1 = data;
-  //     setNewUserData(data1);
-  //     console.log(newUserData);
-  //     console.log("Apps...");
-  // }
-  // const authContext = useMemo(()=>({
-  //   signIn: async (foundUser)=>{
-  //     let userToken;
-  //     userToken = String(foundUser[0].userId);
-  //     let userName = foundUser[0].name;
-      
-  //       try{
-  //         // userToken = "sdsdSDE";
-  //         await AsyncStorage.setItem("userToken",userToken);
-  //       }
-  //       catch(e)
-  //       {
-  //         console.log(e);
-  //       }
-  //     dispatch({ type: "LOGIN", id: userName, token: userToken });
-  //     // setUserToken("userToken");
-  //     // setIsLoading(false);
-  //   },
-  //   signOut: async ()=>{
-  //     // setUserToken(null);
-  //     // setIsLoading(false);
-  //     try{
-  //       await AsyncStorage.removeItem("userToken");
-  //     }
-  //     catch(e)
-  //     {
-  //       console.log(e);
-  //     }
-  //     dispatch({ type: "LOGOUT" }); 
-  //   },
-  //   signUp:()=>{
-  //     setUserToken("userToken");
-  //     setIsLoading(false);
-  //   },
-  //   setUsersType: setUsersType,
-  //   usersType: usersType,
-  //   newUserData: newUserData,
-  //   setNewUserData1: (data)=>{
-  //     notifyUserData(data);
-  //   }
-  // }),[]);
+  const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
+  function notifyUserData(data) {
+    let data1 = data;
+    setNewUserData(data1);
+    console.log(newUserData);
+    console.log("Apps...");
+  }
+  const authContext = useMemo(() => ({
+    signIn: async (foundUser) => {
+      let userToken;
+      userToken = String(foundUser[0].userId);
+      let userName = foundUser[0].name;
+
+      try {
+        // userToken = "sdsdSDE";
+        await AsyncStorage.setItem("userToken", userToken);
+        await AsyncStorage.setItem("currentUserData", JSON.stringify(foundUser));
+
+      }
+      catch (e) {
+        console.log(e);
+      }
+      dispatch({ type: "LOGIN", id: userName, token: userToken });
+      // setUserToken("userToken");
+      // setIsLoading(false);
+    },
+    signOut: async () => {
+      // setUserToken(null);
+      // setIsLoading(false);
+      try {
+        await AsyncStorage.removeItem("userToken");
+      }
+      catch (e) {
+        console.log(e);
+      }
+      dispatch({ type: "LOGOUT" });
+    },
+    signUp: () => {
+      setUserToken("userToken");
+      setIsLoading(false);
+    },
+    setUsersType: setUsersType,
+    setNewUserData1: (data) => {
+      notifyUserData(data);
+    }
+  }), []);
   useEffect(() => {
-    setTimeout( async() => {
+    setTimeout(async () => {
       // setIsLoading(false);
       let userToken;
       userToken = null;
-      try{
+      try {
         userToken = await AsyncStorage.getItem("userToken");
-        console.log("Usertoken in useEffect: "+userToken);
+        console.log("Usertoken in useEffect: " + userToken);
       }
-      catch(e)
-      {
+      catch (e) {
         console.log(e);
       }
       dispatch({ type: "REGISTER", token: userToken });
 
     }, 1000);
-    console.log("userToken: "+loginState.userToken);
+    console.log("userToken: " + loginState.userToken);
     getLawyersData1();
   }, []);
   if (loginState.isLoading) {
@@ -215,18 +213,22 @@ export default function App() {
     );
   }
   return (
-    <Store data={
-    <View style={styles.container}>
-      <NavigationContainer>
-        {
-          loginState.userToken !== null ?
-          <Tabs />
-          : <RootStackScreen/>
-        }
-      </NavigationContainer>
-      <StatusBar style="auto" />
-    </View>}>
-    </Store>
+    <loginContext.Provider value={authContext}>
+
+      <Store data={
+        <View style={styles.container}>
+          <NavigationContainer>
+            {
+              loginState.userToken !== null ?
+                <Tabs />
+                : <RootStackScreen />
+            }
+          </NavigationContainer>
+          <StatusBar style="auto" />
+        </View>}>
+      </Store>
+    </loginContext.Provider>
+
   );
 }
 

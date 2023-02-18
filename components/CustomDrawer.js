@@ -2,7 +2,7 @@ import { DrawerContentScrollView, DrawerItem, DrawerItemList } from "@react-navi
 import { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS } from "./constants";
-import { AuthContext } from "./Context";
+import { AuthContext } from "./context";
 
 function CustomDrawer(props) {
    const { signOut } = useContext(AuthContext);

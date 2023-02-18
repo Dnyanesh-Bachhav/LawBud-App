@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { COLORS } from "../components/constants";
-import { AuthContext } from "../components/Context";
+import { AuthContext } from "../components/context";
 import ChatStack from "../Stacks/ChatStack";
 import FavouriteStack from "../Stacks/FavouriteStack";
 import HomeStack from "../Stacks/HomeStack";

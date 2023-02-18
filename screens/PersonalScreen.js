@@ -1,4 +1,4 @@
-import { Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
@@ -7,7 +7,7 @@ import { Formik } from "formik";
 import * as Yup from 'yup';
 import { useContext, useState } from "react";
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
-import { AuthContext } from "../components/Context";
+import { AuthContext } from "../components/context";
 import { useEffect } from "react";
 import { useRef } from "react";
 const UserPersonalSchema = Yup.object().shape({
@@ -26,6 +26,7 @@ function PersonalScreen({ route }) {
     const navigation = useNavigation();
     const [image, setImage] = useState(null);
     const [name, setName] = useState(null);
+    const [loading, setLoading] = useState(false);
     // const [ profileImageUri, setProfileImageUri] = useState(null);
     const [HAddress, setHAddress] = useState(null);
     const formikRef = useRef();
@@ -45,8 +46,22 @@ function PersonalScreen({ route }) {
             setImage(result.assets[0].uri);
         }
     };
+    async function handleSubmitData() {
+        setLoading(true);
+        signUp(newUserData).then((response) => {
+            navigation.navigate("SignIn");
+        }).finally(() => {
+            setLoading(false);
+            console.log("SAVED...");
+        })
+    }
+    function notifyData() {
+        updateUser({ ...newUserData, name: name, address: HAddress, profile_image: image });
+    }
     useEffect(() => {
         console.log("New data:" + JSON.stringify(newUserData));
+        // if (name !== null && HAddress !== null)
+        //     notifyData()
     }, [name, HAddress]);
     return (
         <View style={styles.container}>
@@ -55,124 +70,136 @@ function PersonalScreen({ route }) {
                 <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
 
                 <RegistrationProgress userType={route.params.userType} />
+                {
+                    !loading ?
 
-                <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5 }} >
-                    <View style={{ width: 100, height: 100, backgroundColor: COLORS.grey, borderRadius: 50, alignSelf: 'center' }} >
-                        <View style={{ width: '100%', height: '100%', borderWidth: 2, borderRadius: 50, overflow: 'hidden' }}  >
-                            {image && <Image
-                                source={{ uri: image }}
-                                style={styles.imageStyle}
-                            />}
-                        </View>
-                        <TouchableOpacity style={styles.badgeStyle} onPress={pickImage}>
-                            <View>
-                                <MaterialIcons name="edit" size={24} color={COLORS.white} />
+                        <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5 }} >
+                            <View style={{ width: 100, height: 100, backgroundColor: COLORS.grey, borderRadius: 50, alignSelf: 'center' }} >
+                                <View style={{ width: '100%', height: '100%', borderWidth: 2, borderRadius: 50, overflow: 'hidden' }}  >
+                                    {image && <Image
+                                        source={{ uri: image }}
+                                        style={styles.imageStyle}
+                                    />}
+                                </View>
+                                <TouchableOpacity style={styles.badgeStyle} onPress={pickImage}>
+                                    <View>
+                                        <MaterialIcons name="edit" size={24} color={COLORS.white} />
+                                    </View>
+                                </TouchableOpacity>
+
                             </View>
-                        </TouchableOpacity>
+                            {
+                                route.params.userType === "user"
+                                    ?
+                                    <Formik
+                                        initialValues={{
+                                            name: '',
+                                            HAddress: '',
+                                            AlternatePhone: ''
+                                        }}
+                                        innerRef={formikRef}
+                                        onSubmit={(state) => {
+                                            setName(state.name);
+                                            setHAddress(state.HAddress);
+                                            if (state.name !== null && state.HAddress !== null) {
+                                                let name1 = state.name;
+                                                let HAddress1 = state.HAddress;
 
-                    </View>
-                    {
-                        route.params.userType === "user"
-                            ?
-                            <Formik
-                                initialValues={{
-                                    name: '',
-                                    HAddress: '',
-                                    AlternatePhone: ''
-                                }}
-                                innerRef={formikRef}
-                                onSubmit={(state) => {
-                                    setName(state.name);
-                                    setHAddress(state.HAddress);
-                                    updateUser({ ...newUserData, name: state.name, address: state.HAddress, profile_image: image });
-                                }}
-                                validationSchema={UserPersonalSchema}>
-                                {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
-                                    <>
-                                        <View style={{ marginTop: 10 }} >
-                                            <Text style={{ color: COLORS.gray }}>Name*</Text>
-                                            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.name} onChangeText={handleChange('name')} onBlur={() => setFieldTouched('name')} />
-                                            {touched.name && errors.name && (
-                                                <Text style={styles.errorText}>{errors.name}</Text>
-                                            )}
-                                        </View>
-                                        <View style={{ marginTop: 10 }} >
-                                            <Text style={{ color: COLORS.gray }}>Home Address*</Text>
-                                            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.HAddress} onChangeText={handleChange('HAddress')} onBlur={() => setFieldTouched('HAddress')} />
-                                            {touched.HAddress && errors.HAddress && (
-                                                <Text style={styles.errorText}>{errors.HAddress}</Text>
-                                            )}
-                                        </View>
-                                        <View style={{ marginTop: 10 }} >
-                                            <Text style={{ color: COLORS.gray }}>Alternate Phone Number</Text>
-                                            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.AlternatePhone} onChangeText={handleChange('AlternatePhone')} onBlur={() => setFieldTouched('AlternatePhone')} />
-                                            {touched.AlternatePhone && errors.AlternatePhone && (
-                                                <Text style={styles.errorText}>{errors.AlternatePhone}</Text>
-                                            )}
-                                        </View>
-                                        <TouchableOpacity onPress={() => {
-                                            navigation.navigate("SignIn");
-                                            formikRef.current.submitForm();
-                                            signUp(newUserData);
-                                        }} disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }}>
-                                            <Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Next</Text>
-                                        </TouchableOpacity>
-                                    </>
-                                )}
-                            </Formik>
-                            :
-                            <Formik
-                                initialValues={{
-                                    name: '',
-                                    OAddress: '',
-                                    AlternatePhone: ''
-                                }}
-                                innerRef={formikRef}
-                                onSubmit={(state) => {
-                                    setName(state.name);
-                                    setHAddress(state.OAddress);
-                                    updateUser({ ...newUserData, name: state.name, address: state.OAddress, profile_image: image });
-                                }}
-                                validationSchema={LawyerPersonalSchema}>
-                                {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
-                                    <>
-                                        <View style={{ marginTop: 10 }} >
-                                            <Text style={{ color: COLORS.gray }}>Name*</Text>
-                                            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.name} onChangeText={handleChange('name')} onBlur={() => setFieldTouched('name')} />
-                                            {touched.name && errors.name && (
-                                                <Text style={styles.errorText}>{errors.name}</Text>
-                                            )}
-                                        </View>
-                                        <View style={{ marginTop: 10 }} >
-                                            <Text style={{ color: COLORS.gray }}>Office address*</Text>
-                                            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.OAddress} onChangeText={handleChange('OAddress')} onBlur={() => setFieldTouched('OAddress')} />
-                                            {touched.OAddress && errors.OAddress && (
-                                                <Text style={styles.errorText}>{errors.OAddress}</Text>
-                                            )}
-                                        </View>
-                                        <View style={{ marginTop: 10 }} >
-                                            <Text style={{ color: COLORS.gray }}>Alternate Phone Number</Text>
-                                            <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.AlternatePhone} onChangeText={handleChange('AlternatePhone')} onBlur={() => setFieldTouched('AlternatePhone')} />
-                                            {touched.AlternatePhone && errors.AlternatePhone && (
-                                                <Text style={styles.errorText}>{errors.AlternatePhone}</Text>
-                                            )}
-                                        </View>
-                                        <TouchableOpacity onPress={() => {
-                                            formikRef.current.submitForm();
-                                            navigation.navigate("Skills", {
-                                                userType: route.params.userType,
-                                                lawyersCategoriesData: route.params.lawyersCategoriesData
-                                            });
-                                        }} disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }}>
-                                            <Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Next</Text>
-                                        </TouchableOpacity>
-                                    </>
-                                )}
-                            </Formik>
-                    }
+                                                updateUser({ ...newUserData, name: name1, address: HAddress1, profile_image: image });
+                                                // handleSubmitData();
+                                            }
+                                        }}
+                                        validationSchema={UserPersonalSchema}>
+                                        {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
+                                            <>
+                                                <View style={{ marginTop: 10 }} >
+                                                    <Text style={{ color: COLORS.gray }}>Name*</Text>
+                                                    <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.name} onChangeText={handleChange('name')} onBlur={() => setFieldTouched('name')} />
+                                                    {touched.name && errors.name && (
+                                                        <Text style={styles.errorText}>{errors.name}</Text>
+                                                    )}
+                                                </View>
+                                                <View style={{ marginTop: 10 }} >
+                                                    <Text style={{ color: COLORS.gray }}>Home Address*</Text>
+                                                    <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.HAddress} onChangeText={handleChange('HAddress')} onBlur={() => setFieldTouched('HAddress')} />
+                                                    {touched.HAddress && errors.HAddress && (
+                                                        <Text style={styles.errorText}>{errors.HAddress}</Text>
+                                                    )}
+                                                </View>
+                                                <View style={{ marginTop: 10 }} >
+                                                    <Text style={{ color: COLORS.gray }}>Alternate Phone Number</Text>
+                                                    <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.AlternatePhone} onChangeText={handleChange('AlternatePhone')} onBlur={() => setFieldTouched('AlternatePhone')} />
+                                                    {touched.AlternatePhone && errors.AlternatePhone && (
+                                                        <Text style={styles.errorText}>{errors.AlternatePhone}</Text>
+                                                    )}
+                                                </View>
+                                                <TouchableOpacity onPress={() => {
+                                                    // formikRef.current.submitForm();
+                                                    navigation.navigate("SignIn");
+                                                    formikRef.current.submitForm();
+                                                    signUp(newUserData);
+                                                }}
+                                                    disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }}>
+                                                    <Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Next</Text>
+                                                </TouchableOpacity>
+                                            </>
+                                        )}
+                                    </Formik>
+                                    :
+                                    <Formik
+                                        initialValues={{
+                                            name: '',
+                                            OAddress: '',
+                                            AlternatePhone: ''
+                                        }}
+                                        innerRef={formikRef}
+                                        onSubmit={(state) => {
+                                            setName(state.name);
+                                            setHAddress(state.OAddress);
+                                            updateUser({ ...newUserData, name: state.name, address: state.OAddress, profile_image: image });
+                                        }}
+                                        validationSchema={LawyerPersonalSchema}>
+                                        {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
+                                            <>
+                                                <View style={{ marginTop: 10 }} >
+                                                    <Text style={{ color: COLORS.gray }}>Name*</Text>
+                                                    <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.name} onChangeText={handleChange('name')} onBlur={() => setFieldTouched('name')} />
+                                                    {touched.name && errors.name && (
+                                                        <Text style={styles.errorText}>{errors.name}</Text>
+                                                    )}
+                                                </View>
+                                                <View style={{ marginTop: 10 }} >
+                                                    <Text style={{ color: COLORS.gray }}>Office address*</Text>
+                                                    <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.OAddress} onChangeText={handleChange('OAddress')} onBlur={() => setFieldTouched('OAddress')} />
+                                                    {touched.OAddress && errors.OAddress && (
+                                                        <Text style={styles.errorText}>{errors.OAddress}</Text>
+                                                    )}
+                                                </View>
+                                                <View style={{ marginTop: 10 }} >
+                                                    <Text style={{ color: COLORS.gray }}>Alternate Phone Number</Text>
+                                                    <TextInput style={styles.inputStyle} cursorColor={COLORS.gray} value={values.AlternatePhone} onChangeText={handleChange('AlternatePhone')} onBlur={() => setFieldTouched('AlternatePhone')} />
+                                                    {touched.AlternatePhone && errors.AlternatePhone && (
+                                                        <Text style={styles.errorText}>{errors.AlternatePhone}</Text>
+                                                    )}
+                                                </View>
+                                                <TouchableOpacity onPress={() => {
+                                                    formikRef.current.submitForm();
+                                                    navigation.navigate("Skills", {
+                                                        userType: route.params.userType,
+                                                        lawyersCategoriesData: route.params.lawyersCategoriesData
+                                                    });
+                                                }} disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }}>
+                                                    <Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Next</Text>
+                                                </TouchableOpacity>
+                                            </>
+                                        )}
+                                    </Formik>
+                            }
 
 
-                </View>
+                        </View>
+                        : <ActivityIndicator size={"small"} color={COLORS.black} />
+                }
             </KeyboardAvoidingView >
         </View >
     );

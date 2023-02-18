@@ -6,7 +6,7 @@ import SearchableDropDown from "react-native-searchable-dropdown";
 import { useEffect, useState, useContext } from "react";
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import { getLawyersCategories } from "../Services/requests";
-import { AuthContext } from "../components/Context";
+import { AuthContext } from "../components/context";
 function SkillScreen({ route }) {
 
     const navigation = useNavigation();

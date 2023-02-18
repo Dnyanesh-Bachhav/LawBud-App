@@ -9,7 +9,7 @@ import { getLawyersCategories, getLawyersData } from "../Services/requests";
 import { Formik } from "formik";
 import * as Yup from 'yup';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
-import { AuthContext } from "../components/Context";
+import { AuthContext } from "../components/context";
 import { State } from "react-native-gesture-handler";
 
 
@@ -153,7 +153,7 @@ function Register({ userType, State, usersType, setUserType, setUsersType, newUs
                 {
                     let email1 = state.email;
                     let phone1 = state.phone;
-                    State.updateUser({...newUserData,email: email1,phone:phone1,type: State.usersType });
+                    State.updateUser({...newUserData,email_id: email1,contact: parseInt(phone1),type: State.usersType });
                 }
                
             }}

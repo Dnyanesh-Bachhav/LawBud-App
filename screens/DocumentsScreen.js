@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
 import { useContext, useState, useRef } from "react";
@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import * as DocumentPicker from 'expo-document-picker';
 import { Entypo } from '@expo/vector-icons';
-import { AuthContext } from "../components/Context";
+import { AuthContext } from "../components/context";
 const DocumentsSchema = Yup.object().shape({
     degreeCertificate: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
     barCertificate: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
@@ -15,10 +15,11 @@ const DocumentsSchema = Yup.object().shape({
     experience: Yup.string().min(1, "Must be greater than or equal to 1 digit").matches(/^[0-9]+$/, "Must be only digits").notRequired()
 });
 function DocumentsScreen({ route }) {
-    const { signIn, newUserData, updateUser } = useContext(AuthContext);
+    const { signUp, newUserData, updateUser } = useContext(AuthContext);
     const [degreeCertificateName, setDegreeCertificateName] = useState(null);
     const [degreeCertificateUri, setDegreeCertificateUri] = useState(null);
     const [barMembership, setBarMembership] = useState(null);
+    const [loading,setLoading] = useState(false);
     const [barMembershipUri, setBarMembershipUri] = useState(null);
     const [sanatNumber, setSanatNumber] = useState(null);
     const [workExperience, setWorkExperience] = useState(null);
@@ -43,13 +44,25 @@ function DocumentsScreen({ route }) {
         }
 
     }
+    async function submitData(){
+        setLoading(true);
+        console.log(newUserData);
+        await signUp(newUserData).then((response)=>{
+            console.log(response);
+        }).catch(()=>{
+        }).finally(()=>{
+            setLoading(false);
+            navigation.navigate("SignIn");
+        });
+    }
     const navigation = useNavigation();
     let [itemsArray, setItemsArray] = useState([]);
     return (
         <View style={styles.container}>
             <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Registration</Text>
             <RegistrationProgress userType={route.params.userType} />
-            <Formik
+            { loading && <ActivityIndicator size={"small"} color={COLORS.black} /> }
+            { !loading && <Formik
                 initialValues={{
                     degreeCertificate: '',
                     barCertificate: '',
@@ -91,6 +104,7 @@ function DocumentsScreen({ route }) {
                             }
                         }
                         ));
+                        submitData(newUserData);
                     }
                 }
                 validationSchema={DocumentsSchema}
@@ -146,7 +160,7 @@ function DocumentsScreen({ route }) {
                         }} disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }} ><Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Next</Text></TouchableOpacity>
                     </View>
                 )}
-            </Formik>
+            </Formik> }
         </View>
     );
 }

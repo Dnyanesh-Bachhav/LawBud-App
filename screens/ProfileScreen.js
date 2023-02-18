@@ -6,11 +6,15 @@ import { COLORS } from "../components/constants";
 import { Octicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useContext, useState } from "react";
-import { AuthContext } from "../components/Context";
+import { AuthContext } from "../components/context";
+import { loginContext } from "../components/context1";
+import { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function ProfileScreen(){
     const [image, setImage] = useState(null);
-    const { signOut } = useContext(AuthContext);
+    const { signOut } = useContext(loginContext);
+    const [currentUserData,setCurrentUserData] = useState(null);
     const pickImage = async () => {
       // No permissions request is necessary for launching the image library
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -26,6 +30,15 @@ function ProfileScreen(){
         setImage(result.assets[0].uri);
       }
     };
+    async function getData(){
+        let userData = await AsyncStorage.getItem("currentUserData");
+        console.log(userData);
+        setCurrentUserData(userData);
+
+    }
+    useEffect(()=>{
+        getData();
+    });
     return(
         <View style={styles.container}>
             <Header headerText={"My Account"} />
