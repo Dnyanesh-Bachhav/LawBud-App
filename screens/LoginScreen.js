@@ -34,7 +34,7 @@ function LoginScreen(){
         }
         setLoading(true);
         const data1 = await getLawyersData();
-        console.log(data1.data);
+        // console.log(data1.data);
         setUsersData(data1.data.filter((item,index)=>{
             return item.type === usersType;
         }));
@@ -44,7 +44,7 @@ function LoginScreen(){
         // setUsersType("user");
         getUsersData();
         
-    },[usersType]);
+    },[userType]);
     return(
         <View style={styles.container}>
             <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Login</Text>
@@ -77,7 +77,8 @@ function LoginScreen(){
                 }}
                 innerRef={formikRef}
                 onSubmit={(state)=>{
-                    setPhone(state.phone);
+                    let phone1 = state.phone;
+                    setPhone(phone1);
                     // console.log("State:"+ JSON.stringify(state));
                 }}
                 validationSchema={LoginSchema}
@@ -161,7 +162,7 @@ function SheetComponent({navigation, userType, usersType, setUsersType, signIn, 
         let usersArray = usersData;
         console.log(usersArray);
         let foundUser = usersArray.filter((item,index)=>{
-            console.log( item.contact === phone);
+            console.log( String(item.contact) +" "+ phone);
             return String(item.contact) === phone;
         });
         console.log("Found user: "+ JSON.stringify(foundUser));
