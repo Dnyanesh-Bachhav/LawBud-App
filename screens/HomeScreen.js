@@ -20,9 +20,7 @@ function HomeScreen() {
     let response = await getLawyersData();
     lawyersArray = response.data;
     console.log("LawyersArray: " + lawyersArray);
-    // console.log("In a file:"+lawyersArray);
     setLawyersData(lawyersArray.filter((item) => {
-      // console.log(item.userType);
       return item.userType === "lawyer";
     }));
 

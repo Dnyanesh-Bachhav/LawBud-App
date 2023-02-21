@@ -37,7 +37,6 @@ function FavouritesScreen(){
             return item.userType === "lawyer";
           }));
             console.log("All:"+ data1.includes({ userId: "tW_EaVsJ" }));
-          // console.log(lawyersArray);
           let i = 0;
           lawyersArray.forEach((item,index)=>{
               
@@ -49,7 +48,6 @@ function FavouritesScreen(){
                 }
                 
             });
-            //   console.log("unfiltered: "+favouritesUserFiltered);
             setFavouritesData(favouritesUserFiltered);
             setLoading(false);
             return favouritesUserFiltered;

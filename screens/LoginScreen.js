@@ -27,14 +27,12 @@ function LoginScreen(){
     let[usersData,setUsersData] = useState([]);
     let[loading,setLoading] = useState(false);
     async function getUsersData() {
-        // await AsyncStorage.removeItem("favourites");
         if(loading)
         {
             return;
         }
         setLoading(true);
         const data1 = await getLawyersData();
-        // console.log(data1.data);
         setUsersData(data1.data.filter((item,index)=>{
             return item.type === usersType;
         }));
