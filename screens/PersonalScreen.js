@@ -137,9 +137,10 @@ function PersonalScreen({ route }) {
                                                 </View>
                                                 <TouchableOpacity onPress={() => {
                                                     // formikRef.current.submitForm();
-                                                    navigation.navigate("SignIn");
                                                     formikRef.current.submitForm();
-                                                    signUp(newUserData);
+                                                    handleSubmitData();
+                                                    // signUp(newUserData);
+                                                    // navigation.navigate("SignIn");
                                                 }}
                                                     disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }}>
                                                     <Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Next</Text>
@@ -161,7 +162,7 @@ function PersonalScreen({ route }) {
                                             updateUser({ ...newUserData, name: state.name, address: state.OAddress, profile_image: image });
                                         }}
                                         validationSchema={LawyerPersonalSchema}>
-                                        {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
+                                        {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmitData }) => (
                                             <>
                                                 <View style={{ marginTop: 10 }} >
                                                     <Text style={{ color: COLORS.gray }}>Name*</Text>

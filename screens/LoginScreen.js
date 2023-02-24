@@ -61,7 +61,7 @@ function LoginScreen(){
                 </TouchableOpacity>
             </View>
             {
-                loading && <ActivityIndicator size={"small"} color={COLORS.black} />
+                loading && <ActivityIndicator size={"small"} color={COLORS.white} />
             }
             { usersData &&
             <View style={{ backgroundColor: COLORS.white, marginTop: 10, padding: 16, borderRadius: 5 }}>
@@ -96,7 +96,7 @@ function LoginScreen(){
                             formikRef.current.submitForm();
                             ToastAndroid.show("1234",ToastAndroid.SHORT);
                             refRBSheet.current.open();
-                        }} disabled={!isValid} style={{backgroundColor: isValid ? COLORS.black : COLORS.grey,marginTop: 10, borderRadius: 4 }} >
+                        }} disabled={ loading && !isValid} style={{backgroundColor: isValid ? COLORS.black : COLORS.grey,marginTop: 10, borderRadius: 4 }} >
                             <Text style={{color: COLORS.white,padding: 4, textAlign: 'center'}} >Send OTP</Text>
                         </TouchableOpacity>
                     <View style={{flexDirection: 'row', marginTop: 20, justifyContent: 'center', alignItems: 'center'}} >
@@ -132,7 +132,7 @@ function LoginScreen(){
                 }                
                 }}
             >
-                <SheetComponent navigation={navigation} userType={userType} setUsersType={setUsersType} usersType={usersType} signIn={signIn} phone={phone} usersData={usersData} />
+                <SheetComponent navigation={navigation} userType={userType} setUsersType={setUsersType} usersType={usersType} setLoading={setLoading} signIn={signIn} phone={phone} usersData={usersData} />
             </RBSheet>
             </>
 
@@ -151,12 +151,13 @@ function InputComponent({title}){
         </View>
     );
 }
-function SheetComponent({navigation, userType, usersType, setUsersType, signIn, phone, usersData }){
+function SheetComponent({navigation, userType, usersType, setUsersType, setLoading, signIn, phone, usersData }){
     const formikRef1 = useRef();
     const [otp,setOtp] = useState();
     // const navigation = useNavigation();
     function loginHandle(){
         // console.log("In a sheet component..."+ JSON.stringify(lawyersData));
+        setLoading(true);
         let usersArray = usersData;
         console.log(usersArray);
         let foundUser = usersArray.filter((item,index)=>{
@@ -171,7 +172,13 @@ function SheetComponent({navigation, userType, usersType, setUsersType, signIn, 
             ]);
             return;
         }
-        signIn(foundUser);
+        signIn(foundUser).then(()=>{
+            console.log("User logged in...");
+        }).catch((e)=>{
+            Alert.alert("Error occured...");
+        }).finally(()=>{
+            setLoading(false);
+        })
         
     }
     return(

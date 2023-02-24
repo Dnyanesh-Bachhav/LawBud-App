@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 // import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StyleSheet, Text, View, StatusBar, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, ActivityIndicator, Alert } from 'react-native';
 import { COLORS } from './components/constants';
 import Tabs from './Navigation/tabs';
 import { useEffect, useMemo, useReducer, useState } from 'react';
@@ -12,11 +12,12 @@ import Store, { AuthContext } from './components/context';
 import RootStackScreen from './screens/RootStackScreen';
 import { loginContext } from './components/context1';
 import axios from 'axios';
-import { getAuth } from "firebase/auth";
+import { auth } from './firebase';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 // import Store from './components/context';
 const Stack = createNativeStackNavigator();
 export default function App() {
-
+  const [authenticatedUser,setAuthenticatedUser] = useState(null);
   const [lawyersData, setLawyersData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
@@ -92,7 +93,6 @@ export default function App() {
     userName: null,
     userToken: null,
   }
-  const auth = getAuth
   const loginReducer = (prevState, action) => {
     switch (action.type) {
       case "RETRIEVE_TOKEN":
@@ -160,6 +160,11 @@ export default function App() {
         // userToken = "sdsdSDE";
         await AsyncStorage.setItem("userToken", userToken);
         await AsyncStorage.setItem("currentUserData", JSON.stringify(foundUser));
+        signInWithEmailAndPassword(auth,foundUser[0].email_id,foundUser[0].contact).then(()=>{
+          Alert.alert("Login Successful...");
+        }).catch((e)=>{
+          Alert.alert("Error occured...");
+        })
 
       }
       catch (e) {
@@ -192,7 +197,15 @@ export default function App() {
       try {
 
         data1 = await axios.post("https://lawbud-backend.onrender.com/user/addUser", data);
-        await auth
+        createUserWithEmailAndPassword(auth, data.email_id,data.contact).then(()=>{
+          Alert.alert("Uploaded...");
+        }).catch((e)=>{
+          Alert.alert("Error...",e.message);
+        })
+        // firestore().collection("users").doc("user1").set({
+        //   email: "demo@gmail.com",
+        //   password: "1234"
+        // });
       }
       catch (e) {
         console.log("Error:" + e);
@@ -222,9 +235,13 @@ export default function App() {
       dispatch({ type: "REGISTER", token: userToken });
 
     }, 1000);
+    const unsubscribe = onAuthStateChanged(auth, async authenticatedUser =>{
+      authenticatedUser ? setAuthenticatedUser(authenticatedUser) : setAuthenticatedUser(null);
+    });
+    return ()=> unsubscribe();
     console.log("userToken: " + loginState.userToken);
     getLawyersData1();
-  }, []);
+  }, [authenticatedUser]);
   if (loginState.isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

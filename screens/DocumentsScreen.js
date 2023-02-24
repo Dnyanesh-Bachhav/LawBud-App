@@ -1,4 +1,4 @@
-import { ActivityIndicator, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
 import { useContext, useState, useRef } from "react";
@@ -52,6 +52,7 @@ function DocumentsScreen({ route }) {
         await signUp(newUserData).then((response)=>{
             console.log(response);
         }).catch(()=>{
+            Alert.alert("Error...");
         }).finally(()=>{
             setLoading(false);
             navigation.navigate("SignIn");
