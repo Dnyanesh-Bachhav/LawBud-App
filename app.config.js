@@ -1,4 +1,5 @@
-{
+import "dotenv/config";
+export default {
   "expo": {
     "name": "LawBud-App",
     "slug": "LawBud-App",
@@ -33,7 +34,13 @@
     "extra": {
       "eas": {
         "projectId": "dcb7a6a6-54f5-4032-b1a7-438b438516aa"
-      }
+      },
+      apiKey: process.env.API_KEY,
+      authDomain: process.env.AUTH_DOMAIN,
+      projectId: process.env.PROJECT_ID,
+      storageBucket: process.env.STORAGE_BUCKET,
+      messagingSenderId: process.env.MESSAGING_ID,
+      appId: process.env.APP_ID
     },
     "plugins": [
       [

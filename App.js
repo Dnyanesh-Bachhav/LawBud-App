@@ -12,6 +12,7 @@ import Store, { AuthContext } from './components/context';
 import RootStackScreen from './screens/RootStackScreen';
 import { loginContext } from './components/context1';
 import axios from 'axios';
+import { getAuth } from "firebase/auth";
 // import Store from './components/context';
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -91,7 +92,7 @@ export default function App() {
     userName: null,
     userToken: null,
   }
-
+  const auth = getAuth
   const loginReducer = (prevState, action) => {
     switch (action.type) {
       case "RETRIEVE_TOKEN":
@@ -191,6 +192,7 @@ export default function App() {
       try {
 
         data1 = await axios.post("https://lawbud-backend.onrender.com/user/addUser", data);
+        await auth
       }
       catch (e) {
         console.log("Error:" + e);
