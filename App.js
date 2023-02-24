@@ -12,8 +12,11 @@ import Store, { AuthContext } from './components/context';
 import RootStackScreen from './screens/RootStackScreen';
 import { loginContext } from './components/context1';
 import axios from 'axios';
-import { auth } from './firebase';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, firestore } from './firebase';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { collection, addDoc, orderBy, query, onSnapshot, getFirestore } from "firebase/firestore";
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 // import Store from './components/context';
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -179,6 +182,11 @@ export default function App() {
       // setIsLoading(false);
       try {
         await AsyncStorage.removeItem("userToken");
+        signOut(auth).then(()=>{
+          Alert.alert("Logout");
+        }).catch(()=>{
+          Alert.alert("Error occured...");
+        })
       }
       catch (e) {
         console.log(e);
@@ -201,7 +209,20 @@ export default function App() {
           Alert.alert("Uploaded...");
         }).catch((e)=>{
           Alert.alert("Error...",e.message);
-        })
+        });
+        const db = getFirestore();
+          // const response = await db.collection("users").doc(uuidv4()).set({
+          //   ...data,
+          //   _id: uuidv4(),
+          //   createdAt: new Date(),
+          // });
+          console.log("In a app.js");
+          addDoc(collection(db,"users"),{
+            ...data,
+            _id: uuidv4(),
+            createdAt: new Date()
+          });
+        
         // firestore().collection("users").doc("user1").set({
         //   email: "demo@gmail.com",
         //   password: "1234"
