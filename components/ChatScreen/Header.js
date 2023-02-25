@@ -12,7 +12,9 @@ function Header({headerText, imgSrc }) {
             <AntDesign name="arrowleft" size={24} color={COLORS.white} />
             </TouchableOpacity>
             <Image
-            source={imgSrc}
+            source={{
+                uri: imgSrc || "https://w7.pngwing.com/pngs/81/570/png-transparent-profile-logo-computer-icons-user-user-blue-heroes-logo-thumbnail.png"
+            }}
             style={styles.imgStyle}
             /> 
             <Text style={{color: COLORS.white,marginLeft: 10, fontSize:16 }}>{ headerText }</Text>

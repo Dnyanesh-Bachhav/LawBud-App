@@ -24,6 +24,7 @@ function LoginScreen(){
     const { signIn } = useContext(loginContext);
     let[userType,setUserType] = useState("user");
     let[phone,setPhone] = useState();
+    let [allUsers,setAllUsers] = useState([]);
     let[usersData,setUsersData] = useState([]);
     let[loading,setLoading] = useState(false);
     async function getUsersData() {
@@ -33,16 +34,22 @@ function LoginScreen(){
         }
         setLoading(true);
         const data1 = await getLawyersData();
+        setAllUsers(data1.data);
         setUsersData(data1.data.filter((item,index)=>{
-            return item.type === usersType;
+            return item.type === userType;
         }));
         setLoading(false);
       }
+      useEffect(()=>{
+        setUsersData(allUsers.filter((item,index)=>{
+            return item.type === usersType;
+        }));
+      },[userType]);
     useEffect(()=>{
         // setUsersType("user");
         getUsersData();
         
-    },[userType]);
+    },[]);
     return(
         <View style={styles.container}>
             <Text style={{color: COLORS.white, fontSize: 30, fontWeight: '400' }}>Login</Text>
