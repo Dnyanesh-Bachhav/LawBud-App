@@ -31,7 +31,7 @@ function ChatsListScreen(){
                 data={users}
                 style={styles.listStyle}
                 renderItem={({ item, index }) => (
-                    <Card name={item.name} description={item.description} profile_image={item.profile_image} isOnline={item?.isOnline || true } key={index} />
+                    <Card name={item.name} description={item.description} profile_image={item.profile_image} contact={item.contact} isOnline={item?.isOnline || true } key={index} />
                     // <Text>{item._id}</Text>
                     )
                 }
@@ -40,7 +40,7 @@ function ChatsListScreen(){
         </View>
     );
 }
-function Card({ name, description, isOnline, profile_image }) {
+function Card({ name, description, contact, isOnline, profile_image }) {
     const navigation = useNavigation();
     return (
         <View style={{elevation: 2, borderRadius: 7, marginTop: 10, marginRight: 10, marginLeft: 10, overflow: 'hidden' }} >
@@ -56,7 +56,8 @@ function Card({ name, description, isOnline, profile_image }) {
                 // });
                 navigation.navigate("Chat",{
                     imgSrc: profile_image,
-                    name: name
+                    name: name,
+                    contact: contact,
 
                 })
             }} >

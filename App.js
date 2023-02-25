@@ -259,9 +259,9 @@ export default function App() {
     const unsubscribe = onAuthStateChanged(auth, async authenticatedUser =>{
       authenticatedUser ? setAuthenticatedUser(authenticatedUser) : setAuthenticatedUser(null);
     });
-    return ()=> unsubscribe();
     console.log("userToken: " + loginState.userToken);
     getLawyersData1();
+    return ()=> unsubscribe();
   }, [authenticatedUser]);
   if (loginState.isLoading) {
     return (
