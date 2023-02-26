@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Entypo } from '@expo/vector-icons';
 import { Dropdown } from "react-native-element-dropdown";
 import { useState } from "react";
+import * as Linking from 'expo-linking';
 function Header({ headerText, imgSrc }) {
     const [value, setValue] = useState(null);
     const data = [

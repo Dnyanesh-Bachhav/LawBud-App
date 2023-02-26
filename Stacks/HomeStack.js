@@ -34,7 +34,7 @@ function DrawerStack() {
     }} >
       <Drawer.Screen name="Home " component={HomeScreen} />
       <Drawer.Screen name="Feedback" component={HomeScreen} />
-      <Drawer.Screen name="Contact us" component={HomeScreen} />
+      {/* <Drawer.Screen name="Contact us" component={HomeScreen} /> */}
       <Drawer.Screen name="Privacy Policy" component={HomeScreen} />
 
     </Drawer.Navigator>
@@ -53,6 +53,10 @@ function DrawerStackLawyers() {
 
     }} >
       <Drawer.Screen name="Home " component={LawyersDashboardScreen} />
+      {/* onPress={()=>{
+        Linking.openURL('mailto:support@example.com?subject=SendMail&body=Description')
+        title="support@example.com"
+      }} */}
       <Drawer.Screen name="Feedback" component={LawyersDashboardScreen} />
       <Drawer.Screen name="Contact us" component={LawyersDashboardScreen} />
       <Drawer.Screen name="Privacy Policy" component={LawyersDashboardScreen} />

@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS } from "./constants";
 import { AuthContext } from "./context";
+import * as Linking from 'expo-linking';
 
 function CustomDrawer(props) {
    const { signOut } = useContext(AuthContext);
@@ -12,6 +13,12 @@ function CustomDrawer(props) {
                 
                 <View style={styles.listContainer}>
                     <DrawerItemList {...props} />
+                    <DrawerItem
+                    label={"Contact us"}
+                    onPress={()=>{
+                        Linking.openURL('mailto:lawbud@support.com?subject=Write your Subject&body=Description')
+                    }}
+                    />
                     <View style={{ marginLeft: 16 }}>
                         <TouchableOpacity onPress={()=>{
                             signOut();
