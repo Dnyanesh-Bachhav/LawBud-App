@@ -18,10 +18,11 @@ function HomeScreen() {
     setLoading(true);
     let lawyersArray = [];
     let response = await getLawyersData();
-    lawyersArray = response.data;
+    // lawyersArray = response.data;
+    console.log(response);
     console.log("LawyersArray: " + lawyersArray);
-    setLawyersData(lawyersArray.filter((item) => {
-      return item.userType === "lawyer";
+    setLawyersData(response.data.filter((item) => {
+      return item.type === "lawyer";
     }));
 
     console.log("Lawyers Data: " + lawyersData);
