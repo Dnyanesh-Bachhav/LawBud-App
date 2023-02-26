@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, TextInput, ActivityIndicator } from "react-native";
+import { Text, View, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity } from "react-native";
 import Header from "../components/ChatScreen/Header";
 import { COLORS } from "../components/constants";
 import { Feather } from '@expo/vector-icons';
@@ -9,11 +9,25 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { addDoc, collection, doc, getDoc, getDocs, getFirestore, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "firebase/firestore";
 import { auth, firestore } from "../firebase";
 import { useLayoutEffect } from "react";
+import { Dropdown } from "react-native-element-dropdown";
+import { AntDesign } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 // Chat Screen
 function ChatScreen({ route }) {
     const [currentUser, setCurrentUser] = useState(route.params.currentUser);
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [value, setValue] = useState(null);
+    const data = [
+        { label: 'Report', value: '1' },
+        { label: 'Block', value: '2' },
+        // { label: 'Item 3', value: '3' },
+        // { label: 'Item 4', value: '4' },
+        // { label: 'Item 5', value: '5' },
+        // { label: 'Item 6', value: '6' },
+        // { label: 'Item 7', value: '7' },
+        // { label: 'Item 8', value: '8' },
+      ];
     const onSend = useCallback(async (messages = []) => {
         console.log(messages);
         const myMsg = {
@@ -169,6 +183,7 @@ function ChatScreen({ route }) {
     return (
         <View style={styles.container}>
             <Header headerText={route.params.name} imgSrc={route.params.imgSrc} />
+            
             {
                 loading ? <ActivityIndicator size={"small"} color={COLORS.black} /> :
 
@@ -189,6 +204,7 @@ function ChatScreen({ route }) {
                     // }}
                     />
             }
+            
         </View>
     );
 }
@@ -259,6 +275,7 @@ const styles = StyleSheet.create({
         width: '85%',
         borderRadius: 8,
         borderColor: COLORS.grey,
-    }
+    },
+
 });
 export default ChatScreen;
