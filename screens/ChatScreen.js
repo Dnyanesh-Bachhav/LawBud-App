@@ -6,35 +6,48 @@ import { Bubble, GiftedChat } from 'react-native-gifted-chat';
 import { useCallback, useEffect, useState } from "react";
 import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { collection, doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, getFirestore, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "firebase/firestore";
+import { auth, firestore } from "../firebase";
+import { useLayoutEffect } from "react";
 // Chat Screen
 function ChatScreen({ route }) {
-    const [currentUser, setCurrentUser] = useState(null);
+    const [currentUser, setCurrentUser] = useState(route.params.currentUser);
     const [messages, setMessages] = useState([]);
-    const [loading,setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const onSend = useCallback(async (messages = []) => {
         console.log(messages);
         const myMsg = {
             ...messages[0],
+            // _id: route.params.currentUser[0].contact,
+            // user:{
+            //     _id: route.params.currentUser[0].contact
+            // },
             sentBy: currentUser[0].contact,
             sentTo: route.params.contact,
-            createdAt: serverTimestamp()
+            createdAt: new Date()
         }
         setMessages(previousMessages => GiftedChat.append(previousMessages, messages));
         const docId = currentUser[0].contact > route.params.contact ? String(currentUser[0].contact) + "-" + String(route.params.contact) : String(route.params.contact) + "-" + String(currentUser[0].contact)
         const db = getFirestore();
-        const docRef = doc(db,"chatrooms",docId);
+        const docRef = doc(db, "chatrooms", docId);
         // console.log("DOCID:"+currentUser[0]._id);
-        setDoc(docRef, {
+        const msgRef = collection(docRef, "messages");
+        addDoc(msgRef, {
             ...myMsg,
-        }).then(()=>{
+            // createdAt: serverTimestamp()
+        }).then(() => {
             console.log("Data added...");
-        }).catch((e)=>{
-            console.log("Error: "+e);
+        }).catch((e) => {
+            console.log("Error: " + e);
         });
+        // addDoc(collection(db,"chatrooms/messages"),{
+        //     ...data,
+        //     _id: uuidv4(),
+        //     createdAt: new Date()
+        //   });
     }, []);
 
-    async function getData() {
+    async function getUserData() {
         setLoading(true);
         const currentUser = await AsyncStorage.getItem("currentUserData");
         // console.log(currentUser);
@@ -43,6 +56,48 @@ function ChatScreen({ route }) {
         setLoading(false);
         // console.log("Current User: " + currentUser[0]._id);
 
+    }
+    async function loadChats() {
+        const docId = currentUser[0].contact > route.params.contact ? String(currentUser[0].contact) + "-" + String(route.params.contact) : String(route.params.contact) + "-" + String(currentUser[0].contact)
+        const db = getFirestore();
+        const docRef = doc(db, "chatrooms", docId);
+        // console.log("DOCID:"+currentUser[0]._id);
+        const msgRef = collection(docRef, "messages");
+        // const collectionRef = collection(firestore,"users");
+        const q = query(msgRef, orderBy("createdAt", "desc"));
+        // const allMessages1 = await getDocs(msgRef);
+        // allMessages1.forEach(doc1=>{
+        //     console.log(doc1.id);
+        // })
+        const unsubscribe = onSnapshot(q, snapshot => {
+
+            let chatdata = snapshot.docs.map(doc => {
+                // console.log(doc.data());
+                if (doc.exists) {
+
+                    return {
+
+                        _id: doc.data()._id,
+                        createdAt: doc.data().createdAt.toDate(),
+                        text: doc.data().text,
+                        user: doc.data().user,
+                    }
+                }
+
+            });
+            setMessages(chatdata);
+            // snapshot.forEach(doc=>{
+            //     console.log(doc.id);
+            // });
+        }, (e) => {
+            console.log("Error: " + e);
+        });
+        return () => {
+            unsubscribe();
+          };
+        // setMessages(allMessages);
+        // return ()=> allMessages;
+        // console.log("Messages:"+allMessages);
     }
 
     const renderBubble = (props) => {
@@ -81,6 +136,9 @@ function ChatScreen({ route }) {
             <FontAwesome name="angle-double-down" size={24} color="black" />
         );
     }
+    useLayoutEffect(() => {
+        loadChats();
+    }, []);
     useEffect(() => {
         setMessages([
             {
@@ -104,34 +162,33 @@ function ChatScreen({ route }) {
                 },
             },
         ]);
-        getData();
+        // getUserData();
+        // loadChats();
     }, []);
 
     return (
         <View style={styles.container}>
             <Header headerText={route.params.name} imgSrc={route.params.imgSrc} />
             {
-                loading ? <ActivityIndicator size={"small"} color={COLORS.black} /> : null
+                loading ? <ActivityIndicator size={"small"} color={COLORS.black} /> :
+
+                    <GiftedChat
+                        messages={messages}
+                        onSend={messages => onSend(messages)}
+                        user={{
+                            _id: currentUser[0].contact
+                        }}
+                        renderBubble={renderBubble}
+                        scrollToBottom
+                        scrollToBottomComponent={scrollToBottomComponent}
+                    // textInputStyle={{
+                    //     borderWidth: 1,
+                    //     padding: 5,
+                    //     borderRadius: 8,
+                    //     borderColor: COLORS.grey,
+                    // }}
+                    />
             }
-            {/* <SentMessage/>
-            <ReceiveMessage />
-            <InputMessage/> */}
-            <GiftedChat
-                messages={messages}
-                onSend={messages => onSend(messages)}
-                user={{
-                    _id: 1,
-                }}
-                renderBubble={renderBubble}
-                scrollToBottom
-                scrollToBottomComponent={scrollToBottomComponent}
-            // textInputStyle={{
-            //     borderWidth: 1,
-            //     padding: 5,
-            //     borderRadius: 8,
-            //     borderColor: COLORS.grey,
-            // }}
-            />
         </View>
     );
 }

@@ -33,7 +33,10 @@ function LoginScreen(){
             return;
         }
         setLoading(true);
+        console.log("Called 1");
         const data1 = await getLawyersData();
+        console.log(data1.data);
+        console.log("Called 2");
         setAllUsers(data1.data);
         setUsersData(data1.data.filter((item,index)=>{
             return item.type === userType;

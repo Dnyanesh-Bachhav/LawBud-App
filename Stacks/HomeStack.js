@@ -78,9 +78,7 @@ function HomeStack() {
       <HomeScreenStack.Screen name='About' component={AboutScreen} options={{
         headerShown: false,
       }} />
-      <HomeScreenStack.Screen name='Chat' component={ChatScreen} options={{
-        headerShown: false,
-      }} />
+      
       <HomeScreenStack.Screen name='Favourite' component={FavouritesScreen} options={{
         headerShown: false,
       }} />

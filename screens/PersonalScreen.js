@@ -50,6 +50,9 @@ function PersonalScreen({ route }) {
     };
     async function handleSubmitData() {
         setLoading(true);
+        if(name!==null)
+        {
+            
         signUp(newUserData).then((response) => {
             navigation.navigate("SignIn");
         }).finally(() => {
@@ -57,13 +60,15 @@ function PersonalScreen({ route }) {
             console.log("SAVED...");
         })
     }
+
+    }
     function notifyData() {
         updateUser({ ...newUserData, name: name, address: HAddress, profile_image: image });
     }
     useEffect(() => {
         console.log("New data:" + JSON.stringify(newUserData));
-        // if (name !== null && HAddress !== null)
-        //     notifyData()
+        if (name !== null)
+            handleSubmitData();
     }, [name, HAddress]);
     return (
         <View style={styles.container}>
@@ -138,7 +143,7 @@ function PersonalScreen({ route }) {
                                                 <TouchableOpacity onPress={() => {
                                                     // formikRef.current.submitForm();
                                                     formikRef.current.submitForm();
-                                                    handleSubmitData();
+                                                    // handleSubmitData();
                                                     // signUp(newUserData);
                                                     // navigation.navigate("SignIn");
                                                 }}

@@ -1,15 +1,29 @@
 import { useNavigation } from "@react-navigation/native";
-import { FlatList, Text, TouchableOpacity, View, StyleSheet, Image } from "react-native";
+import { FlatList, Text, TouchableOpacity, View, StyleSheet, Image, ActivityIndicator } from "react-native";
 import { CHATS_DATA, COLORS } from "../components/constants";
 import Header from "../components/Header";
 import image1 from "../assets/image.jpg";
 import { useEffect, useState } from "react";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { firestore } from "../firebase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function ChatsListScreen(){
     const [users,setUsers] = useState([]);
+    const [loading,setLoading] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
+    async function getUserData() {
+        setLoading(true);
+        const currentUser = await AsyncStorage.getItem("currentUserData");
+        console.log(currentUser);
+        let arr = JSON.parse(currentUser);
+        setCurrentUser(JSON.parse(currentUser));
+        setLoading(false);
+        // console.log("Current User: " + currentUser[0]._id);
+
+    }
     useEffect(()=>{
+        getUserData();
         const collectionRef = collection(firestore,"users");
         const q = query(collectionRef, ref => ref.orderBy("createdAt","desc"));
         let unsubscribe = onSnapshot(q,snapshot=>{
@@ -27,20 +41,24 @@ function ChatsListScreen(){
     return(
         <View>
             <Header headerText={"Chats"} />
-            <FlatList
+            {
+                !loading ?
+                <FlatList
                 data={users}
                 style={styles.listStyle}
                 renderItem={({ item, index }) => (
-                    <Card name={item.name} description={item.description} profile_image={item.profile_image} contact={item.contact} isOnline={item?.isOnline || true } key={index} />
+                    <Card name={item.name} description={item.description} profile_image={item.profile_image} currentUser={currentUser} contact={item.contact} isOnline={item?.isOnline || true } key={index} />
                     // <Text>{item._id}</Text>
                     )
                 }
                 keyExtractor={({ item, index }) => index}
-            />
+                />
+                : <ActivityIndicator size={"small"} color={COLORS.black} />
+            }
         </View>
     );
 }
-function Card({ name, description, contact, isOnline, profile_image }) {
+function Card({ name, description, contact, currentUser, isOnline, profile_image }) {
     const navigation = useNavigation();
     return (
         <View style={{elevation: 2, borderRadius: 7, marginTop: 10, marginRight: 10, marginLeft: 10, overflow: 'hidden' }} >
@@ -58,6 +76,7 @@ function Card({ name, description, contact, isOnline, profile_image }) {
                     imgSrc: profile_image,
                     name: name,
                     contact: contact,
+                    currentUser: currentUser
 
                 })
             }} >
