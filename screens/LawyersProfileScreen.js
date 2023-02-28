@@ -1,17 +1,16 @@
-import { View, Text, StyleSheet, Image, TextInput, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
-import Header from '../components/Header';
-import image1 from '../assets/default_user.jpg';
+import { Alert, Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import Header from "../components/Header";
 import { MaterialIcons } from '@expo/vector-icons';
-import { COLORS } from "../components/constants";
 import { Octicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { useContext, useState } from "react";
+import { useState } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../components/context";
 import { loginContext } from "../components/context1";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-function ProfileScreen(){
+function LawyersProfileScreen(){
     const [image, setImage] = useState(null);
     const { signOut } = useContext(loginContext);
     const { usersType } = useContext(AuthContext);
@@ -109,31 +108,10 @@ function ProfileScreen(){
             
             }
             <Logout_Button signOut={signOut} />
-        </View>
-    );
-}
-function Field({name,value}){
-    return(
-        <View style={styles.fieldContainer}>
-            <Text>{name}</Text>
-            <TextInput
-                style={styles.inputStyle}
-                cursorColor={COLORS.gray}
-                value={value||"hi"}
-            />
-        </View>
+        </View>        
     );
 }
 
-function Logout_Button({signOut}){
-    return(
-        <TouchableOpacity style={styles.report_btn} onPress={()=>{
-            signOut();
-        }} >
-            <Text> Logout </Text>
-        </TouchableOpacity>
-    );
-}
 const styles = StyleSheet.create({
     container:{
         flex: 1
@@ -185,4 +163,4 @@ const styles = StyleSheet.create({
         resizeMode: 'cover'
     },
 });
-export default ProfileScreen;
+export default LawyersProfileScreen;

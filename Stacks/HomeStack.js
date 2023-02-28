@@ -17,6 +17,7 @@ import DocumentsScreen from "../screens/DocumentsScreen";
 import LawyersDashboardScreen from "../screens/LawyersDashboardScreen";
 import { useContext } from "react";
 import { AuthContext } from "../components/context";
+import LawyersProfileScreen from "../screens/LawyersProfileScreen";
 
 const HomeScreenStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -92,10 +93,16 @@ function HomeStack() {
       <HomeScreenStack.Screen name='NewsAlert' component={NewsAlertScreen} options={{
         headerShown: false,
       }} />
-      <HomeScreenStack.Screen name='Profile' component={ProfileScreen} options={{
+      {
+        usersType === "user" ?
+        <HomeScreenStack.Screen name='Profile' component={ProfileScreen} options={{
+          headerShown: false,
+        }} />
+      : 
+      <HomeScreenStack.Screen name='LawyersProfile' component={LawyersProfileScreen} options={{
         headerShown: false,
       }} />
-
+      }
     </HomeScreenStack.Navigator>
   );
 
