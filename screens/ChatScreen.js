@@ -7,13 +7,15 @@ import { useCallback, useEffect, useState } from "react";
 import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { addDoc, collection, doc, getDoc, getDocs, getFirestore, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "firebase/firestore";
-import { auth, firestore } from "../firebase";
+import { auth, firestore, storage } from "../firebase";
 import { useLayoutEffect } from "react";
 import * as ImagePicker from 'expo-image-picker';
 import { Dropdown } from "react-native-element-dropdown";
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { v4 as uuidv4 } from 'uuid';
 // import { FontAwesome } from '@expo/vector-icons';
 // Chat Screen
 function ChatScreen({ route }) {
@@ -22,6 +24,7 @@ function ChatScreen({ route }) {
     const [loading, setLoading] = useState(false);
     const [value, setValue] = useState(null);
     const [imageUrl,setImageUrl] = useState(null);
+    const [imageData,setImageData] = useState(null);
     const data = [
         { label: 'Report', value: '1' },
         { label: 'Block', value: '2' },
@@ -66,7 +69,90 @@ function ChatScreen({ route }) {
         //     createdAt: new Date()
         //   });
     }, []);
+    async function uploadImage(imageData1){
+        if(imageData.type!=="image")
+        {
+            return;
+        }
 
+        const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function() {
+              resolve(xhr.response);
+            };
+            xhr.onerror = function() {
+              reject(new TypeError('Network request failed'));
+            };
+            xhr.responseType = 'blob';
+            xhr.open('GET', imageData1.assets[0].uri, true);
+            xhr.send(null);
+          });
+          const metadata = {
+            contentType: 'image/jpeg',
+          };
+          // Upload file and metadata to the object 'images/mountains.jpg'
+const storageRef = ref(storage, 'chats/images/' + uuidv4());
+const uploadTask = uploadBytesResumable(storageRef, blob, metadata);
+
+// Listen for state changes, errors, and completion of the upload.
+uploadTask.on('state_changed',
+  (snapshot) => {
+    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    console.log('Upload is ' + progress + '% done');
+    switch (snapshot.state) {
+      case 'paused':
+        console.log('Upload is paused');
+        break;
+      case 'running':
+        console.log('Upload is running');
+        break;
+    }
+  }, 
+  (error) => {
+    // A full list of error codes is available at
+    // https://firebase.google.com/docs/storage/web/handle-errors
+    switch (error.code) {
+      case 'storage/unauthorized':
+        // User doesn't have permission to access the object
+        break;
+      case 'storage/canceled':
+        // User canceled the upload
+        break;
+
+      // ...
+
+      case 'storage/unknown':
+        // Unknown error occurred, inspect error.serverResponse
+        break;
+    }
+  }, 
+  () => {
+    // Upload completed successfully, now we can get the download URL
+    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+      console.log('File available at', downloadURL);
+      setImageUrl(downloadURL);
+    });
+  }
+);
+        // const response = await fetch(imageData1.assets[0].uri);
+        // const blob = await response.blob();
+        // var ref = storage().ref().child(uuidv4()).put(blob);
+        // const imageRef = ref(storage,`images/${uuidv4()}`);
+        // try{
+        //     await imageRef;
+        // }
+        // catch(e)
+        // {
+        //     console.log(e);
+        // }
+        // Alert.alert("Uploaded...");
+        // // const reference = storage().ref(uuidv4());
+        // // await reference.putFile()
+        // // uploadBytes(imageRef,imageData1.assets[0].uri).then(()=>{
+        // //     Alert.alert("Image uploaded...");
+        // // });
+    }
     async function getUserData() {
         setLoading(true);
         const currentUser = await AsyncStorage.getItem("currentUserData");
@@ -168,7 +254,9 @@ function ChatScreen({ route }) {
         console.log(result);
     
         if (!result.canceled) {
-          setImageUrl(result.assets[0].uri);
+        //   setImageUrl(result.assets[0].uri);
+          setImageData(result.assets[0]);
+          uploadImage(result);
         }
       };
     const renderSend = (props)=>{
