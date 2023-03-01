@@ -1,23 +1,27 @@
-import { Text, View, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, Image, Alert } from "react-native";
 import Header from "../components/ChatScreen/Header";
 import { COLORS } from "../components/constants";
 import { Feather } from '@expo/vector-icons';
-import { Bubble, GiftedChat } from 'react-native-gifted-chat';
+import { Bubble, GiftedChat, Send } from 'react-native-gifted-chat';
 import { useCallback, useEffect, useState } from "react";
 import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { addDoc, collection, doc, getDoc, getDocs, getFirestore, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "firebase/firestore";
 import { auth, firestore } from "../firebase";
 import { useLayoutEffect } from "react";
+import * as ImagePicker from 'expo-image-picker';
 import { Dropdown } from "react-native-element-dropdown";
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+// import { FontAwesome } from '@expo/vector-icons';
 // Chat Screen
 function ChatScreen({ route }) {
     const [currentUser, setCurrentUser] = useState(route.params.currentUser);
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
     const [value, setValue] = useState(null);
+    const [imageUrl,setImageUrl] = useState(null);
     const data = [
         { label: 'Report', value: '1' },
         { label: 'Block', value: '2' },
@@ -32,6 +36,7 @@ function ChatScreen({ route }) {
         console.log(messages);
         const myMsg = {
             ...messages[0],
+            image: imageUrl,
             // _id: route.params.currentUser[0].contact,
             // user:{
             //     _id: route.params.currentUser[0].contact
@@ -40,7 +45,8 @@ function ChatScreen({ route }) {
             sentTo: route.params.contact,
             createdAt: new Date()
         }
-        setMessages(previousMessages => GiftedChat.append(previousMessages, messages));
+        console.log(myMsg);
+        setMessages(previousMessages => GiftedChat.append(previousMessages, myMsg));
         const docId = currentUser[0].contact > route.params.contact ? String(currentUser[0].contact) + "-" + String(route.params.contact) : String(route.params.contact) + "-" + String(currentUser[0].contact)
         const db = getFirestore();
         const docRef = doc(db, "chatrooms", docId);
@@ -150,6 +156,41 @@ function ChatScreen({ route }) {
             <FontAwesome name="angle-double-down" size={24} color="black" />
         );
     }
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+    
+        console.log(result);
+    
+        if (!result.canceled) {
+          setImageUrl(result.assets[0].uri);
+        }
+      };
+    const renderSend = (props)=>{
+        return(
+            <View style={{flexDirection: 'row', justifyContent:'center', alignItems: 'center' }} >
+            <TouchableOpacity onPress={()=>{
+                // Alert.alert("Image clicked...");
+                pickImage();
+
+            }} >
+                <Image source={ require("../assets/image_default.png")} style={{width: 24, height: 24 }} />
+            </TouchableOpacity>
+        
+            <Send {...props}>
+                <View style={{ marginBottom: 2.5, marginRight: 5, width: 38, aspectRatio: 1, padding: 5, justifyContent: 'center', alignItems: 'center' }} >
+                    {/* <Ionicons name="send-sharp" size={20} color="black" /> */}
+                    <FontAwesome name="send" size={21} color="black" />
+                </View>
+            </Send>
+        </View>
+        );
+    }
     useLayoutEffect(() => {
         loadChats();
     }, []);
@@ -196,6 +237,16 @@ function ChatScreen({ route }) {
                         renderBubble={renderBubble}
                         scrollToBottom
                         scrollToBottomComponent={scrollToBottomComponent}
+                        renderSend={renderSend}
+                        alwaysShowSend={true} 
+                        isLoadingEarlier={true}
+                        renderLoading={()=>{
+                            return(
+                                <View>
+                                    <ActivityIndicator size={"small"} color={"black"} />
+                                </View>
+                            );
+                        }}
                     // textInputStyle={{
                     //     borderWidth: 1,
                     //     padding: 5,

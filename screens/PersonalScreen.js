@@ -1,4 +1,4 @@
-import { ActivityIndicator, Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from "../components/constants";
 import { useNavigation } from "@react-navigation/native";
@@ -191,11 +191,17 @@ function PersonalScreen({ route }) {
                                                     )}
                                                 </View>
                                                 <TouchableOpacity onPress={() => {
-                                                    formikRef.current.submitForm();
-                                                    navigation.navigate("Skills", {
-                                                        userType: route.params.userType,
-                                                        lawyersCategoriesData: route.params.lawyersCategoriesData
-                                                    });
+                                                    if(image!==null)
+                                                    {
+                                                        formikRef.current.submitForm();
+                                                        navigation.navigate("Skills", {
+                                                            userType: route.params.userType,
+                                                            lawyersCategoriesData: route.params.lawyersCategoriesData
+                                                        });
+                                                    }
+                                                    else{
+                                                        Alert.alert("Profile Image","Profile image is mandatory...");
+                                                    }
                                                 }} disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }}>
                                                     <Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Next</Text>
                                                 </TouchableOpacity>
