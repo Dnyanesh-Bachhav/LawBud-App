@@ -31,6 +31,7 @@ function PersonalScreen({ route }) {
     const [loading, setLoading] = useState(false);
     // const [ profileImageUri, setProfileImageUri] = useState(null);
     const [HAddress, setHAddress] = useState(null);
+    const [OAddress, setOAddress] = useState(null);
     const formikRef = useRef();
 
     const pickImage = async () => {
@@ -67,9 +68,14 @@ function PersonalScreen({ route }) {
     }
     useEffect(() => {
         console.log("New data:" + JSON.stringify(newUserData));
-        if (name !== null)
+        if (name !== null && HAddress !== null)
             handleSubmitData();
     }, [name, HAddress]);
+    // useEffect(() => {
+    //     console.log("New data:" + JSON.stringify(newUserData));
+    //     if (name !== null && HAddress !== null)
+    //         handleSubmitData();
+    // }, [name, OAddress]);
     return (
         <View style={styles.container}>
             <KeyboardAvoidingView>
@@ -163,7 +169,7 @@ function PersonalScreen({ route }) {
                                         innerRef={formikRef}
                                         onSubmit={(state) => {
                                             setName(state.name);
-                                            setHAddress(state.OAddress);
+                                            setOAddress(state.OAddress);
                                             updateUser({ ...newUserData, name: state.name, address: state.OAddress, profile_image: image });
                                         }}
                                         validationSchema={LawyerPersonalSchema}>
