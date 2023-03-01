@@ -19,7 +19,7 @@ function CustomDrawer(props) {
                         Linking.openURL('mailto:lawbud@support.com?subject=Write your Subject&body=Description')
                     }}
                     />
-                    <View style={{ marginLeft: 16 }}>
+                    <View style={{ marginLeft: 18, marginTop: 4 }}>
                         <TouchableOpacity onPress={()=>{
                             signOut();
                         }} >

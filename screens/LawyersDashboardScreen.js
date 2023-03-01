@@ -55,12 +55,14 @@ function LawyersDashboardScreen() {
           </View>
         </View>
         <Text style={{ fontSize: 24, paddingVertical: 10, fontWeight: '500', marginLeft: 10 }}>Messages</Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.white, width: '100%', alignSelf: 'center', padding: 10, borderRadius: 8 }} >
-          <View style={{ backgroundColor: "#EB5757", padding: 15, borderRadius: 50, alignItems: 'center' }} >
-            <FontAwesome name="envelope-o" size={24} color={COLORS.white} />
+        {/* <View style={{elevation: 8, shadowColor: COLORS.black, paddingVertical: 10 }}> */}
+          <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.white, width: '100%', alignSelf: 'center', padding: 10, margin: 5, borderRadius: 8, elevation: 2 }} >
+            <View style={{ backgroundColor: "#EB5757", padding: 15, borderRadius: 50, alignItems: 'center' }} >
+              <FontAwesome name="envelope-o" size={24} color={COLORS.white} />
+            </View>
+            <Text style={{ marginLeft: 5 }} >You have 2 new Messages</Text>
           </View>
-          <Text style={{ marginLeft: 5 }} >You have 2 new Messages</Text>
-        </View>
+        {/* </View> */}
       </ScrollView>
     </View>
   );

@@ -59,7 +59,7 @@ function DrawerStackLawyers() {
         title="support@example.com"
       }} */}
       <Drawer.Screen name="Feedback" component={LawyersDashboardScreen} />
-      <Drawer.Screen name="Contact us" component={LawyersDashboardScreen} />
+      {/* <Drawer.Screen name="Contact us" component={LawyersDashboardScreen} /> */}
       <Drawer.Screen name="Privacy Policy" component={LawyersDashboardScreen} />
 
     </Drawer.Navigator>
