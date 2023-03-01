@@ -32,25 +32,25 @@ function LawyersDashboardScreen() {
               <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
             </View>
           </View>
-          <View style={{ flexDirection: 'row', marginTop: 20 }}>
+          <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: "center" }}>
             <View style={{ alignItems: 'center' }} >
               <View style={styles.barStyle}>
-                <Text>demo</Text>
+                <Text style={{fontSize: 16}} >100+</Text>
               </View>
-              <Text style={{ fontSize: 12 }} >Lorem Epsum</Text>
+              <Text style={{ fontSize: 14, color: COLORS.gray }} >Profile Views</Text>
             </View>
-            <View style={{ alignItems: 'center' }} >
+            <View style={{ alignItems: 'center', marginLeft: 10 }} >
               <View style={styles.barStyle}>
-                <Text>demo</Text>
+                <Text style={{fontSize: 16}} >10+</Text>
               </View>
-              <Text style={{ fontSize: 12 }} >Lorem Epsum</Text>
+              <Text style={{ fontSize: 14, color: COLORS.gray }} >Reviews</Text>
             </View>
 
-            <View style={{ alignItems: 'center' }} >
+            <View style={{ alignItems: 'center', marginLeft: 10 }} >
               <View style={styles.barStyle}>
-                <Text>demo</Text>
+                <Text style={{fontSize: 16}} >4.9</Text>
               </View>
-              <Text style={{ fontSize: 12 }} >Lorem Epsum</Text>
+              <Text style={{ fontSize: 14, color: COLORS.gray }} >Rating</Text>
             </View>
           </View>
         </View>
@@ -93,11 +93,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   barStyle: {
-    borderWidth: 2,
+    borderWidth: 2.5,
+    borderColor: COLORS.success,
     width: 80,
     height: 80,
     borderRadius: 50,
-    marginLeft: 10,
     justifyContent: 'center',
     alignItems: 'center'
   },
