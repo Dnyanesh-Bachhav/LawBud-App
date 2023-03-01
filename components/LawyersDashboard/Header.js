@@ -3,8 +3,11 @@ import { COLORS } from "../constants";
 import { FontAwesome } from '@expo/vector-icons';
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import SearchableDropDown from "react-native-searchable-dropdown";
+import { useContext } from "react";
+import { AuthContext } from "../context";
 function Header() {
     const navigation = useNavigation();
+    const { usersType } = useContext(AuthContext);
     return (
         <View style={styles.headerContainer}>
             <Pressable onPress={() => {
@@ -56,7 +59,13 @@ function Header() {
             }}
           /> */}
                 <TouchableOpacity onPress={() => {
-                    navigation.navigate("Profile");
+                    if(usersType==="user")
+                    {
+                        navigation.navigate("Profile");
+                    }
+                    else{
+                        navigation.navigate("LawyersProfile");
+                    }
                 }} >
                     <FontAwesome name="user" size={24} color={COLORS.white} style={{ marginLeft: 5 }} />
                 </TouchableOpacity>

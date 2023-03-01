@@ -4,6 +4,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import Header from "../components/LawyersDashboard/Header";
+
 function LawyersDashboardScreen() {
   const navigation = useNavigation();
   return (
@@ -15,10 +16,10 @@ function LawyersDashboardScreen() {
           <Text>Categories</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1, borderColor: COLORS.lightGray, marginTop: 5, padding: 2 }}>
             <Text style={{ color: COLORS.gray }}>Lawyer Level</Text>
-            <Text style={{ fontWeight: '500' }} >23</Text>
+            <Text style={{ fontWeight: '500' }} >A2</Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1, borderColor: COLORS.lightGray, marginTop: 5, padding: 2 }}>
-            <Text style={{ color: COLORS.gray }}>Lawyer Level</Text>
+            <Text style={{ color: COLORS.gray }}>Reviews</Text>
             <Text style={{ fontWeight: '500' }} >23</Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 5 }}>

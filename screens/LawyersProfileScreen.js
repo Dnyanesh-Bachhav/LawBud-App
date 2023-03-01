@@ -1,4 +1,4 @@
-import { Alert, Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Header from "../components/Header";
 import { MaterialIcons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
@@ -9,6 +9,8 @@ import { AuthContext } from "../components/context";
 import { loginContext } from "../components/context1";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { COLORS } from "../components/constants";
+import image1 from '../assets/default_user.jpg';
 
 function LawyersProfileScreen(){
     const [image, setImage] = useState(null);
@@ -80,7 +82,7 @@ function LawyersProfileScreen(){
                     </TouchableOpacity>
             
                 </View>
-                { currentUserData && <ScrollView>
+                { currentUserData && <ScrollView style={{marginBottom: 10 }}>
                 <Field name="Name" value={currentUserData[0].name} />
                 <Field name="Contact" value={ String(currentUserData[0].contact)} />
                 <Text style={{paddingHorizontal: 15,marginTop: 10}} >Email</Text>
@@ -100,6 +102,16 @@ function LawyersProfileScreen(){
                     : <Field name="Office Address" value={currentUserData[0].address} />
                 }
                 <Field name="Profession" value={currentUserData[0].type} />
+                {
+                    usersType === "lawyer" ?
+                    <View>
+                        <Field name="Degree Certificate" value={currentUserData[0].user_law_data.degree.default.file.file}  />
+                        <Field name="Bar Membership" value={currentUserData[0].user_law_data.bar_membership.default.file.file}  />
+                        <Field name="Sanat Number" value={currentUserData[0].user_law_data.sanat.sanat} />
+                        <Field name="Experience" value={currentUserData[0].user_law_data.experience.experience} />
+                    </View>
+                    : null
+                }
             </ScrollView>
 }
                 {
@@ -111,7 +123,28 @@ function LawyersProfileScreen(){
         </View>        
     );
 }
+function Field({name,value}){
+    return(
+        <View style={styles.fieldContainer}>
+            <Text>{name}</Text>
+            <TextInput
+                style={styles.inputStyle}
+                cursorColor={COLORS.gray}
+                value={value||"hi"}
+            />
+        </View>
+    );
+}
 
+function Logout_Button({signOut}){
+    return(
+        <TouchableOpacity style={styles.report_btn} onPress={()=>{
+            signOut();
+        }} >
+            <Text> Logout </Text>
+        </TouchableOpacity>
+    );
+}
 const styles = StyleSheet.create({
     container:{
         flex: 1
@@ -148,7 +181,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         paddingVertical: 10,
         width: '90%',
-        position: 'absolute',
+        // position: 'absolute',
         bottom: 10,
         alignSelf: 'center',
         alignItems: 'center',
