@@ -39,7 +39,7 @@ function ChatsListScreen(){
         return ()=> unsubscribe();
     },[]);
     return(
-        <View>
+        <View style={{flex:1}} >
             <Header headerText={"Chats"} />
             {
                 !loading ?
@@ -53,7 +53,10 @@ function ChatsListScreen(){
                 }
                 keyExtractor={({ item, index }) => index}
                 />
-                : <ActivityIndicator size={"small"} color={COLORS.black} />
+                : 
+                <View style={{ borderWidth: 1, justifyContent:'center',alignItems:'center'}} >
+                    <ActivityIndicator size={"large"} color={COLORS.black} />
+                </View>
             }
         </View>
     );

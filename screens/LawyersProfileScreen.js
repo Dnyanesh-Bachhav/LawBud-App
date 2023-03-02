@@ -1,5 +1,5 @@
 import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import Header from "../components/Header";
+import Header from "../components/LawyersDashboard/ProfileHeader";
 import { MaterialIcons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';

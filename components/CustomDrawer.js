@@ -4,9 +4,10 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS } from "./constants";
 import { AuthContext } from "./context";
 import * as Linking from 'expo-linking';
+import { loginContext } from "./context1";
 
 function CustomDrawer(props) {
-   const { signOut } = useContext(AuthContext);
+   const { signOut } = useContext(loginContext);
     return (
         <View style={styles.container}>
             <DrawerContentScrollView {...props} contentContainerStyle={{ backgroundColor: COLORS.secondary }}>

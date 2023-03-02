@@ -23,8 +23,9 @@ function ChatScreen({ route }) {
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
     const [value, setValue] = useState(null);
-    const [imageUrl,setImageUrl] = useState(null);
-    const [imageData,setImageData] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null);
+    const [imageData, setImageData] = useState(null);
+    var imgUrl = "";
     const data = [
         { label: 'Report', value: '1' },
         { label: 'Block', value: '2' },
@@ -34,12 +35,13 @@ function ChatScreen({ route }) {
         // { label: 'Item 6', value: '6' },
         // { label: 'Item 7', value: '7' },
         // { label: 'Item 8', value: '8' },
-      ];
+    ];
     const onSend = useCallback(async (messages = []) => {
         console.log(messages);
         const myMsg = {
             ...messages[0],
             image: imageUrl,
+
             // _id: route.params.currentUser[0].contact,
             // user:{
             //     _id: route.params.currentUser[0].contact
@@ -63,95 +65,91 @@ function ChatScreen({ route }) {
         }).catch((e) => {
             console.log("Error: " + e);
         });
+        // setImageUrl(null);
         // addDoc(collection(db,"chatrooms/messages"),{
         //     ...data,
         //     _id: uuidv4(),
         //     createdAt: new Date()
         //   });
     }, []);
-    async function uploadImage(imageData1){
-        if(imageData.type!=="image")
-        {
+    async function uploadImage(imageData1) {
+        if (imageData1.type !== "image") {
             return;
         }
 
         const blob = await new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
-            xhr.onload = function() {
-              resolve(xhr.response);
+            xhr.onload = function () {
+                resolve(xhr.response);
             };
-            xhr.onerror = function() {
-              reject(new TypeError('Network request failed'));
+            xhr.onerror = function () {
+                reject(new TypeError('Network request failed'));
             };
             xhr.responseType = 'blob';
             xhr.open('GET', imageData1.assets[0].uri, true);
             xhr.send(null);
-          });
-          const metadata = {
+        });
+        const metadata = {
             contentType: 'image/jpeg',
-          };
-          // Upload file and metadata to the object 'images/mountains.jpg'
-const storageRef = ref(storage, 'chats/images/' + uuidv4());
-const uploadTask = uploadBytesResumable(storageRef, blob, metadata);
+        };
+        // Upload file and metadata to the object 'images/mountains.jpg'
+        const storageRef = ref(storage, 'chats/images/' + uuidv4());
+        const uploadTask = uploadBytesResumable(storageRef, blob, metadata);
 
-// Listen for state changes, errors, and completion of the upload.
-uploadTask.on('state_changed',
-  (snapshot) => {
-    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    console.log('Upload is ' + progress + '% done');
-    switch (snapshot.state) {
-      case 'paused':
-        console.log('Upload is paused');
-        break;
-      case 'running':
-        console.log('Upload is running');
-        break;
-    }
-  }, 
-  (error) => {
-    // A full list of error codes is available at
-    // https://firebase.google.com/docs/storage/web/handle-errors
-    switch (error.code) {
-      case 'storage/unauthorized':
-        // User doesn't have permission to access the object
-        break;
-      case 'storage/canceled':
-        // User canceled the upload
-        break;
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.on('state_changed',
+            (snapshot) => {
+                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                    case 'paused':
+                        console.log('Upload is paused');
+                        break;
+                    case 'running':
+                        console.log('Upload is running');
+                        break;
+                }
+            },
+            (error) => {
+                // A full list of error codes is available at
+                // https://firebase.google.com/docs/storage/web/handle-errors
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        // User doesn't have permission to access the object
+                        break;
+                    case 'storage/canceled':
+                        // User canceled the upload
+                        break;
 
-      // ...
+                    // ...
 
-      case 'storage/unknown':
-        // Unknown error occurred, inspect error.serverResponse
-        break;
-    }
-  }, 
-  () => {
-    // Upload completed successfully, now we can get the download URL
-    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-      console.log('File available at', downloadURL);
-      setImageUrl(downloadURL);
-    });
-  }
-);
-        // const response = await fetch(imageData1.assets[0].uri);
-        // const blob = await response.blob();
-        // var ref = storage().ref().child(uuidv4()).put(blob);
-        // const imageRef = ref(storage,`images/${uuidv4()}`);
-        // try{
-        //     await imageRef;
-        // }
-        // catch(e)
-        // {
-        //     console.log(e);
-        // }
-        // Alert.alert("Uploaded...");
-        // // const reference = storage().ref(uuidv4());
-        // // await reference.putFile()
-        // // uploadBytes(imageRef,imageData1.assets[0].uri).then(()=>{
-        // //     Alert.alert("Image uploaded...");
-        // // });
+                    case 'storage/unknown':
+                        // Unknown error occurred, inspect error.serverResponse
+                        break;
+                }
+            },
+            () => {
+                // Upload completed successfully, now we can get the download URL
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    console.log('File available at', downloadURL);
+                    setImageUrl(downloadURL);
+                    let myMsg = {
+                        _id: uuidv4(),
+                        text: "hi",
+                        image: downloadURL,
+                        createdAt: new Date(),
+                        user: {
+                            _id: currentUser[0].contact
+                        },
+                    };
+                    imgUrl = downloadURL;
+                    // await onSend(myMsg);
+                    // setImageUrl(null);
+                });
+            }
+        );
+
     }
     async function getUserData() {
         setLoading(true);
@@ -184,6 +182,7 @@ uploadTask.on('state_changed',
                     return {
 
                         _id: doc.data()._id,
+                        image: doc.data().image,
                         createdAt: doc.data().createdAt.toDate(),
                         text: doc.data().text,
                         user: doc.data().user,
@@ -200,7 +199,7 @@ uploadTask.on('state_changed',
         });
         return () => {
             unsubscribe();
-          };
+        };
         // setMessages(allMessages);
         // return ()=> allMessages;
         // console.log("Messages:"+allMessages);
@@ -245,66 +244,75 @@ uploadTask.on('state_changed',
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
         });
-    
-        console.log(result);
-    
-        if (!result.canceled) {
-        //   setImageUrl(result.assets[0].uri);
-          setImageData(result.assets[0]);
-          uploadImage(result);
-        }
-      };
-    const renderSend = (props)=>{
-        return(
-            <View style={{flexDirection: 'row', justifyContent:'center', alignItems: 'center' }} >
-            <TouchableOpacity onPress={()=>{
-                // Alert.alert("Image clicked...");
-                pickImage();
 
-            }} >
-                <Image source={ require("../assets/image_default.png")} style={{width: 24, height: 24 }} />
-            </TouchableOpacity>
-        
-            <Send {...props}>
-                <View style={{ marginBottom: 2.5, marginRight: 5, width: 38, aspectRatio: 1, padding: 5, justifyContent: 'center', alignItems: 'center' }} >
-                    {/* <Ionicons name="send-sharp" size={20} color="black" /> */}
-                    <FontAwesome name="send" size={21} color="black" />
-                </View>
-            </Send>
-        </View>
+        console.log(result);
+
+        if (!result.canceled) {
+            //   setImageUrl(result.assets[0].uri);
+            setImageData(result.assets[0]);
+            uploadImage(result);
+        }
+    };
+    const renderSend = (props) => {
+        return (
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
+                <TouchableOpacity onPress={() => {
+                    Alert.alert("Attachment Alert...");
+                    // pickImage();
+                }}>
+                    {/* <Image source={require("../assets/image_default.png")} style={{ width: 24, height: 24 }} /> */}
+                    <Entypo name="attachment" size={21} color="black" style={{padding: 5, marginLeft: 5 }} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    // Alert.alert("Image clicked...");
+                    pickImage();
+                }} >
+                    <Image source={require("../assets/image_default.png")} style={{ width: 24, height: 24 }} />
+                </TouchableOpacity>
+
+                <Send {...props}>
+                    <View style={{ marginBottom: 2.5, marginRight: 5, width: 38, aspectRatio: 1, padding: 5, justifyContent: 'center', alignItems: 'center' }} >
+                        {/* <Ionicons name="send-sharp" size={20} color="black" /> */}
+                        <FontAwesome name="send" size={21} color="black" />
+                    </View>
+                </Send>
+            </View>
         );
     }
     useLayoutEffect(() => {
         loadChats();
     }, []);
+    useEffect(()=>{
+        console.log(imageUrl);
+    },[imageUrl]);
     useEffect(() => {
-        setMessages([
-            {
-                _id: 1,
-                text: 'Hello developer',
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: 'React Native',
-                    avatar: 'https://placeimg.com/140/140/any',
-                },
-            },
-            {
-                _id: 2,
-                text: 'Hello World...!!!',
-                createdAt: new Date(),
-                user: {
-                    _id: 1,
-                    name: 'React Native',
-                    avatar: 'https://placeimg.com/140/140/any',
-                },
-            },
-        ]);
+        // setMessages([
+        //     {
+        //         _id: 1,
+        //         text: 'Hello developer',
+        //         createdAt: new Date(),
+        //         user: {
+        //             _id: 2,
+        //             name: 'React Native',
+        //             avatar: 'https://placeimg.com/140/140/any',
+        //         },
+        //     },
+        //     {
+        //         _id: 2,
+        //         text: 'Hello World...!!!',
+        //         createdAt: new Date(),
+        //         user: {
+        //             _id: 1,
+        //             name: 'React Native',
+        //             avatar: 'https://placeimg.com/140/140/any',
+        //         },
+        //     },
+        // ]);
         // getUserData();
         // loadChats();
     }, []);
@@ -312,7 +320,7 @@ uploadTask.on('state_changed',
     return (
         <View style={styles.container}>
             <Header headerText={route.params.name} imgSrc={route.params.imgSrc} />
-            
+
             {
                 loading ? <ActivityIndicator size={"small"} color={COLORS.black} /> :
 
@@ -326,10 +334,10 @@ uploadTask.on('state_changed',
                         scrollToBottom
                         scrollToBottomComponent={scrollToBottomComponent}
                         renderSend={renderSend}
-                        alwaysShowSend={true} 
+                        alwaysShowSend={true}
                         isLoadingEarlier={true}
-                        renderLoading={()=>{
-                            return(
+                        renderLoading={() => {
+                            return (
                                 <View>
                                     <ActivityIndicator size={"small"} color={"black"} />
                                 </View>
@@ -343,7 +351,7 @@ uploadTask.on('state_changed',
                     // }}
                     />
             }
-            
+
         </View>
     );
 }

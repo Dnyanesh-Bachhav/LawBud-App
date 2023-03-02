@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, TextInput, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
-import Header from '../components/Header';
+import Header from '../components/ProfileScreen/Header';
 import image1 from '../assets/default_user.jpg';
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from "../components/constants";

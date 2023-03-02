@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image } from "react-native";
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, Alert } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { COLORS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
@@ -34,8 +34,15 @@ function Header({ headerText, imgSrc }) {
                 // placeholder="Select item"
                 // searchPlaceholder="Search..."
                 value={value}
+                
                 onChange={item => {
                     setValue(item.value);
+                    Alert.alert(`${item.value}`);
+                }}
+                confirmSelectItem
+                onConfirmSelectItem={item=>{
+                    // Alert.alert(`${item}`);
+                    console.log(item);
                 }}
                 renderRightIcon={() => (
                     <Entypo name="dots-three-vertical" size={24} color={COLORS.white} />
@@ -81,7 +88,22 @@ function Header({ headerText, imgSrc }) {
                 value={value}
                 onChange={item => {
                     setValue(item.value);
+                    Alert.alert(`${item.label}`,`${item.label} an account`,[
+                        {
+                            text: "Cancel",
+                            onPress: ()=>{
+                                console.log("Cancel clicked...");
+                            }
+                        },
+                        {
+                            text: "Ok",
+                            onPress: ()=>{
+                                console.log("Ok")
+                            }
+                        }
+                    ]);
                 }}
+
                 renderRightIcon={() => (
                     <Entypo name="dots-three-vertical" size={18} color={COLORS.white} />
                 )}
