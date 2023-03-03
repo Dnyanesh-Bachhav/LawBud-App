@@ -25,6 +25,7 @@ function ChatScreen({ route }) {
     const [value, setValue] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
     const [imageData, setImageData] = useState(null);
+    const [uploading, setUploading] = useState(0);
     const imgUrl = useRef(null);
     const data = [
         { label: 'Report', value: '1' },
@@ -52,7 +53,9 @@ function ChatScreen({ route }) {
             createdAt: new Date()
         }
         console.log(myMsg);
-        setMessages(previousMessages => GiftedChat.append(previousMessages, myMsg));
+        setMessages(previousMessages => GiftedChat.append(previousMessages, myMsg));        
+        setImageUrl(null);
+        setUploading(0);
         const docId = currentUser[0].contact > route.params.contact ? String(currentUser[0].contact) + "-" + String(route.params.contact) : String(route.params.contact) + "-" + String(currentUser[0].contact)
         const db = getFirestore();
         const docRef = doc(db, "chatrooms", docId);
@@ -74,9 +77,9 @@ function ChatScreen({ route }) {
         //   });
     }, []);
     async function uploadImage(imageData1) {
-        if (imageData1.type !== "image") {
-            return;
-        }
+        // if (imageData1.type !== "image") {
+        //     return;
+        // }
 
         const blob = await new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
@@ -103,6 +106,7 @@ function ChatScreen({ route }) {
                 // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                 console.log('Upload is ' + progress + '% done');
+                setUploading(progress);
                 switch (snapshot.state) {
                     case 'paused':
                         console.log('Upload is paused');
@@ -263,6 +267,14 @@ function ChatScreen({ route }) {
     const renderSend = (props) => {
         return (
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
+                {
+                    uploading < 100 && uploading > 0 ? <Text> Uploading {Math.round(uploading)}%</Text> :
+                    imgUrl.current !== null ? 
+                    <Image source={{
+                        uri: imgUrl.current
+                    }} style={{width: 40, aspectRatio: 1 }} />
+                    : null
+                }
                 <TouchableOpacity onPress={() => {
                     Alert.alert("Attachment Alert...");
                     // pickImage();
@@ -291,7 +303,7 @@ function ChatScreen({ route }) {
     }, []);
     useEffect(()=>{
         imgUrl.current = imageUrl;
-        console.log(imageUrl);
+        // console.log(imageUrl);
     },[imageUrl]);
     useEffect(() => {
         // setMessages([
