@@ -3,7 +3,7 @@ import Header from "../components/ChatScreen/Header";
 import { COLORS } from "../components/constants";
 import { Feather } from '@expo/vector-icons';
 import { Bubble, GiftedChat, Send } from 'react-native-gifted-chat';
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { addDoc, collection, doc, getDoc, getDocs, getFirestore, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "firebase/firestore";
@@ -25,7 +25,7 @@ function ChatScreen({ route }) {
     const [value, setValue] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
     const [imageData, setImageData] = useState(null);
-    var imgUrl = "";
+    const imgUrl = useRef(null);
     const data = [
         { label: 'Report', value: '1' },
         { label: 'Block', value: '2' },
@@ -37,10 +37,11 @@ function ChatScreen({ route }) {
         // { label: 'Item 8', value: '8' },
     ];
     const onSend = useCallback(async (messages = []) => {
-        console.log(messages);
+        console.log(messages[0]);
+        console.log("In a onsend:"+imageUrl);
         const myMsg = {
             ...messages[0],
-            image: imageUrl,
+            image: imgUrl.current,
 
             // _id: route.params.currentUser[0].contact,
             // user:{
@@ -132,18 +133,19 @@ function ChatScreen({ route }) {
             () => {
                 // Upload completed successfully, now we can get the download URL
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    console.log('File available at', downloadURL);
+                    // console.log('File available at', downloadURL);
                     setImageUrl(downloadURL);
-                    let myMsg = {
-                        _id: uuidv4(),
-                        text: "hi",
-                        image: downloadURL,
-                        createdAt: new Date(),
-                        user: {
-                            _id: currentUser[0].contact
-                        },
-                    };
-                    imgUrl = downloadURL;
+                    // imgUrl.current = downloadURL;
+                    // let myMsg = {
+                    //     _id: uuidv4(),
+                    //     text: "hi",
+                    //     image: downloadURL,
+                    //     createdAt: new Date(),
+                    //     user: {
+                    //         _id: currentUser[0].contact
+                    //     },
+                    // };
+                    // imgUrl = downloadURL;
                     // await onSend(myMsg);
                     // setImageUrl(null);
                 });
@@ -288,6 +290,7 @@ function ChatScreen({ route }) {
         loadChats();
     }, []);
     useEffect(()=>{
+        imgUrl.current = imageUrl;
         console.log(imageUrl);
     },[imageUrl]);
     useEffect(() => {

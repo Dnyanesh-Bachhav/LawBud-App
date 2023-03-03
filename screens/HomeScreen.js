@@ -19,13 +19,13 @@ function HomeScreen() {
     let lawyersArray = [];
     let response = await getLawyersData();
     // lawyersArray = response.data;
-    console.log(response);
-    console.log("LawyersArray: " + lawyersArray);
+    // console.log(response);
+    // console.log("LawyersArray: " + lawyersArray);
     setLawyersData(response.data.filter((item) => {
       return item.type === "lawyer";
     }));
 
-    console.log("Lawyers Data: " + lawyersData);
+    // console.log("Lawyers Data:1 " + lawyersData);
     setLoading(false);
   }
   useEffect(() => {

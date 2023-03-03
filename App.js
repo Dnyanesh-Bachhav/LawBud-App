@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, Text, View, StatusBar, ActivityIndicator, Alert } from 'react-native';
 import { COLORS } from './components/constants';
 import Tabs from './Navigation/tabs';
-import { useEffect, useMemo, useReducer, useState } from 'react';
+import { useContext, useEffect, useMemo, useReducer, useState } from 'react';
 import { getLawyersData } from './Services/requests';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Store, { AuthContext } from './components/context';
@@ -24,7 +24,8 @@ export default function App() {
   const [lawyersData, setLawyersData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
-  const [usersType, setUsersType] = useState("user");
+  // const { usersType, setUsersType } = useContext(AuthContext);
+  // const [usersType, setUsersType] = useState("user");
   // const []
   // const [ newUserData, setNewUserData ] = useState({
   //   languages: [],
@@ -182,6 +183,7 @@ export default function App() {
       // setIsLoading(false);
       try {
         await AsyncStorage.removeItem("userToken");
+        await AsyncStorage.removeItem("currentUserData");
         signOut(auth).then(()=>{
           Alert.alert("Logout");
         }).catch(()=>{
@@ -236,7 +238,7 @@ export default function App() {
       setIsLoading(false);
 
     },
-    setUsersType: setUsersType,
+    // setUsersType: setUsersType,
     setNewUserData1: (data) => {
       notifyUserData(data);
     }
@@ -248,6 +250,11 @@ export default function App() {
       userToken = null;
       try {
         userToken = await AsyncStorage.getItem("userToken");
+        // if(userToken !== null)
+        // {
+        //   let data = await AsyncStorage.getItem("currentUserData");
+        //   console.log(data);
+        // }
         console.log("Usertoken in useEffect: " + userToken);
       }
       catch (e) {

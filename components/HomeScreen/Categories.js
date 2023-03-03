@@ -22,7 +22,7 @@ function Categories() {
 
     useEffect(() => {
         getLawyersCategoriesData1();
-        console.log("Data1: " + JSON.stringify(lawyersCategoriesData));
+        // console.log("Data1: " + JSON.stringify(lawyersCategoriesData));
     }, []);
     return (
         <View>
@@ -52,9 +52,9 @@ function Categories() {
         </View>
     );
 }
-function Card({ name }) {
+function Card({ name, key }) {
     return (
-        <View style={{ alignItems: "center", justifyContent: 'center', marginLeft: 10, marginTop: 10, width: 80 }} >
+        <View style={{ alignItems: "center", justifyContent: 'center', marginLeft: 10, marginTop: 10, width: 80 }} key={key}>
             <View style={{ width: CARD_WIDTH, height: CARD_WIDTH, borderRadius: 50, backgroundColor: COLORS.gray, }} >
 
             </View>

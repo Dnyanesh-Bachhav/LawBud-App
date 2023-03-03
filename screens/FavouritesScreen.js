@@ -34,7 +34,7 @@ function FavouritesScreen(){
           //   const allUsers = JSON.parse(savedAllUsers);
           setLawyersData(lawyersArray.filter(( item )=>{
             // console.log(item.userType);
-            return item.userType === "lawyer";
+            return item.type === "lawyer";
           }));
             console.log("All:"+ data1.includes({ userId: "tW_EaVsJ" }));
           let i = 0;

@@ -33,8 +33,8 @@ function Lawyers({lawyersData}) {
                     renderItem={({ item, index }) => (
                         <Card name={item.name} type={item.type} userId={item.userId} imgSrc={item.profile_image} languages={item.user_law_data.languages||["Marathi","Hindi","English"]} experience={item?.experience||0} key={index} favouriteLawyers={favouriteLawyers} setFavouriteLawyers={setFavouriteLawyers} />
                         )}
-                        keyExtractor={({ item, index }) => index}
-                        />)
+                    keyExtractor={({ item, index }) => index}
+                />)
                     }
             {/* <ActivityIndicator size={"large"} color={COLORS.secondary} /> */}
             

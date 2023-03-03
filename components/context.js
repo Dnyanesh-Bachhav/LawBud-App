@@ -4,6 +4,7 @@ import { useReducer } from "react";
 import { useState } from "react";
 import { useMemo } from "react";
 import axios from "axios";
+import { useEffect } from "react";
 export const AuthContext = createContext();
 
 const Store = (props) => {
@@ -195,6 +196,25 @@ const Store = (props) => {
   const setNewUserData1 = (data) => {
     notifyUserData(data);
   }
+  async function getData() {
+    let userToken;
+    try {
+        userToken = await AsyncStorage.getItem("userToken");
+        if (userToken !== null) {
+            let data = await AsyncStorage.getItem("currentUserData");
+            let arr = JSON.parse(data);
+            setUsersType(arr[0].type);
+            console.log("Type: "+arr[0].type);
+        }
+        console.log("Usertoken in useEffect: " + userToken);
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+useEffect(() => {
+    getData();
+}, []);
   return (
     <AuthContext.Provider value={{
       signIn: signIn,
