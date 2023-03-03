@@ -49,7 +49,7 @@ function LoginScreen(){
         }));
       },[userType]);
     useEffect(()=>{
-        // setUsersType("user");
+        setUsersType("user");
         getUsersData();
         
     },[]);

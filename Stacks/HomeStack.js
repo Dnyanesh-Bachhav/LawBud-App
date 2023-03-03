@@ -18,6 +18,7 @@ import LawyersDashboardScreen from "../screens/LawyersDashboardScreen";
 import { useContext } from "react";
 import { AuthContext } from "../components/context";
 import LawyersProfileScreen from "../screens/LawyersProfileScreen";
+import UploadDataScreen from "../screens/UploadDataScreen";
 
 const HomeScreenStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -102,7 +103,8 @@ function HomeStack() {
       <HomeScreenStack.Screen name='LawyersProfile' component={LawyersProfileScreen} options={{
         headerShown: false,
       }} />
-      }
+    }
+    
     </HomeScreenStack.Navigator>
   );
 

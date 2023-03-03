@@ -49,14 +49,15 @@ function DocumentsScreen({ route }) {
     async function submitData(){
         setLoading(true);
         console.log(newUserData);
-        await signUp(newUserData).then((response)=>{
-            console.log(response);
-        }).catch(()=>{
-            Alert.alert("Error...");
-        }).finally(()=>{
-            setLoading(false);
-            navigation.navigate("SignIn");
-        });
+        navigation.navigate("UploadData");
+        // await signUp(newUserData).then((response)=>{
+        //     console.log(response);
+        // }).catch(()=>{
+        //     Alert.alert("Error...");
+        // }).finally(()=>{
+        //     setLoading(false);
+        //     navigation.navigate("SignIn");
+        // });
     }
     const navigation = useNavigation();
     let [itemsArray, setItemsArray] = useState([]);
@@ -107,6 +108,7 @@ function DocumentsScreen({ route }) {
                             }
                         }
                         ));
+                        // navigation.navigate("UploadData");
                         submitData(newUserData);
                     }
                 }
@@ -159,7 +161,7 @@ function DocumentsScreen({ route }) {
                         <TouchableOpacity onPress={() => {
                             // signIn();
                             formikRef.current.submitForm();
-                            navigation.navigate("SignIn");
+                            // navigation.navigate("SignIn");
                         }} disabled={!isValid} style={{ backgroundColor: isValid ? COLORS.black : COLORS.grey, marginTop: 10, borderRadius: 4 }} ><Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Next</Text></TouchableOpacity>
                     </View>
                 )}

@@ -141,9 +141,9 @@ export default function App() {
     // await AsyncStorage.removeItem("favourites");
     const lawyersArray = await getLawyersData();
     // console.log(lawyersArray);
-    setLawyersData(lawyersArray.filter((item) => {
+    setLawyersData(lawyersArray.data.filter((item) => {
       // console.log(item.userType);
-      return item.userType === "lawyer";
+      return item.type === "lawyer";
     }));
     await storeAllUser(lawyersData);
   }
@@ -164,6 +164,7 @@ export default function App() {
         // userToken = "sdsdSDE";
         await AsyncStorage.setItem("userToken", userToken);
         await AsyncStorage.setItem("currentUserData", JSON.stringify(foundUser));
+        // await AsyncStorage.setItem("currentUserData",null);
         signInWithEmailAndPassword(auth,foundUser[0].email_id,foundUser[0].contact).then(()=>{
           Alert.alert("Login Successful...");
         }).catch((e)=>{
