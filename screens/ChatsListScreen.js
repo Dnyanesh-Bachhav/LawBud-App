@@ -49,13 +49,13 @@ function ChatsListScreen(){
                 data={users}
                 style={styles.listStyle}
                 renderItem={({ item, index }) => (
-                            <>
+                            <View key={index}>
                             {
                                 currentUser[0].contact !== item.contact ?
                                 <Card name={item.name} description={item.description} profile_image={item.profile_image} currentUser={currentUser} contact={item.contact} isOnline={item?.isOnline || true } key={index} /> 
                                 : null
                             }
-                            </>
+                            </View>
                             
                         )
                         

@@ -15,6 +15,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import * as DocumentPicker from 'expo-document-picker';
 import { v4 as uuidv4 } from 'uuid';
 // import { FontAwesome } from '@expo/vector-icons';
 // Chat Screen
@@ -50,7 +51,7 @@ function ChatScreen({ route }) {
             // },
             sentBy: currentUser[0].contact,
             sentTo: route.params.contact,
-            createdAt: new Date()
+            createdAt: new Date(),
         }
         console.log(myMsg);
         setMessages(previousMessages => GiftedChat.append(previousMessages, myMsg));        
@@ -264,6 +265,17 @@ function ChatScreen({ route }) {
             uploadImage(result);
         }
     };
+    const pickDocument = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await DocumentPicker.getDocumentAsync();
+        console.log(result);
+
+        // if (!result.canceled) {
+        //     //   setImageUrl(result.assets[0].uri);
+        //     setImageData(result.assets[0]);
+        //     uploadImage(result);
+        // }
+    };
     const renderSend = (props) => {
         return (
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
@@ -276,7 +288,8 @@ function ChatScreen({ route }) {
                     : null
                 }
                 <TouchableOpacity onPress={() => {
-                    Alert.alert("Attachment Alert...");
+                    // Alert.alert("Attachment Alert...");
+                    pickDocument();
                     // pickImage();
                 }}>
                     {/* <Image source={require("../assets/image_default.png")} style={{ width: 24, height: 24 }} /> */}
