@@ -1,5 +1,5 @@
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from "@react-navigation/drawer";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { COLORS } from "./constants";
 import { AuthContext } from "./context";
@@ -7,10 +7,35 @@ import * as Linking from 'expo-linking';
 import { loginContext } from "./context1";
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { sendGridEmail } from "react-native-sendgrid";
 
 function CustomDrawer(props) {
     const { signOut } = useContext(loginContext);
     const [modalVisible, setModalVisible] = useState(false);
+    const [ currentUserData, setCurrentUserData ] = useState(null);
+    async function getData(){
+        let data = await AsyncStorage.getItem("currentUserData");
+        setCurrentUserData( JSON.parse(data));
+        console.log(data);
+    }
+    async function sendMail(){
+        
+        const TO_MAIL = "dnyaneshbachhav.dev@gmail.com";
+        const FROM_MAIL = "dnyaneshbachhav.dev@gmail.com";
+        const SUBJECT = "Hello there...";
+        const CONTACT_DETAILS = "name"+currentUserData[0].name;
+        const sendRequest = sendGridEmail(process.env.SEND_GRID_API_KEY, TO_MAIL, FROM_MAIL, SUBJECT, CONTACT_DETAILS)
+	        sendRequest.then((response) => {
+	            console.log(response+"Success")
+	        }).catch((error) =>{
+	            console.log(error)
+	        });
+    }
+    useEffect(()=>{
+        getData();
+
+    },[]);
     return (
         <View style={styles.container}>
             <Modal
@@ -39,7 +64,7 @@ function CustomDrawer(props) {
                             <Text style={{ marginTop: 5 }} >You can leave a written feedback here</Text>
                         </View>
                         <TextInput cursorColor={COLORS.gray} numberOfLines={5} style={styles.inputStyle} />
-                        <TouchableOpacity style={{ backgroundColor: COLORS.black, marginTop: 10, borderRadius: 4 }}>
+                        <TouchableOpacity style={{ backgroundColor: COLORS.black, marginTop: 10, borderRadius: 4 }} onPress={sendMail}>
                             <Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Submit</Text>
                         </TouchableOpacity>
                     </View>

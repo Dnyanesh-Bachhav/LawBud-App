@@ -6347,6 +6347,11 @@ react-native-searchable-dropdown@^1.1.3:
   resolved "https://registry.yarnpkg.com/react-native-searchable-dropdown/-/react-native-searchable-dropdown-1.1.3.tgz#dace445ab8696fc90438a5b3d05b4d5e569f9ea6"
   integrity sha512-ip6YwjKED/h27oRQGN3f62usFMj5IfS6tr/zZWfQItCAV/XAq5E9P0Exvg/86gSlcGJnnZdoixK+PS1sElxcyA==
 
+react-native-sendgrid@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-sendgrid/-/react-native-sendgrid-1.0.2.tgz#ac171ff6a0f230484a5917231e9f72e59b760402"
+  integrity sha512-pFlyFsXwuVOyg2QwL44Yz61w/XI/hPb94RjVOved+FCU+tFm32OCts9mooVln/T1yruBP2BXVpDhr+WyxhjJLw==
+
 react-native-typing-animation@0.1.7:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/react-native-typing-animation/-/react-native-typing-animation-0.1.7.tgz#8f2cf08d9400ae543a110292eb7d71523dda5528"
