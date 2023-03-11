@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { Text, View, StyleSheet, FlatList, Image, TouchableOpacity, ActivityIndicator } from "react-native";
 import { LAWYERS, COLORS } from "../components/constants";
 import Header from "../components/Header";
@@ -11,6 +11,7 @@ import { getLawyersData } from "../Services/requests";
 function FavouritesScreen(){
     const[favouritesData,setFavouritesData] = useState([]);
     const[loading,setLoading] = useState(false);
+    const [ isFocused, setIsFocused ] = useState(useIsFocused());
     const[lawyersData,setLawyersData] = useState(null);
     let favouritesUserFiltered = [];
     const getUser = async () => {
@@ -36,11 +37,11 @@ function FavouritesScreen(){
             // console.log(item.userType);
             return item.type === "lawyer";
           }));
-            console.log("All:"+ data1.includes({ userId: "tW_EaVsJ" }));
+            // console.log("All:"+ data1.includes({ userId: "tW_EaVsJ" }));
           let i = 0;
           lawyersArray.forEach((item,index)=>{
               
-              if(data1.some(item1 => item1.userId == item.userId))
+              if(data1.some(item1 => item1.userId === item.user_id))
               {
                   
                   favouritesUserFiltered.push(item);
@@ -59,7 +60,7 @@ function FavouritesScreen(){
 
         getUser();
         // console.log("Favorites123:"+favouritesData);
-    },[]);
+    },[ isFocused ]);
 
     return(
         <View style={styles.container}>
@@ -110,7 +111,8 @@ function Card({ name, type, languages, profile_image, experience }) {
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginRight: 10 }} >
                     <Text style={{ fontSize: 16, fontWeight: '500' }} >{name}</Text>
                     <TouchableOpacity>
-                        <AntDesign name="hearto" size={21} color={COLORS.gray} />
+                        <AntDesign name="hearto" size={21} color={COLORS.red} />
+                        {/* <AntDesign name="heart" size={21} color={COLORS.red} /> */}
                     </TouchableOpacity>
                 </View>
                 <Text style={{ color: COLORS.gray }} >{type}</Text>

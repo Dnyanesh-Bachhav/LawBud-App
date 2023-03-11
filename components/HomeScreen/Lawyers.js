@@ -2,13 +2,15 @@ import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity,
 import { AntDesign } from '@expo/vector-icons';
 import { COLORS, LAWYERS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getLawyersData } from "../../Services/requests";
+import { AuthContext } from "../context";
 
 function Lawyers({lawyersData}) {
     const navigation = useNavigation();
     let[favouriteLawyers,setFavouriteLawyers] = useState([]);
+    const { favouriteUsers, setFavouriteUsers } = useContext(AuthContext);
     // const[ lawyersData, setLawyersData ] = useState(null);
     // async function getLawyersData1(){
     //    await  AsyncStorage.setItem("favourites",JSON.stringify([]));
@@ -31,7 +33,7 @@ function Lawyers({lawyersData}) {
                     data={ lawyersData }
                     style={styles.listStyle}
                     renderItem={({ item, index }) => (
-                        <Card name={item.name} type={item.type} userId={item.userId} imgSrc={item.profile_image} languages={item.user_law_data.languages||["Marathi","Hindi","English"]} experience={item?.experience||0} key={index} favouriteLawyers={favouriteLawyers} setFavouriteLawyers={setFavouriteLawyers} />
+                        <Card name={item.name} type={item.type} userId={item.user_id} imgSrc={item.profile_image} languages={item.user_law_data.languages||["Marathi","Hindi","English"]} experience={item?.experience||0} key={index} favouriteLawyers={favouriteLawyers} setFavouriteLawyers={setFavouriteLawyers} lawyersData={ lawyersData } />
                         )}
                     keyExtractor={({ item, index }) => index}
                 />)
@@ -52,8 +54,9 @@ function Lawyers({lawyersData}) {
         </View>
     );
 }
-function Card({ name, userId, type, imgSrc, languages, experience, favouriteLawyers, setFavouriteLawyers }) {
+function Card({ name, userId, type, imgSrc, languages, experience, favouriteLawyers, setFavouriteLawyers, lawyersData }) {
     const navigation = useNavigation();
+    const [ users,setUsers ] = useState([]);
     let favoritesArray = [];
     // console.log(experience);
     const elementRemove = ( array, item )=>{
@@ -110,17 +113,27 @@ function Card({ name, userId, type, imgSrc, languages, experience, favouriteLawy
                 }
             }
       };
+      const userFavoriteOrNot = ( userId )=>{
+        let response = users.some(item=>{
+            return item.userId === userId;
+        });
+        console.log("HI there how are you: "+response+" "+userId);
+        return response;
+      }
     const getUser = async () => {
         try {
-          const savedUser = await AsyncStorage.getItem("favourites");
-          const currentUser = JSON.parse(savedUser);
+          const savedUsers = await AsyncStorage.getItem("favourites");
+          const favouriteUsers = JSON.parse(savedUsers);
+          setUsers(favouriteUsers);
         //   console.log(currentUser[0][0]);
         } catch (error) {
           console.log(error);
         }
       };
-    getUser();
-
+      useEffect(()=>{
+          getUser();
+    },[]);
+    
     return (
         <View style={{elevation: 2, borderRadius: 7, marginBottom: 10, marginRight: 10, overflow: 'hidden' }}>
             <View style={{flex:1, justifyContent: 'center', backgroundColor: COLORS.white}} >
@@ -147,7 +160,12 @@ function Card({ name, userId, type, imgSrc, languages, experience, favouriteLawy
                     <TouchableOpacity onPress={()=>{
                         storeUser(userId);
                     }} >
-                        <AntDesign name="hearto" size={21} color={COLORS.gray} />
+                        {
+                            userFavoriteOrNot(userId) ?
+                            <AntDesign name="hearto" size={21} color={COLORS.red} />
+                            :
+                            <AntDesign name="hearto" size={21} color={COLORS.gray} />
+                        }
                     </TouchableOpacity>
                 </View>
                 <Text style={{ color: COLORS.gray }} >{type}</Text>

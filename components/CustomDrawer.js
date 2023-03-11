@@ -9,33 +9,37 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { sendGridEmail } from "react-native-sendgrid";
+import { Rating, AirbnbRating } from 'react-native-ratings';
 
 function CustomDrawer(props) {
     const { signOut } = useContext(loginContext);
     const [modalVisible, setModalVisible] = useState(false);
-    const [ currentUserData, setCurrentUserData ] = useState(null);
-    async function getData(){
+    const [currentUserData, setCurrentUserData] = useState(null);
+    async function getData() {
         let data = await AsyncStorage.getItem("currentUserData");
-        setCurrentUserData( JSON.parse(data));
+        setCurrentUserData(JSON.parse(data));
         console.log(data);
     }
-    async function sendMail(){
-        
+    async function sendMail() {
+
         const TO_MAIL = "dnyaneshbachhav.dev@gmail.com";
         const FROM_MAIL = "dnyaneshbachhav.dev@gmail.com";
         const SUBJECT = "Hello there...";
-        const CONTACT_DETAILS = "name"+currentUserData[0].name;
+        const CONTACT_DETAILS = "name" + currentUserData[0].name;
         const sendRequest = sendGridEmail(process.env.SEND_GRID_API_KEY, TO_MAIL, FROM_MAIL, SUBJECT, CONTACT_DETAILS)
-	        sendRequest.then((response) => {
-	            console.log(response+"Success")
-	        }).catch((error) =>{
-	            console.log(error)
-	        });
+        sendRequest.then((response) => {
+            console.log(response + "Success")
+        }).catch((error) => {
+            console.log(error)
+        });
     }
-    useEffect(()=>{
+    function onFinishRating(rating) {
+        console.log("Rating: " + rating);
+    }
+    useEffect(() => {
         getData();
 
-    },[]);
+    }, []);
     return (
         <View style={styles.container}>
             <Modal
@@ -54,13 +58,22 @@ function CustomDrawer(props) {
                         {/* <Text>Hello World...!!!</Text> */}
                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                             <Text>Please leave a feedback</Text>
-                            <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                            <AirbnbRating />
+                            <Rating
+                                //   type='heart'
+                                ratingCount={5}
+                                imageSize={40}
+                                showRating
+                                onFinishRating={onFinishRating}
+                                style={{ paddingVertical: 10 }}
+                            />
+                            {/* <View style={{ flexDirection: 'row', marginTop: 5 }}>
                                 <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
                                 <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
                                 <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
                                 <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
                                 <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
-                            </View>
+                            </View> */}
                             <Text style={{ marginTop: 5 }} >You can leave a written feedback here</Text>
                         </View>
                         <TextInput cursorColor={COLORS.gray} numberOfLines={5} style={styles.inputStyle} />

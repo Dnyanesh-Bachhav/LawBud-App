@@ -97,6 +97,7 @@ const Store = (props) => {
     // tokens: []
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [favouriteUsers, setFavouriteUsers] = useState(null);
   const loginReducer = (prevState, action) => {
     switch (action.type) {
       case "RETRIEVE_TOKEN":
@@ -225,6 +226,8 @@ useEffect(() => {
       setUsersType: setUsersType,
       updateUser: setNewUserData,
       loginStatus: loginStatus,
+      favouriteUsers: favouriteUsers,
+      setFavouriteUsers: setFavouriteUsers,
       setLoginStatus: setLoginStatus,
       setNewUserData1: setNewUserData1,
     }} >

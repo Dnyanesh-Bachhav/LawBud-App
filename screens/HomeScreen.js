@@ -1,6 +1,9 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useContext } from "react";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from "react-native";
 import { COLORS } from "../components/constants";
+import { AuthContext } from "../components/context";
 import Categories from "../components/HomeScreen/Categories";
 import Header from "../components/HomeScreen/Header";
 import Lawyers from "../components/HomeScreen/Lawyers";
@@ -11,6 +14,7 @@ import { getLawyersData } from "../Services/requests";
 function HomeScreen() {
   const [lawyersData, setLawyersData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { favouriteUsers, setfavouriteUsers } = useContext(AuthContext);
   async function getLawyersData1() {
     if (loading) {
       return;
@@ -28,8 +32,14 @@ function HomeScreen() {
     // console.log("Lawyers Data:1 " + lawyersData);
     setLoading(false);
   }
+  async function setFavouritesData(){
+    const data = await AsyncStorage.getItem("currentUserData");
+    setfavouriteUsers(JSON.parse(data));
+
+  }
   useEffect(() => {
     getLawyersData1();
+    setFavouritesData();
   }, []);
   return (
     <SafeAreaView style={styles.container}>
