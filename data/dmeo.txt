@@ -1,0 +1,7 @@
+API_KEY = AIzaSyBsAznu4qMfAX5tVY2w5g7oYXB1x8VOkd8
+AUTH_DOMAIN = lawbud-chatapp.firebaseapp.com
+PROJECT_ID = lawbud-chatapp
+STORAGE_BUCKET = lawbud-chatapp.appspot.com
+MESSAGING_SENDER_ID = 939772231796
+APP_ID = 1:939772231796:web:2a7a59927ce9ed7b33d121
+SEND_GRID_API_KEY = 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
