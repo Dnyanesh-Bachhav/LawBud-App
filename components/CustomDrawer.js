@@ -58,7 +58,7 @@ function CustomDrawer(props) {
                         {/* <Text>Hello World...!!!</Text> */}
                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                             <Text>Please leave a feedback</Text>
-                            <AirbnbRating />
+                            {/* <AirbnbRating /> */}
                             <Rating
                                 //   type='heart'
                                 ratingCount={5}
@@ -89,6 +89,10 @@ function CustomDrawer(props) {
                     <DrawerItemList {...props} />
                     <DrawerItem
                         label={"Feedback"}
+                        labelStyle={{
+                            fontWeight: '500',
+                            color: COLORS.black
+                        }}
                         onPress={() => {
                             setModalVisible(true);
 
@@ -96,15 +100,19 @@ function CustomDrawer(props) {
                     />
                     <DrawerItem
                         label={"Contact us"}
+                        labelStyle={{
+                            fontWeight: '500',
+                            color: COLORS.black
+                        }}
                         onPress={() => {
                             Linking.openURL('mailto:lawbud@support.com?subject=Write your Subject&body=Description')
                         }}
                     />
-                    <View style={{ marginLeft: 18, marginTop: 4 }}>
+                    <View style={{ marginLeft: 18, marginTop: 15 }}>
                         <TouchableOpacity onPress={() => {
                             signOut();
                         }} >
-                            <Text>Logout</Text>
+                            <Text style={{ fontWeight: '500' }} >Logout</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

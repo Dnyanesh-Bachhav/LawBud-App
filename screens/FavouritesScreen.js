@@ -1,5 +1,5 @@
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { Text, View, StyleSheet, FlatList, Image, TouchableOpacity, ActivityIndicator } from "react-native";
+import { Text, View, StyleSheet, FlatList, Image, TouchableOpacity, ActivityIndicator, RefreshControl } from "react-native";
 import { LAWYERS, COLORS } from "../components/constants";
 import Header from "../components/Header";
 import image1 from "../assets/image.jpg";
@@ -65,12 +65,13 @@ function FavouritesScreen(){
     return(
         <View style={styles.container}>
             <Header headerText={"Favourites"} />
-            {
-                loading && <ActivityIndicator size={"small"} color={COLORS.black} ></ActivityIndicator>}
+            {/* {
+                loading && <ActivityIndicator size={"small"} color={COLORS.black} ></ActivityIndicator>} */}
                 {
                     favouritesData && <FlatList
                     data={favouritesData}
                     style={styles.listStyle}
+                    refreshControl={<RefreshControl refreshing={loading} onRefresh={getUser} />}
                     renderItem={({ item, index }) => (
                         // <Text>{item.userId }</Text>
                         <Card name={item?.name} type={item?.type} languages={item?.languages || ["Marathi","Hindi","English"]} profile_image={item.profile_image} experience={item?.experience || 0 } key={index} />

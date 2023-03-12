@@ -35,7 +35,7 @@ function DrawerStack() {
 
     }} >
       <Drawer.Screen name="Home " component={HomeScreen} />
-      <Drawer.Screen name="Feedback" component={HomeScreen} />
+      {/* <Drawer.Screen name="Feedback" component={HomeScreen} /> */}
       {/* <Drawer.Screen name="Contact us" component={HomeScreen} /> */}
       <Drawer.Screen name="Privacy Policy" component={HomeScreen} />
 
@@ -84,11 +84,14 @@ function HomeStack() {
       <HomeScreenStack.Screen name='About' component={AboutScreen} options={{
         headerShown: false,
       }} />
-      
+
       <HomeScreenStack.Screen name='Favourite' component={FavouritesScreen} options={{
         headerShown: false,
       }} />
       <HomeScreenStack.Screen name='ChatsList' component={ChatsListScreen} options={{
+        headerShown: false,
+      }} />
+      <HomeScreenStack.Screen name='Chat' component={ChatScreen} options={{
         headerShown: false,
       }} />
       <HomeScreenStack.Screen name='NewsAlert' component={NewsAlertScreen} options={{
@@ -96,15 +99,15 @@ function HomeStack() {
       }} />
       {
         usersType === "user" ?
-        <HomeScreenStack.Screen name='Profile' component={ProfileScreen} options={{
-          headerShown: false,
-        }} />
-      : 
-      <HomeScreenStack.Screen name='LawyersProfile' component={LawyersProfileScreen} options={{
-        headerShown: false,
-      }} />
-    }
-    
+          <HomeScreenStack.Screen name='Profile' component={ProfileScreen} options={{
+            headerShown: false,
+          }} />
+          :
+          <HomeScreenStack.Screen name='LawyersProfile' component={LawyersProfileScreen} options={{
+            headerShown: false,
+          }} />
+      }
+
     </HomeScreenStack.Navigator>
   );
 

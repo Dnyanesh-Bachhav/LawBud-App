@@ -59,9 +59,9 @@ function Card({ name, userId, type, imgSrc, languages, experience, favouriteLawy
     const [ users,setUsers ] = useState([]);
     let favoritesArray = [];
     // console.log(experience);
-    const elementRemove = ( array, item )=>{
-        return array.filter((ele)=>{
-            return ele.userId === item.userId;
+    const elementRemove = ( userId )=>{
+        return users.filter((ele)=>{
+            return ele.userId === userId;
         });
     }
     const storeUser = async (userId) => {
@@ -159,6 +159,7 @@ function Card({ name, userId, type, imgSrc, languages, experience, favouriteLawy
                     <Text style={{ fontSize: 16, fontWeight: '500' }} >{name}</Text>
                     <TouchableOpacity onPress={()=>{
                         storeUser(userId);
+                        elementRemove(userId);
                     }} >
                         {
                             userFavoriteOrNot(userId) ?
