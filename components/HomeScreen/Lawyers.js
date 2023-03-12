@@ -33,7 +33,7 @@ function Lawyers({lawyersData}) {
                     data={ lawyersData }
                     style={styles.listStyle}
                     renderItem={({ item, index }) => (
-                        <Card name={item.name} type={item.type} userId={item.user_id} imgSrc={item.profile_image} languages={item.user_law_data.languages||["Marathi","Hindi","English"]} experience={item?.experience||0} key={index} favouriteLawyers={favouriteLawyers} setFavouriteLawyers={setFavouriteLawyers} lawyersData={ lawyersData } />
+                        <Card name={item.name} type={item.type} userId={item.user_id} contact={item.contact} imgSrc={item.profile_image} languages={item.user_law_data.languages||["Marathi","Hindi","English"]} experience={item?.experience||0} key={index} favouriteLawyers={favouriteLawyers} setFavouriteLawyers={setFavouriteLawyers} lawyersData={ lawyersData } />
                         )}
                     keyExtractor={({ item, index }) => index}
                 />)
@@ -54,7 +54,7 @@ function Lawyers({lawyersData}) {
         </View>
     );
 }
-function Card({ name, userId, type, imgSrc, languages, experience, favouriteLawyers, setFavouriteLawyers, lawyersData }) {
+function Card({ name, userId, type, imgSrc, contact, languages, experience, favouriteLawyers, setFavouriteLawyers, lawyersData }) {
     const navigation = useNavigation();
     const [ users,setUsers ] = useState([]);
     let favoritesArray = [];
@@ -142,6 +142,8 @@ function Card({ name, userId, type, imgSrc, languages, experience, favouriteLawy
             <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>{
                 navigation.navigate('About',{
                     name,
+                    imgSrc,
+                    contact,
                     type,
                     languages,
                     experience

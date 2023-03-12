@@ -1,21 +1,39 @@
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
-import { Text, View, TouchableOpacity, Image, StyleSheet, ScrollView, SafeAreaView } from "react-native";
+import { Text, View, TouchableOpacity, Image, StyleSheet, ScrollView, SafeAreaView, Alert, ActivityIndicator } from "react-native";
 import Header from "../components/AboutScreen/Header";
 import { Ionicons } from '@expo/vector-icons';
 import image1 from "../assets/image.jpg";
 import { COLORS } from "../components/constants";
 import Ratings from "../components/AboutScreen/Ratings";
 import Reviews from "../components/AboutScreen/Reviews";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 
 function AboutScreen({ route }){
+    const [loading,setLoading] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
+    async function getUserData() {
+        setLoading(true);
+        const currentUser = await AsyncStorage.getItem("currentUserData");
+        console.log(currentUser);
+        let arr = JSON.parse(currentUser);
+        setCurrentUser(JSON.parse(currentUser));
+        setLoading(false);
+        // console.log("Current User: " + currentUser[0]._id);
+
+    }
+    useEffect(()=>{
+        getUserData();
+        
+    },[]);
     return(
         <SafeAreaView style={{flex:1,backgroundColor: COLORS.lightGray, }}>
             <Header/>
             <ScrollView>
 
             <View style={styles.container}>
-                <Card name={ route.params.name } type={ route.params.type } languages={ route.params.languages } experience={ route.params.experience } />
+                <Card name={ route.params.name } imgSrc={ route.params.imgSrc } type={ route.params.type } languages={ route.params.languages } experience={ route.params.experience } />
                 <View  style={styles.textStyle}>
                     <Text style={{padding: 12}}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, provident pariatur dolorum quidem nihil, quaerat voluptatibus nam adipisci consectetur repellendus, facilis excepturi? Aliquam assumenda enim quia laboriosam. Quam, temporibus perspiciatis?</Text>
                 </View>
@@ -24,14 +42,17 @@ function AboutScreen({ route }){
                     <Reviews/>
                 </View>
                 <Report_Button/>
-                <Chat_Button name={route.params.name} />
-            </View>
+                { loading && <ActivityIndicator size={"small"} color={COLORS.black} /> }
+                { currentUser && 
+                    <Chat_Button name={route.params.name} imgSrc={ route.params.imgSrc } currentUser={currentUser} contact={ route.params.contact } />
+                }
+                </View>
             </ScrollView>
         </SafeAreaView>
     );
 }
 
-function Card({ name, type, languages, experience }) {
+function Card({ name, imgSrc, type, languages, experience }) {
     const navigation = useNavigation();
     // console.log(experience);
     return (
@@ -39,18 +60,12 @@ function Card({ name, type, languages, experience }) {
             <View style={{flex:1, justifyContent: 'center', backgroundColor: COLORS.white}} >
                 
             
-            <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>{
-            // Navigate to Lawyer's AboutScreen 
-            navigation.navigate('About',{
-                    name,
-                    type,
-                    languages,
-                    experience
-                });
-            }} >
+            <TouchableOpacity style={{flexDirection: 'row'}}>
 
             <Image
-                source={image1}
+                source={{
+                    uri: imgSrc
+                }}
                 style={styles.imgStyle}
                 />
             <View style={{ flex: 1, marginLeft: 10, justifyContent: 'center' }} >
@@ -89,19 +104,30 @@ function Card({ name, type, languages, experience }) {
 
 function Report_Button(){
     return(
-        <View style={styles.report_btn}>
+        <TouchableOpacity style={styles.report_btn} onPress={()=>{
+            Alert.alert("Report", "Report an account", [
+                {
+                    text: "Cancel"
+                },
+                {
+                    text: "OK"
+                },
+        ]);
+        }} >
             <Text> Report Account </Text>
-        </View>
+        </TouchableOpacity>
     );
 }
 
-function Chat_Button({name}){
+function Chat_Button({name, imgSrc, contact, currentUser }){
     const navigation = useNavigation();
     return(
         <TouchableOpacity onPress={()=>{
             navigation.navigate('Chat',{
-                imgSrc: image1,
-                name,
+                imgSrc: imgSrc,
+                name: name,
+                contact: contact,
+                currentUser: currentUser
             });
         }} >
         <View style={styles.chat_btn}>
