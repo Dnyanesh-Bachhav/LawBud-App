@@ -33,7 +33,7 @@ function Lawyers({lawyersData}) {
                     data={ lawyersData }
                     style={styles.listStyle}
                     renderItem={({ item, index }) => (
-                        <Card name={item.name} type={item.type} userId={item.user_id} contact={item.contact} imgSrc={item.profile_image} languages={item.user_law_data.languages||["Marathi","Hindi","English"]} experience={item?.experience||0} key={index} favouriteLawyers={favouriteLawyers} setFavouriteLawyers={setFavouriteLawyers} lawyersData={ lawyersData } />
+                        <Card name={item.name} type={item.type} userId={item.user_id} contact={item.contact} imgSrc={item.profile_image} languages={item.user_law_data.languages||["Marathi","Hindi","English"]} experience={item?.user_law_data.experience.experience||0} key={index} favouriteLawyers={favouriteLawyers} setFavouriteLawyers={setFavouriteLawyers} lawyersData={ lawyersData } />
                         )}
                     keyExtractor={({ item, index }) => index}
                 />)
