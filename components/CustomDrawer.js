@@ -13,6 +13,8 @@ import { Rating, AirbnbRating } from 'react-native-ratings';
 
 function CustomDrawer(props) {
     const { signOut } = useContext(loginContext);
+    const [feedbackText, setFeedbackText] = useState(null);
+    const [ rating, setRating ] = useState(null); 
     const [modalVisible, setModalVisible] = useState(false);
     const [currentUserData, setCurrentUserData] = useState(null);
     async function getData() {
@@ -33,8 +35,17 @@ function CustomDrawer(props) {
             console.log(error)
         });
     }
+    function handleSubmit(){
+        const feedback = {
+            rating,
+            feedbackText,
+            from: currentUserData[0].email_id
+        }
+        console.log(feedback);
+    }
     function onFinishRating(rating) {
         console.log("Rating: " + rating);
+        setRating(rating);
     }
     useEffect(() => {
         getData();
@@ -76,9 +87,11 @@ function CustomDrawer(props) {
                             </View> */}
                             <Text style={{ marginTop: 5 }} >You can leave a written feedback here</Text>
                         </View>
-                        <TextInput cursorColor={COLORS.gray} numberOfLines={5} style={styles.inputStyle} />
-                        <TouchableOpacity style={{ backgroundColor: COLORS.black, marginTop: 10, borderRadius: 4 }} onPress={sendMail}>
-                            <Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }} >Submit</Text>
+                        <TextInput cursorColor={COLORS.gray} numberOfLines={5} style={styles.inputStyle}  onChangeText={(data)=>{
+                            setFeedbackText(data);
+                        }} />
+                        <TouchableOpacity style={{ backgroundColor: COLORS.black, marginTop: 10, borderRadius: 4 }} onPress={handleSubmit}>
+                            <Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }}>Submit</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
