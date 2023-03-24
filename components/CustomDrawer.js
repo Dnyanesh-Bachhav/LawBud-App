@@ -42,6 +42,7 @@ function CustomDrawer(props) {
             from: currentUserData[0].email_id
         }
         console.log(feedback);
+        
     }
     function onFinishRating(rating) {
         console.log("Rating: " + rating);
@@ -190,3 +191,9 @@ const styles = StyleSheet.create({
     }
 })
 export default CustomDrawer;
+
+
+
+
+
+

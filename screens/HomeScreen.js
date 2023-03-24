@@ -14,6 +14,7 @@ import { getLawyersData } from "../Services/requests";
 function HomeScreen() {
   const [lawyersData, setLawyersData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [ currentUserData, setCurrentUserData ] = useState();
   const { favouriteUsers, setfavouriteUsers } = useContext(AuthContext);
   async function getLawyersData1() {
     if (loading) {
@@ -37,7 +38,15 @@ function HomeScreen() {
     setfavouriteUsers(JSON.parse(data));
 
   }
+  async function getCurrentUserData(){
+    
+    let userData = await AsyncStorage.getItem("currentUserData");
+    console.log("In a profile:" + userData);
+    let data = JSON.parse(userData);
+    setCurrentUserData(data);
+  }
   useEffect(() => {
+    getCurrentUserData();
     getLawyersData1();
     setFavouritesData();
   }, []);
@@ -55,7 +64,7 @@ function HomeScreen() {
       {
         loading && <ActivityIndicator size={"small"} color={COLORS.black} />  
       }
-      { lawyersData && (<Header lawyersData={lawyersData} />)}
+      { lawyersData && (<Header lawyersData={lawyersData} currentUserData={ currentUserData } />)}
       {/* <ScrollView> */}
       <Text style={styles.textStyle}>Hello, User</Text>
       <Text style={{ fontSize: 20, fontWeight: '400', marginLeft: 10 }}>Categories</Text>

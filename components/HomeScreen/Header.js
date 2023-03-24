@@ -3,7 +3,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { COLORS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
 import SearchableDropDown from "react-native-searchable-dropdown";
-function Header({lawyersData}) {
+function Header({lawyersData, currentUserData }) {
     const navigation = useNavigation();
     // console.log("In a header:"+lawyersData);
     return (
@@ -56,7 +56,9 @@ function Header({lawyersData}) {
                 }}
             />
                 <TouchableOpacity onPress={()=>{
-                    navigation.navigate("Profile");
+                    navigation.navigate("Profile",{
+                        currentUserData
+                    });
                 }} >
                     <FontAwesome name="user" size={24} color={COLORS.white} style={{marginLeft: 5}} />
                 </TouchableOpacity>
