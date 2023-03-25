@@ -15,6 +15,7 @@ function HomeScreen() {
   const [lawyersData, setLawyersData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [ currentUserData, setCurrentUserData ] = useState();
+  const [ username, setUsername ] = useState();
   const { favouriteUsers, setfavouriteUsers } = useContext(AuthContext);
   async function getLawyersData1() {
     if (loading) {
@@ -35,6 +36,9 @@ function HomeScreen() {
   }
   async function setFavouritesData(){
     const data = await AsyncStorage.getItem("currentUserData");
+    let data1 = JSON.parse(data);
+    // setCurrentUserData(data1);
+    setUsername(data1[0].name);
     setfavouriteUsers(JSON.parse(data));
 
   }
@@ -52,6 +56,7 @@ function HomeScreen() {
   }, []);
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView>
       {/* <MarqueeText
           style={{ fontSize: 24 }}
           speed={1}
@@ -66,14 +71,15 @@ function HomeScreen() {
       }
       { lawyersData && (<Header lawyersData={lawyersData} currentUserData={ currentUserData } />)}
       {/* <ScrollView> */}
-      <Text style={styles.textStyle}>Hello, User</Text>
+      <Text style={styles.textStyle}>Hello, { username || "" }</Text>
       <Text style={{ fontSize: 20, fontWeight: '400', marginLeft: 10 }}>Categories</Text>
       <Categories />
       {
         loading && <ActivityIndicator size={"small"} color={COLORS.black} />  
       }
-      { lawyersData && <Lawyers lawyersData={lawyersData} />}
+      { lawyersData && <Lawyers lawyersData={lawyersData} currentUserData={currentUserData} />}
       {/* </ScrollView> */}
+      </ScrollView>
     </SafeAreaView>
   );
 }

@@ -25,6 +25,7 @@ function AboutScreen({ route }){
     }
     useEffect(()=>{
         getUserData();
+        // console.log( route.params.reviews );
         
     },[]);
     return(
@@ -39,7 +40,7 @@ function AboutScreen({ route }){
                 </View>
                 <View style={{ backgroundColor: COLORS.white, marginTop: 10, elevation: 2, borderRadius: 5, padding: 12, }} >
                     <Ratings/>
-                    <Reviews/>
+                    <Reviews reviews={ route.params.reviews } userId={ route.params.userId } currentUserData={ route.params.currentUserData }/>
                 </View>
                 <Report_Button/>
                 { loading && <ActivityIndicator size={"small"} color={COLORS.black} /> }

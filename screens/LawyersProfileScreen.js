@@ -67,7 +67,7 @@ function LawyersProfileScreen(){
             <Header headerText={"My Account"} />
             <View style={{ width: 100, height: 100, backgroundColor: COLORS.grey, borderRadius: 50, marginTop: 10, alignSelf: 'center',flexDirection: 'row', alignSelf: 'center', }} >
                     <View style={{width: '100%', height: '100%', borderRadius: 50, overflow: 'hidden' }}  >
-                    { image!=null ? <Image
+                    { currentUserData != null ? <Image
                     source={{ uri: currentUserData[0].profile_image || image }}
                     style={styles.imageStyle}
                     /> : <Image

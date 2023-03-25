@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getLawyersData } from "../../Services/requests";
 import { AuthContext } from "../context";
 
-function Lawyers({lawyersData}) {
+function Lawyers({lawyersData, currentUserData }) {
     const navigation = useNavigation();
     let[favouriteLawyers,setFavouriteLawyers] = useState([]);
     const { favouriteUsers, setFavouriteUsers } = useContext(AuthContext);
@@ -33,7 +33,7 @@ function Lawyers({lawyersData}) {
                     data={ lawyersData }
                     style={styles.listStyle}
                     renderItem={({ item, index }) => (
-                        <Card name={item.name} type={item.type} userId={item.user_id} contact={item.contact} imgSrc={item.profile_image} languages={item.user_law_data.languages||["Marathi","Hindi","English"]} experience={item?.user_law_data.experience.experience||0} key={index} favouriteLawyers={favouriteLawyers} setFavouriteLawyers={setFavouriteLawyers} lawyersData={ lawyersData } />
+                        <Card name={item.name} type={item.type} userId={item.user_id} contact={item.contact} imgSrc={item.profile_image} languages={item?.user_law_data?.languages||["Marathi","Hindi","English"]} reviews={ item.reviews } experience={item?.user_law_data?.experience.experience||0} key={index} currentUserData={currentUserData} favouriteLawyers={favouriteLawyers} setFavouriteLawyers={setFavouriteLawyers} lawyersData={ lawyersData } />
                         )}
                     keyExtractor={({ item, index }) => index}
                 />)
@@ -54,7 +54,7 @@ function Lawyers({lawyersData}) {
         </View>
     );
 }
-function Card({ name, userId, type, imgSrc, contact, languages, experience, favouriteLawyers, setFavouriteLawyers, lawyersData }) {
+function Card({ name, userId, type, imgSrc, contact, languages, reviews, experience, currentUserData, favouriteLawyers, setFavouriteLawyers, lawyersData }) {
     const navigation = useNavigation();
     const [ users,setUsers ] = useState([]);
     let favoritesArray = [];
@@ -142,11 +142,14 @@ function Card({ name, userId, type, imgSrc, contact, languages, experience, favo
             <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>{
                 navigation.navigate('About',{
                     name,
+                    userId,
                     imgSrc,
                     contact,
                     type,
                     languages,
-                    experience
+                    experience,
+                    reviews,
+                    currentUserData
                 });
             }} >
 

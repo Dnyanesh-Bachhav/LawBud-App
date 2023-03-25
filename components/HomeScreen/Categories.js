@@ -3,7 +3,7 @@ import { CATEGORIES, COLORS } from "../constants";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useEffect, useState } from "react";
 import { getLawyersCategories } from "../../Services/requests";
-const CARD_WIDTH = Dimensions.get("window").width / 4.6;
+const CARD_WIDTH = Dimensions.get("window").width / 4.8;
 const CARD_HEIGHT = Dimensions.get("window").height / 4;
 function Categories() {
     const [lawyersCategoriesData, setLawyersCategoriesData] = useState([]);
@@ -33,7 +33,7 @@ function Categories() {
                 <FlatList
                     data={lawyersCategoriesData}
                     numColumns={4}
-                    style={{ flexWrap: "wrap" }}
+                    style={{ flexWrap: "wrap", alignSelf: 'center' }}
                     columnWrapperStyle={{ alignContent: 'center', }}
                     renderItem={({ item, index }) => (
                         <Card name={item.name||"HI"} key={index} />
@@ -54,11 +54,11 @@ function Categories() {
 }
 function Card({ name, key }) {
     return (
-        <View style={{ alignItems: "center", justifyContent: 'center', marginLeft: 10, marginTop: 10, width: 80 }} key={key}>
+        <View style={{ position: 'relative',  top: 0, marginLeft: 10, marginTop: 16, width: 80 }} key={key}>
             <View style={{ width: CARD_WIDTH, height: CARD_WIDTH, borderRadius: 50, backgroundColor: COLORS.gray, }} >
 
             </View>
-            <Text numberOfLines={2} >{name || "HI" }</Text>
+            <Text numberOfLines={2} style={{ fontSize: 14, textAlign: 'center' }} >{name || "HI" }</Text>
         </View>
     );
 }
