@@ -41,7 +41,11 @@ function AboutScreen({ route }){
 
             <View style={styles.container}>
                 <Card name={ route.params.name } imgSrc={ route.params.imgSrc } type={ route.params.type } languages={ route.params.languages } experience={ route.params.experience } />
-                <View  style={{...styles.textStyle, marginBottom: 10, padding: 12, width: '100%' }}>
+                
+                <View  style={styles.textStyle}>
+                    <Text style={{padding: 12}}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, provident pariatur dolorum quidem nihil, quaerat voluptatibus nam adipisci consectetur repellendus, facilis excepturi? Aliquam assumenda enim quia laboriosam. Quam, temporibus perspiciatis?</Text>
+                </View>
+                <View  style={{...styles.textStyle, marginTop: 10, padding: 12, width: '100%' }}>
                     <Text>Rate a lawyer:</Text>
                     <Rating
                                 //   type='heart'
@@ -53,11 +57,8 @@ function AboutScreen({ route }){
                                 style={{ paddingVertical: 10 }}
                             />
                 </View>
-                <View  style={styles.textStyle}>
-                    <Text style={{padding: 12}}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, provident pariatur dolorum quidem nihil, quaerat voluptatibus nam adipisci consectetur repellendus, facilis excepturi? Aliquam assumenda enim quia laboriosam. Quam, temporibus perspiciatis?</Text>
-                </View>
                 <View style={{ backgroundColor: COLORS.white, marginTop: 10, elevation: 2, borderRadius: 5, padding: 12, }} >
-                    <Ratings/>
+                    <Ratings userId={ route.params.userId } />
                     <Reviews reviews={ route.params.reviews } userId={ route.params.userId } currentUserData={ route.params.currentUserData }/>
                 </View>
                 <Report_Button/>
