@@ -66,6 +66,7 @@ function Ratings({ userId }) {
         setReviews(data);
         setAverageReview(count / data.length);
     }
+    
     useEffect(() => {
         getReviews();
     }, []);
@@ -77,7 +78,7 @@ function Ratings({ userId }) {
             </View>
             <View style={{ flexDirection: 'row', }} >
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                    <Text style={styles.ratingText}>{averageReview}</Text>
+                    <Text style={styles.ratingText}>{averageReview.toFixed(2)}</Text>
                     
                     {/* <Rating
                         ratingCount={5}
@@ -88,11 +89,11 @@ function Ratings({ userId }) {
                     <Text style={{ color: COLORS.gray }}>{reviews.length} reviews</Text>
                 </View>
                 <View style={{ flex: 1, }}>
-                    <View style={styles.barStyle}><Text>1</Text><ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={oneCount.current / 10} color={COLORS.blue} style={{ width: '80%', marginLeft: 10 }} /></View>
-                    <View style={styles.barStyle}><Text>2</Text><ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={twoCount.current / 10} color={COLORS.blue} style={{ width: '80%', marginLeft: 10 }} /></View>
-                    <View style={styles.barStyle}><Text>3</Text><ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={threeCount.current / 10} color={COLORS.blue} style={{ width: '80%', marginLeft: 10 }} /></View>
-                    <View style={styles.barStyle}><Text>4</Text><ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={fourCount.current / 10} color={COLORS.blue} style={{ width: '80%', marginLeft: 10 }} /></View>
-                    <View style={styles.barStyle}><Text>5</Text><ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={ fiveCount.current } color={COLORS.blue} style={{ width: '80%', marginLeft: 10 }} /></View>
+                    <View style={styles.barStyle}><Text>1</Text><ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={oneCount.current} color={COLORS.blue} style={{ width: '80%', marginLeft: 10 }} /></View>
+                    <View style={styles.barStyle}><Text>2</Text><ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={twoCount.current} color={COLORS.blue} style={{ width: '80%', marginLeft: 10 }} /></View>
+                    <View style={styles.barStyle}><Text>3</Text><ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={threeCount.current} color={COLORS.blue} style={{ width: '80%', marginLeft: 10 }} /></View>
+                    <View style={styles.barStyle}><Text>4</Text><ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={fourCount.current} color={COLORS.blue} style={{ width: '80%', marginLeft: 10 }} /></View>
+                    <View style={styles.barStyle}><Text>5</Text><ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={ fiveCount.current} color={COLORS.blue} style={{ width: '80%', marginLeft: 10 }} /></View>
                 </View>
 
             </View>

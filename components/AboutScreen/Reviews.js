@@ -68,13 +68,18 @@ function Reviews({ reviews, userId, currentUserData }) {
                 <FlatList
                 data={ reviewsArray }
                         renderItem={({ item, index }) => (
-                            <View style={{ marginTop: 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: COLORS.lightGray, }} >
+                            <>
+                            {
+                                item.hasOwnProperty("review_msg") ?
+                                <View style={{ marginTop: 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: COLORS.lightGray, }} >
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }} >
                                     <View style={{ width: 50, height: 50, backgroundColor: COLORS.grey, borderRadius: 50 }}></View>
                                     <Text style={{ marginLeft: 10, fontWeight: 'bold' }}>Username</Text>
                                 </View>
                                 <Text style={{ color: COLORS.gray, marginLeft: 5, }} >{item.review_msg}</Text>
-                            </View>
+                                </View> : null
+                            }
+                            </>
                         )}
                         inverted={true}
                         keyExtractor={({ item, index }) => index}

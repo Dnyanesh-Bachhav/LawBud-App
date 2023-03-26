@@ -10,10 +10,12 @@ import Reviews from "../components/AboutScreen/Reviews";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { Rating } from "react-native-ratings";
+import axios from "axios";
 
 function AboutScreen({ route }){
     const [loading,setLoading] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
+    const [ lawyersRating, setLawyersRating ] = useState(0);
     const [ rating, setRating ] = useState(null);
     async function getUserData() {
         setLoading(true);
@@ -25,12 +27,42 @@ function AboutScreen({ route }){
         // console.log("Current User: " + currentUser[0]._id);
 
     }
-    function onFinishRating(rating) {
+    
+    async function getRatings(){
+        setLoading(true);
+        const response = await axios.get(`https://lawbud-backend.onrender.com/user/getReview/${route.params.userId}`);
+        console.log( "Response: " + JSON.stringify(response.data));
+        let reviews = response.data;
+        console.log(route.params.currentUserId);
+        reviews.data.forEach((item,index)=>{
+            console.log(item.reviewer);
+            if(item.reviewer === route.params.currentUserId){
+                console.log("Matched...");
+                setLawyersRating(item.rating);
+            }
+        });
+        setLoading(false);
+    }
+
+    async function onFinishRating(rating) {
         console.log("Rating: " + rating);
         setRating(rating);
+        let msg =
+        {
+            "reviewer": route.params.currentUserId,
+            "reviewed_on": route.params.userId,
+            "review_msg": rating + "",
+            "rating": rating,
+        }
+        console.log(msg);
+        axios.post("https://lawbud-backend.onrender.com/user/addRating/", msg).then((response)=>{
+            // reviews.push(msg);
+            getRatings();
+        })
     }
     useEffect(()=>{
         getUserData();
+        getRatings();
         // console.log( route.params.reviews );
         
     },[]);
@@ -50,7 +82,7 @@ function AboutScreen({ route }){
                     <Rating
                                 //   type='heart'
                                 ratingCount={5}
-                                startingValue={0}
+                                startingValue={lawyersRating}
                                 imageSize={40}
                                 showRating
                                 onFinishRating={onFinishRating}

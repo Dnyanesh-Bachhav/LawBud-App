@@ -142,6 +142,7 @@ function Card({ name, userId, type, imgSrc, contact, languages, reviews, experie
             <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>{
                 navigation.navigate('About',{
                     name,
+                    currentUserId: currentUserData[0].user_id,
                     userId,
                     imgSrc,
                     contact,
