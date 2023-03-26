@@ -9,10 +9,12 @@ import Ratings from "../components/AboutScreen/Ratings";
 import Reviews from "../components/AboutScreen/Reviews";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
+import { Rating } from "react-native-ratings";
 
 function AboutScreen({ route }){
     const [loading,setLoading] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
+    const [ rating, setRating ] = useState(null);
     async function getUserData() {
         setLoading(true);
         const currentUser = await AsyncStorage.getItem("currentUserData");
@@ -22,6 +24,10 @@ function AboutScreen({ route }){
         setLoading(false);
         // console.log("Current User: " + currentUser[0]._id);
 
+    }
+    function onFinishRating(rating) {
+        console.log("Rating: " + rating);
+        setRating(rating);
     }
     useEffect(()=>{
         getUserData();
@@ -35,6 +41,18 @@ function AboutScreen({ route }){
 
             <View style={styles.container}>
                 <Card name={ route.params.name } imgSrc={ route.params.imgSrc } type={ route.params.type } languages={ route.params.languages } experience={ route.params.experience } />
+                <View  style={{...styles.textStyle, marginBottom: 10, padding: 12, width: '100%' }}>
+                    <Text>Rate a lawyer:</Text>
+                    <Rating
+                                //   type='heart'
+                                ratingCount={5}
+                                startingValue={0}
+                                imageSize={40}
+                                showRating
+                                onFinishRating={onFinishRating}
+                                style={{ paddingVertical: 10 }}
+                            />
+                </View>
                 <View  style={styles.textStyle}>
                     <Text style={{padding: 12}}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, provident pariatur dolorum quidem nihil, quaerat voluptatibus nam adipisci consectetur repellendus, facilis excepturi? Aliquam assumenda enim quia laboriosam. Quam, temporibus perspiciatis?</Text>
                 </View>
