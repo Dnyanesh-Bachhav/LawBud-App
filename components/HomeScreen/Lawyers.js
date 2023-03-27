@@ -1,4 +1,4 @@
-import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { COLORS, LAWYERS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getLawyersData } from "../../Services/requests";
 import { AuthContext } from "../context";
 
-function Lawyers({lawyersData, currentUserData }) {
+function Lawyers({lawyersData, loading, getLawyersData1, currentUserData }) {
     const navigation = useNavigation();
     let[favouriteLawyers,setFavouriteLawyers] = useState([]);
     const { favouriteUsers, setFavouriteUsers } = useContext(AuthContext);
@@ -21,8 +21,14 @@ function Lawyers({lawyersData, currentUserData }) {
     //         return item.userType === "lawyer";
     //     }));
     // }
+    async function getFavouritesLawyers(){
+        const data = await AsyncStorage.getItem("favourites");
+        setFavouriteLawyers(JSON.parse(data));
+
+    }
     useEffect(()=>{
         // getLawyersData1();
+        getFavouritesLawyers();
         console.log(lawyersData.length);
     },[]);
     return (
@@ -32,6 +38,7 @@ function Lawyers({lawyersData, currentUserData }) {
                 (<FlatList
                     data={ lawyersData }
                     style={styles.listStyle}
+                    refreshControl={<RefreshControl refreshing={loading} onRefresh={getLawyersData1} />}
                     renderItem={({ item, index }) => (
                         <Card name={item.name} type={item.type} userId={item.user_id} contact={item.contact} imgSrc={item.profile_image} languages={item?.user_law_data?.languages||["Marathi","Hindi","English"]} reviews={ item.reviews } experience={item?.user_law_data?.experience.experience||0} key={index} currentUserData={currentUserData} favouriteLawyers={favouriteLawyers} setFavouriteLawyers={setFavouriteLawyers} lawyersData={ lawyersData } />
                         )}
