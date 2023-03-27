@@ -77,7 +77,7 @@ function HomeScreen() {
       {
         loading && <ActivityIndicator size={"small"} color={COLORS.black} />  
       }
-      { lawyersData && <Lawyers lawyersData={lawyersData} currentUserData={currentUserData} />}
+      { lawyersData && <Lawyers lawyersData={lawyersData} loading={loading} getLawyersData1={getLawyersData1} currentUserData={currentUserData} />}
       {/* </ScrollView> */}
       </ScrollView>
     </SafeAreaView>

@@ -90,8 +90,8 @@ function AboutScreen({ route }){
                             />
                 </View>
                 <View style={{ backgroundColor: COLORS.white, marginTop: 10, elevation: 2, borderRadius: 5, padding: 12, }} >
-                    <Ratings userId={ route.params.userId } />
-                    <Reviews reviews={ route.params.reviews } userId={ route.params.userId } currentUserData={ route.params.currentUserData }/>
+                    {/* <Ratings userId={ route.params.userId } /> */}
+                    <Reviews reviews={ route.params.reviews } lawyersRating={ lawyersRating } userId={ route.params.userId } currentUserData={ route.params.currentUserData }/>
                 </View>
                 <Report_Button/>
                 { loading && <ActivityIndicator size={"small"} color={COLORS.black} /> }
