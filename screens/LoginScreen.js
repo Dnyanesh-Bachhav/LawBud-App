@@ -43,7 +43,7 @@ function LoginScreen() {
         setLoading(false);
     }
     function checkUserIsValid() {
-        let foundUser = allUsers.filter((item, index) => {
+        let foundUser = allUsers?.filter((item, index) => {
             // console.log( String(item.contact) +" "+ phone);
             if( item.type === usersType)
             return String(item.contact) === phone;
@@ -62,7 +62,7 @@ function LoginScreen() {
         }
     }
     useEffect(() => {
-        setUsersData(allUsers.filter((item, index) => {
+        setUsersData(allUsers?.filter((item, index) => {
             return item.type === usersType;
         }));
     }, [userType]);

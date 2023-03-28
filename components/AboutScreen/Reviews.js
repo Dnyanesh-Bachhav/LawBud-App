@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRef } from "react";
+import { Rating } from "react-native-ratings";
 
 function Reviews({ userId, lawyersRating, currentUserData }) {
 
@@ -24,7 +25,9 @@ function Reviews({ userId, lawyersRating, currentUserData }) {
         console.log("Response: " + JSON.stringify(response.data));
         let reviews = response.data;
         console.log(reviews.data);
-        reviewsArray.current = reviews.data;
+        reviewsArray.current = reviews.data.filter((item,index)=>{
+            return item.hasOwnProperty("review_msg") == true;
+        })
         // setReviewsarray(reviews.data);
         if(reviews.data.length>0)
         {
@@ -80,6 +83,16 @@ function Reviews({ userId, lawyersRating, currentUserData }) {
             "review_msg": review,
             "rating": lawyersRating,
         }
+        if(review==null)
+        {
+            Alert.alert("Review","Please enter a valid review",[{
+                text: "Ok",
+                onPress: ()=>{
+                    return;
+                }
+            }]);
+            return;
+        }
         if(lawyersRating==0)
         {
             Alert.alert("Rating","Please enter a rating",[{
@@ -116,15 +129,27 @@ function Reviews({ userId, lawyersRating, currentUserData }) {
 
     return (
         <View style={styles.container}>
+             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom:10 }} >
+                <View style={{ width: 48, height: 48, backgroundColor: COLORS.grey, borderRadius: 50 }}></View>
+                <TextInput
+                    placeholder=" Write a Review"
+                    style={{ width: '70%', paddingVertical:6, paddingHorizontal: 10, marginLeft: 10, backgroundColor: COLORS.lightGray, borderRadius:5 }} onChangeText={(data) => {
+                        setReview(data);
+                    }} />
+                <TouchableOpacity onPress={handleSubmit} style={{backgroundColor: review?.length > 2 ? COLORS.black: COLORS.lightGray, marginHorizontal:4, paddingVertical: 8, paddingRight: 6, borderRadius: 50 }}>
+                    <MaterialCommunityIcons name="send" size={24} color="white" style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+            </View>
             <View style={styles.header}>
                 <Text>Ratings</Text>
-                <MaterialIcons name="arrow-forward-ios" size={21} color={COLORS.gray} />
+                
             </View>
-            <View style={{ flexDirection: 'row', }} >
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
+            <View style={{ flexDirection: 'row', backgroundColor: COLORS.lightGray, borderRadius: 10, padding: 10 }} >
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',  }} >
+                    <>
                     <Text style={styles.ratingText}>{averageReview.toFixed(2)}</Text>
 
-                    <Text style={{ color: COLORS.gray }}>{reviews.length} reviews</Text>
+                    <Text style={{ color: COLORS.gray }}>{reviews.length} reviews</Text></>
                 </View>
                 <View style={{ flex: 1, }}>
                     <View style={styles.barStyle}><Text>1</Text><ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={oneCount.current} color={COLORS.blue} style={{ width: '80%', marginLeft: 10 }} /></View>
@@ -137,18 +162,8 @@ function Reviews({ userId, lawyersRating, currentUserData }) {
             </View>
 
 
-            <Text style={{ marginBottom: 10 }} >Reviews</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }} >
-                <View style={{ width: 50, height: 50, backgroundColor: COLORS.grey, borderRadius: 50 }}></View>
-                <TextInput
-                    placeholder=" Write a review "
-                    style={{ width: '70%', paddingHorizontal: 10, marginLeft: 10, backgroundColor: COLORS.lightGray }} onChangeText={(data) => {
-                        setReview(data);
-                    }} />
-                <TouchableOpacity onPress={handleSubmit}>
-                    <MaterialCommunityIcons name="send" size={24} color="black" style={{ marginLeft: 10 }} />
-                </TouchableOpacity>
-            </View>
+            <Text style={{ marginVertical: 10 }} >User Reviews</Text>
+           
 
             {
                 loading && <ActivityIndicator size={"small"} color={COLORS.black} />
@@ -163,13 +178,29 @@ function Reviews({ userId, lawyersRating, currentUserData }) {
                     renderItem={({ item, index }) => (
                         <>
                             {
-                                item.hasOwnProperty("review_msg") ?
-                                    <View style={{ marginTop: 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: COLORS.lightGray, }} >
+                                item?.hasOwnProperty("review_msg") ?
+                                    <View key={index} style={{ marginTop: 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: COLORS.lightGray, }} >
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }} >
-                                            <View style={{ width: 50, height: 50, backgroundColor: COLORS.grey, borderRadius: 50 }}></View>
-                                            <Text style={{ marginLeft: 10, fontWeight: 'bold' }}>Username</Text>
+                                            <View style={{ width: 36, height: 36, backgroundColor: COLORS.grey, borderRadius: 50 }}></View>
+                                            <View>
+                                                <View style={{ flexDirection: 'row',justifyContent: 'space-between', alignItems: 'center' }} >
+                                                    <Text style={{ marginLeft: 10, fontWeight: 'bold', marginRight:5 }}>Name</Text>
+                                                    <Rating
+                                                    //   type='heart'
+                                                    ratingCount={5}
+                                                    imageSize={12}
+                                                    readonly
+                                                    style={{ alignSelf: 'flex-end', paddingVertical: 10 }}
+                                                    starContainerStyle={{padding:5}}
+                                                    startingValue={item?.rating}
+                                                    />
+                                                </View>
+                                                <Text style={{ color: COLORS.gray, marginLeft: 10 }} >{item?.review_msg}</Text>
+                                            </View>
+                                                
                                         </View>
-                                        <Text style={{ color: COLORS.gray, marginLeft: 5, }} >{item.review_msg}</Text>
+                                        
+                                        
                                     </View> : null
                             }
                         </>
@@ -184,7 +215,7 @@ function Reviews({ userId, lawyersRating, currentUserData }) {
             {
                 reviews.length > 1 ?
                     <TouchableOpacity>
-                        <View style={{ padding: 5, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginTop: 10, borderRadius: 5, width: '70%', backgroundColor: COLORS.lightGray }} >
+                        <View style={{ padding: 5, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginTop: 10, borderRadius: 5, width: '30%', backgroundColor: COLORS.lightGray }} >
                             <Text>See More</Text>
                             <MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
                         </View>

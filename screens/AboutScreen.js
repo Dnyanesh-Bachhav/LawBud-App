@@ -27,7 +27,33 @@ function AboutScreen({ route }){
         // console.log("Current User: " + currentUser[0]._id);
 
     }
-    
+    function getAverageReview() {
+        let count = 0;
+        let data = reviewsArray.current;
+        data.forEach((item, index) => {
+            switch (item.rating) {
+                case 1:
+                    oneCount.current = oneCount.current + 1;
+                    break;
+                case 2:
+                    twoCount.current = twoCount.current + 1;
+                    break;
+                case 3:
+                    threeCount.current = threeCount.current + 1;
+                    break;
+                case 4:
+                    fourCount.current = fourCount.current + 1;
+                    break;
+                case 5:
+                    fiveCount.current = fiveCount.current + 1;
+                    break;
+
+            }
+            count += item.rating;
+        });
+        
+        setAverageReview(count / data.length);
+    }
     async function getRatings(){
         setLoading(true);
         const response = await axios.get(`https://lawbud-backend.onrender.com/user/getReview/${route.params.userId}`);
@@ -73,12 +99,16 @@ function AboutScreen({ route }){
 
             <View style={styles.container}>
                 <Card name={ route.params.name } imgSrc={ route.params.imgSrc } type={ route.params.type } languages={ route.params.languages } experience={ route.params.experience } />
-                
+                { loading && <ActivityIndicator size={"small"} color={COLORS.black} /> }
+                { currentUser && 
+                    <Chat_Button name={route.params.name} imgSrc={ route.params.imgSrc } currentUser={currentUser} contact={ route.params.contact } />
+                }
                 <View  style={styles.textStyle}>
                     <Text style={{padding: 12}}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, provident pariatur dolorum quidem nihil, quaerat voluptatibus nam adipisci consectetur repellendus, facilis excepturi? Aliquam assumenda enim quia laboriosam. Quam, temporibus perspiciatis?</Text>
                 </View>
-                <View  style={{...styles.textStyle, marginTop: 10, padding: 12, width: '100%' }}>
-                    <Text>Rate a lawyer:</Text>
+               
+                <View  style={{...styles.textStyle,   padding: 12, width: '100%' }}>
+                    <Text>Rate {route.params.name}:</Text>
                     <Rating
                                 //   type='heart'
                                 ratingCount={5}
@@ -86,18 +116,15 @@ function AboutScreen({ route }){
                                 imageSize={40}
                                 showRating
                                 onFinishRating={onFinishRating}
-                                style={{ paddingVertical: 10 }}
+                                style={{ paddingBottom: 10 }}
                             />
                 </View>
-                <View style={{ backgroundColor: COLORS.white, marginTop: 10, elevation: 2, borderRadius: 5, padding: 12, }} >
+                <View style={{ backgroundColor: COLORS.white,   elevation: 2, borderRadius: 5, padding: 12, }} >
                     {/* <Ratings userId={ route.params.userId } /> */}
                     <Reviews reviews={ route.params.reviews } lawyersRating={ lawyersRating } userId={ route.params.userId } currentUserData={ route.params.currentUserData }/>
                 </View>
                 <Report_Button/>
-                { loading && <ActivityIndicator size={"small"} color={COLORS.black} /> }
-                { currentUser && 
-                    <Chat_Button name={route.params.name} imgSrc={ route.params.imgSrc } currentUser={currentUser} contact={ route.params.contact } />
-                }
+                
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -108,7 +135,7 @@ function Card({ name, imgSrc, type, languages, experience }) {
     const navigation = useNavigation();
     // console.log(experience);
     return (
-        <View style={{elevation: 2, borderRadius: 7, marginBottom: 10, overflow: 'hidden' }} >
+        <View style={{elevation: 2, borderRadius: 7,   overflow: 'hidden' }} >
             <View style={{flex:1, justifyContent: 'center', backgroundColor: COLORS.white}} >
                 
             
@@ -183,8 +210,8 @@ function Chat_Button({name, imgSrc, contact, currentUser }){
             });
         }} >
         <View style={styles.chat_btn}>
-            <Ionicons name="chatbubble-ellipses" size={24} color={COLORS.blue} />
-            <Text style={{ color: COLORS.blue, fontSize: 20, fontWeight: '400', marginLeft: 5}} >Chat</Text>
+            <Ionicons name="chatbubble-ellipses" size={24} color={COLORS.white} />
+            <Text style={{ color: COLORS.white, fontSize: 20, fontWeight: '400', marginLeft: 5}} >Chat</Text>
         </View>
         </TouchableOpacity>
     );
@@ -205,12 +232,13 @@ const styles = StyleSheet.create({
         resizeMode: "cover",
     },
     textStyle:{
+          width: '100%',
         flex: 1,
         elevation:2,
         backgroundColor: COLORS.white,
         alignSelf: 'center',
         borderRadius: 5,
-        
+        marginBottom:10
     },
     report_btn:{
         marginTop: 10,
@@ -225,12 +253,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: COLORS.secondary,
         justifyContent: 'center',
-        marginTop: 10,
+        
         paddingVertical: 10,
         alignItems: 'center',
         borderWidth: 1,
-        borderRadius: 5,
-        marginBottom: 20,
+        borderRadius: 5, marginVertical:10
     }
 });
 

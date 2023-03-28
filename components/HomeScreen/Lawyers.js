@@ -67,7 +67,7 @@ function Card({ name, userId, type, imgSrc, contact, languages, reviews, experie
     let favoritesArray = [];
     // console.log(experience);
     const elementRemove = ( userId )=>{
-        return users.filter((ele)=>{
+        return users?.filter((ele)=>{
             return ele.userId === userId;
         });
     }
@@ -121,7 +121,7 @@ function Card({ name, userId, type, imgSrc, contact, languages, reviews, experie
             }
       };
       const userFavoriteOrNot = ( userId )=>{
-        let response = users.some(item=>{
+        let response = users?.some(item=>{
             return item.userId === userId;
         });
         console.log("HI there how are you: "+response+" "+userId);

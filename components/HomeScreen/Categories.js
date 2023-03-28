@@ -37,18 +37,17 @@ function Categories() {
                     columnWrapperStyle={{ alignContent: 'center', }}
                     renderItem={({ item, index }) => (
                         <Card name={item.name||"HI"} key={index} />
-                        // <Text style={{fontSize: 200}} >Hi{item.name}</Text>
                     )}
                     keyExtractor={(item, index) => index}
                 />)
             }
-            <View style={{ flexDirection: 'row', backgroundColor: '#cbd5e1', alignItems: 'center', width: '50%', alignSelf: 'center', justifyContent: 'center', borderWidth: 1, borderColor: COLORS.gray, borderRadius: 5, paddingHorizontal: 5, paddingVertical: 5, marginTop: 15 }} >
-                <TouchableOpacity style={{ flexDirection: 'row' }} >
-                    <Text>See More</Text>
-                    <MaterialIcons name="keyboard-arrow-down" size={24} color={COLORS.black} />
+                 <TouchableOpacity style={{ padding: 5, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginTop: 10, borderRadius: 5, width: '30%', backgroundColor: COLORS.lightGray }} >
+                 
+                            <Text>See More</Text>
+                            <MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
+                         
                 </TouchableOpacity>
-            </View>
-
+ 
         </View>
     );
 }

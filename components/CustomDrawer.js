@@ -76,7 +76,9 @@ function CustomDrawer(props) {
                                 ratingCount={5}
                                 imageSize={40}
                                 showRating
+                                starContainerStyle={{padding:5}}
                                 onFinishRating={onFinishRating}
+                                startingValue={5} 
                                 style={{ paddingVertical: 10 }}
                             />
                             {/* <View style={{ flexDirection: 'row', marginTop: 5 }}>
@@ -91,7 +93,7 @@ function CustomDrawer(props) {
                         <TextInput cursorColor={COLORS.gray} numberOfLines={5} style={styles.inputStyle}  onChangeText={(data)=>{
                             setFeedbackText(data);
                         }} />
-                        <TouchableOpacity style={{ backgroundColor: COLORS.black, marginTop: 10, borderRadius: 4 }} onPress={handleSubmit}>
+                        <TouchableOpacity style={{ backgroundColor: COLORS.black, marginTop: 10, borderRadius: 4, paddingVertical :10 }} onPress={handleSubmit}>
                             <Text style={{ color: COLORS.white, padding: 4, textAlign: 'center' }}>Submit</Text>
                         </TouchableOpacity>
                     </View>
