@@ -11,12 +11,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { Rating } from "react-native-ratings";
 import axios from "axios";
+import { useRef } from "react";
 
 function AboutScreen({ route }){
     const [loading,setLoading] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
     const [ lawyersRating, setLawyersRating ] = useState(0);
     const [ rating, setRating ] = useState(null);
+    const reviewsArray = useRef([]);
+    const [averageReview, setAverageReview] = useState(0);
     async function getUserData() {
         setLoading(true);
         const currentUser = await AsyncStorage.getItem("currentUserData");
@@ -30,29 +33,14 @@ function AboutScreen({ route }){
     function getAverageReview() {
         let count = 0;
         let data = reviewsArray.current;
-        data.forEach((item, index) => {
-            switch (item.rating) {
-                case 1:
-                    oneCount.current = oneCount.current + 1;
-                    break;
-                case 2:
-                    twoCount.current = twoCount.current + 1;
-                    break;
-                case 3:
-                    threeCount.current = threeCount.current + 1;
-                    break;
-                case 4:
-                    fourCount.current = fourCount.current + 1;
-                    break;
-                case 5:
-                    fiveCount.current = fiveCount.current + 1;
-                    break;
-
-            }
-            count += item.rating;
+        data.forEach((item,index)=>{
+            
+                console.log("Rating: "+item.rating);
+                count += item.rating;
         });
         
-        setAverageReview(count / data.length);
+        setAverageReview(count / (data.length));
+        console.log("Count: "+ count + " Data: "+data.length +" "+ count / (data.length));
     }
     async function getRatings(){
         setLoading(true);
@@ -60,6 +48,7 @@ function AboutScreen({ route }){
         console.log( "Response: " + JSON.stringify(response.data));
         let reviews = response.data;
         console.log(route.params.currentUserId);
+        reviewsArray.current = reviews.data;
         reviews.data.forEach((item,index)=>{
             console.log(item.reviewer);
             if(item.reviewer === route.params.currentUserId){
@@ -67,6 +56,7 @@ function AboutScreen({ route }){
                 setLawyersRating(item.rating);
             }
         });
+        getAverageReview();
         setLoading(false);
     }
 
@@ -98,7 +88,7 @@ function AboutScreen({ route }){
             <ScrollView>
 
             <View style={styles.container}>
-                <Card name={ route.params.name } imgSrc={ route.params.imgSrc } type={ route.params.type } languages={ route.params.languages } experience={ route.params.experience } />
+                <Card name={ route.params.name } imgSrc={ route.params.imgSrc } type={ route.params.type } languages={ route.params.languages } experience={ route.params.experience } averageReview={ averageReview }  />
                 { loading && <ActivityIndicator size={"small"} color={COLORS.black} /> }
                 { currentUser && 
                     <Chat_Button name={route.params.name} imgSrc={ route.params.imgSrc } currentUser={currentUser} contact={ route.params.contact } />
@@ -131,7 +121,7 @@ function AboutScreen({ route }){
     );
 }
 
-function Card({ name, imgSrc, type, languages, experience }) {
+function Card({ name, imgSrc, type, languages, experience, averageReview }) {
     const navigation = useNavigation();
     // console.log(experience);
     return (
@@ -166,13 +156,22 @@ function Card({ name, imgSrc, type, languages, experience }) {
                 } )}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',marginRight: 10 }} >
                     <Text style={{ color: COLORS.gray }} >Exp: {experience}</Text>
-                    <View style={{ flexDirection: 'row' }} >
+                    <Rating
+                //   type='heart'
+                        ratingCount={5}
+                        imageSize={25}
+                        readonly
+                        style={{ alignSelf: 'flex-end', paddingVertical: 10 }}
+                        starContainerStyle={{padding:5}}
+                        startingValue={ averageReview }
+                        />
+                    {/* <View style={{ flexDirection: 'row' }} >
                         <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
                         <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
                         <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
                         <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
                         <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
-                    </View>
+                    </View> */}
                 </View>
             </View>
             </TouchableOpacity>
