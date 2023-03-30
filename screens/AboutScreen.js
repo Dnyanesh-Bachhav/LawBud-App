@@ -17,6 +17,7 @@ function AboutScreen({ route }){
     const [loading,setLoading] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
     const [ lawyersRating, setLawyersRating ] = useState(0);
+    
     const [ rating, setRating ] = useState(null);
     const reviewsArray = useRef([]);
     const [averageReview, setAverageReview] = useState(0);
@@ -102,7 +103,7 @@ function AboutScreen({ route }){
                     <Rating
                                 //   type='heart'
                                 ratingCount={5}
-                                startingValue={lawyersRating}
+                                startingValue={ lawyersRating }
                                 imageSize={40}
                                 showRating
                                 onFinishRating={onFinishRating}
@@ -111,7 +112,7 @@ function AboutScreen({ route }){
                 </View>
                 <View style={{ backgroundColor: COLORS.white,   elevation: 2, borderRadius: 5, padding: 12, }} >
                     {/* <Ratings userId={ route.params.userId } /> */}
-                    <Reviews reviews={ route.params.reviews } lawyersRating={ lawyersRating } userId={ route.params.userId } currentUserData={ route.params.currentUserData }/>
+                    <Reviews reviews={ route.params.reviews } averageReview={averageReview} setAverageReview={setAverageReview} lawyersRating={ lawyersRating } userId={ route.params.userId } currentUserData={ route.params.currentUserData }/>
                 </View>
                 <Report_Button/>
                 

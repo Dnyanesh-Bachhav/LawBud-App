@@ -7,12 +7,12 @@ import axios from "axios";
 import { useRef } from "react";
 import { Rating } from "react-native-ratings";
 
-function Reviews({ userId, lawyersRating, currentUserData }) {
+function Reviews({ userId, lawyersRating, averageReview, setAverageReview, currentUserData }) {
 
     // Rating
     const reviewsArray = useRef([]);
     // const [loading, setLoading] = useState(false);
-    const [averageReview, setAverageReview] = useState(0);
+    // const [averageReview, setAverageReview] = useState(0);
     const oneCount = useRef(0);
     const twoCount = useRef(0);
     const threeCount = useRef(0);
