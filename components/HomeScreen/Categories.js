@@ -20,6 +20,7 @@ function Categories() {
         let arr1 = [];
         for(let i=0;i< array.length;i=i+2)
         {
+            
             arr1.push([{ name: array[i].name }, { name: array[i+1].name }]);
         }
         setLawyersCategoriesData( arr1 );
@@ -47,11 +48,11 @@ function Categories() {
                     renderItem={({ item, index }) => {
                     return(
                         
-                        <View style={{ paddingVertical: 5 }}>
+                        <View style={{ paddingVertical: 5, marginRight: 5 }}>
                             <Card name={ item[0].name || "HI"} key={index} />
                             <Card name={ item[1].name || "HI"} key={index + 1} />
                         </View>
-                        );
+                        )
                         }
                     }
                     keyExtractor={(item, index) => index}
@@ -70,7 +71,7 @@ function Categories() {
 function Card({ name, key }) {
     return (
         <View style={{ position: 'relative', top: 0, marginLeft: 10, marginTop: 16, width: 80 }} key={key}>
-            <View style={{ width: CARD_WIDTH, height: CARD_WIDTH, borderRadius: 50, backgroundColor: COLORS.gray, }} >
+            <View style={{ width: CARD_WIDTH, height: CARD_WIDTH, borderRadius: 50, backgroundColor: COLORS.gray }}>
 
             </View>
             <TextTicker
