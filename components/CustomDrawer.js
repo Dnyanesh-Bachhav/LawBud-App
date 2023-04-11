@@ -10,6 +10,7 @@ import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { sendGridEmail } from "react-native-sendgrid";
 import { Rating, AirbnbRating } from 'react-native-ratings';
+import axios from "axios";
 
 function CustomDrawer(props) {
     const { signOut } = useContext(loginContext);
@@ -35,14 +36,14 @@ function CustomDrawer(props) {
             console.log(error)
         });
     }
-    function handleSubmit(){
+    async function handleSubmit(){
         const feedback = {
             rating,
             feedbackText,
             from: currentUserData[0].email_id
         }
         console.log(feedback);
-        
+        await axios.post("https://server.mintflick.app/user/send_mail", JSON.stringify(feedback))
     }
     function onFinishRating(rating) {
         console.log("Rating: " + rating);

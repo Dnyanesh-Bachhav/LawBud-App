@@ -3,7 +3,7 @@ export default {
   "expo": {
     "name": "LawBud",
     "slug": "LawBud-App",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/lawbud_icon.png",
     "userInterfaceStyle": "light",
@@ -14,7 +14,7 @@ export default {
     },
     "ios": {
       "bundleIdentifier": "com.lawbud.app",
-      "buildNumber": "0.1.0"
+      "buildNumber": "0.1.1"
     },
     "android": {
       "package": "com.lawbud.app",
