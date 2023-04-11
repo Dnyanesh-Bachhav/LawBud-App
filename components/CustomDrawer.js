@@ -37,10 +37,11 @@ function CustomDrawer(props) {
         });
     }
     async function handleSubmit(){
+        const HTMLContent = `${ feedbackText } \\n Rating: ${ rating }`;
         const feedback = {
-            rating,
-            feedbackText,
-            from: currentUserData[0].email_id
+            "subject": "Feedback from user: "+ currentUserData[0].name,
+            HTMLContent,
+            "recepient": currentUserData[0].email_id
         }
         console.log(feedback);
         await axios.post("https://server.mintflick.app/user/send_mail", JSON.stringify(feedback))
