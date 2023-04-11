@@ -1,16 +1,24 @@
 import "dotenv/config";
 export default {
   "expo": {
-    "name": "LawBud-App",
+    "name": "LawBud",
     "slug": "LawBud-App",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/lawbud_icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "bundleIdentifier": "com.lawbud.app",
+      "buildNumber": "0.1.0"
+    },
+    "android": {
+      "package": "com.lawbud.app",
+      "versionCode": 1
     },
     "updates": {
       "fallbackToCacheTimeout": 0
