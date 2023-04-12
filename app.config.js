@@ -18,7 +18,7 @@ export default {
     },
     "android": {
       "package": "com.lawbud.app",
-      "versionCode": 1
+      "versionCode": 2
     },
     "updates": {
       "fallbackToCacheTimeout": 0
