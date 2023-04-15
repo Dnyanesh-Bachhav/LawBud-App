@@ -28,7 +28,6 @@ function AboutScreen({ route }){
         let arr = JSON.parse(currentUser);
         setCurrentUser(JSON.parse(currentUser));
         setLoading(false);
-        // console.log("Current User: " + currentUser[0]._id);
 
     }
     function getAverageReview() {
@@ -166,13 +165,7 @@ function Card({ name, imgSrc, type, languages, experience, averageReview }) {
                         starContainerStyle={{padding:5}}
                         startingValue={ averageReview }
                         />
-                    {/* <View style={{ flexDirection: 'row' }} >
-                        <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
-                        <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
-                        <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
-                        <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
-                        <TouchableOpacity><AntDesign name="staro" size={20} color={COLORS.gray} /></TouchableOpacity>
-                    </View> */}
+                    
                 </View>
             </View>
             </TouchableOpacity>
