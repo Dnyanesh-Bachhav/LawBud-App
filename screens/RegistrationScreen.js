@@ -21,7 +21,7 @@ import { ProgressSteps, ProgressStep } from "react-native-progress-steps";
 import { AuthContext } from "../components/context";
 import { State } from "react-native-gesture-handler";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
-import { auth, firebaseConfig } from "../firebase";
+import { firebaseConfig } from "../firebase";
 import firebase from "firebase/compat/app";
 
 const SignupSchema = Yup.object().shape({
@@ -190,42 +190,46 @@ function Register({
     console.log("Email and phone: " + email + " " + phone);
   }
 
-  const sendVerification = async (phoneNumber) => {
+  const sendVerification = (phoneNumber) => {
     const phoneProvider = new firebase.auth.PhoneAuthProvider();
     console.log("Verify: " + phoneNumber);
     phoneProvider
       .verifyPhoneNumber(phoneNumber, recapchaVerifier.current)
       .then((res)=>{
-        console.log("Output: "+res);
+        // console.log("Output: "+res);
         setVerificationId(res);
-      })
-      .then(() => {
+      }).then(() => {
         refRBSheet.current.open();
       }).catch((error)=>{
         Alert.alert("Error"+error.message);
       });
-      console.log("Verification ID:"+verificationId);
-    setPhone("");
+      // console.log("Verification ID:"+verificationId);
+      setPhone("");
   };
 
-  const confirmCode = () => {
+  const confirmCode = async () => {
     console.log("Code: "+code);
+    console.log("VerificationId"+verificationId);
     const credential = firebase.auth.PhoneAuthProvider.credential(
       verificationId,
       code
     );
+    // let userData = await firebase.auth().currentUser.linkWithCredential(credential);
+    // console.log("USerdata: "+ userData);
     console.log("Credential: "+ JSON.stringify(credential));
-    firebase
-      .auth()
-      .signInWithCredential(credential)
-      .then(() => {
+    firebase.auth().signInWithCredential(credential).then(() => {
         setCode("");
-      })
-      .catch((error) => {
+        navigation.navigate("Personal", {
+          userType,
+          lawyersCategoriesData,
+        });
+      }).catch((error) => {
+        console
         // Alert.alert("Error", error.message);
         alert(error);
         return;
       });
+      
     Alert.alert("Login Successful...");
   };
 
@@ -487,10 +491,7 @@ function SheetComponent({
           <TouchableOpacity
             onPress={() => {
               formikRef.current.submitForm();
-              navigation.navigate("Personal", {
-                userType,
-                lawyersCategoriesData,
-              });
+              
             }}
             style={{
               backgroundColor: isValid ? COLORS.black : COLORS.grey,
