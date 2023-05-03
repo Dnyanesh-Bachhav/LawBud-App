@@ -29,8 +29,8 @@ const LoginSchema = Yup.object().shape({
 });
 const LoginOTPSchema = Yup.object().shape({
   otp: Yup.string()
-    .min(4, "Must be exactly 4 digits")
-    .max(4, "Must be exactly 4 digits")
+    .min(6, "Must be exactly 6 digits")
+    .max(6, "Must be exactly 6 digits")
     .matches(/^[0-9]+$/, "Must be only digits")
     .required("Please enter your OTP"),
 });
@@ -39,7 +39,7 @@ function LoginScreen() {
   const refRBSheet = useRef();
   const formikRef = useRef();
   const navigation = useNavigation();
-  const [code, setCode] = useState("");
+  const code = useRef(null);
   const [verificationId, setVerificationId] = useState(null);
   const recapchaVerifier = useRef(null);  
   const { usersType, setUsersType } = useContext(AuthContext);
@@ -96,7 +96,8 @@ function LoginScreen() {
       .auth()
       .signInWithCredential(credential)
       .then(() => {
-        setCode("");
+        // setCode("");
+        code.current = null;
       })
       .catch((error) => {
         // Alert.alert("Error", error.message);
@@ -107,13 +108,13 @@ function LoginScreen() {
   };
   function checkUserIsValid() {
     let foundUser = allUsers?.filter((item, index) => {
-      // console.log( String(item.contact) +" "+ phone);
-      if (item.type === usersType) return String(item.contact) === phone;
+      console.log( String(item.contact) +" "+ phone);
+      if (item.type === usersType) return ("+" + String(item.contact)) === phone;
     });
     // console.log("Found user: "+ JSON.stringify(foundUser));
     if (foundUser.length !== 0) {
-      ToastAndroid.show("1234", ToastAndroid.SHORT);
-      refRBSheet.current.open();
+      // ToastAndroid.show("1234", ToastAndroid.SHORT);
+      sendVerification(phone);
     } else {
       Alert.alert("Invalid user!", "Phone Number is incorrect...", [
         { text: "Okay" },
@@ -219,7 +220,6 @@ function LoginScreen() {
                   let phone1 = state.phone;
                   setPhone(phone1);
                   checkUserIsValid();
-                  sendVerification(phone1);
                   // console.log("State:"+ JSON.stringify(state));
                 }}
                 validationSchema={LoginSchema}
@@ -326,6 +326,7 @@ function LoginScreen() {
                   setLoading={setLoading}
                   signIn={signIn}
                   phone={phone}
+                  code={code}
                   usersData={usersData}
                 />
               </RBSheet>
@@ -351,6 +352,7 @@ function SheetComponent({
   setUsersType,
   setLoading,
   signIn,
+  code,
   phone,
   usersData,
 }) {
@@ -392,7 +394,8 @@ function SheetComponent({
       validationSchema={LoginOTPSchema}
       innerRef={formikRef1}
       onSubmit={(state) => {
-        setOtp(state.otp);
+        // setOtp(state.otp);
+        code.current = state.otp;
       }}
     >
       {({

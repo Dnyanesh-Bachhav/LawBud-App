@@ -123,7 +123,6 @@ function AboutScreen({ route }){
 
 function Card({ name, imgSrc, type, languages, experience, averageReview }) {
     const navigation = useNavigation();
-    // console.log(experience);
     return (
         <View style={{elevation: 2, borderRadius: 7,   overflow: 'hidden' }} >
             <View style={{flex:1, justifyContent: 'center', backgroundColor: COLORS.white}} >

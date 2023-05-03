@@ -19,7 +19,6 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { ProgressSteps, ProgressStep } from "react-native-progress-steps";
 import { AuthContext } from "../components/context";
-import { State } from "react-native-gesture-handler";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { firebaseConfig } from "../firebase";
 import firebase from "firebase/compat/app";
@@ -27,8 +26,8 @@ import firebase from "firebase/compat/app";
 const SignupSchema = Yup.object().shape({
   email: Yup.string().email("Please enter a valid email").required("Required"),
   phone: Yup.string()
-    .min(13, "Must be exactly 10 digits")
-    .max(13, "Must be exactly 10 digits")
+    .min(13, "Must be exactly 13 digits")
+    .max(13, "Must be exactly 13 digits")
     .matches(/^[+0-9]+$/, "Must be only digits")
     .required("Please enter your mobile number"),
 });
@@ -177,7 +176,7 @@ function Register({
   const [currentOption, setCurrentOption] = useState("user");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [code, setCode] = useState("");
+  const code = useRef(null);
   const [verificationId, setVerificationId] = useState(null);
   const recapchaVerifier = useRef(null);
   const navigation = useNavigation();
@@ -208,23 +207,24 @@ function Register({
   };
 
   const confirmCode = async () => {
-    console.log("Code: "+code);
+    console.log("Code: "+code.current);
     console.log("VerificationId"+verificationId);
     const credential = firebase.auth.PhoneAuthProvider.credential(
       verificationId,
-      code
+      code.current
     );
     // let userData = await firebase.auth().currentUser.linkWithCredential(credential);
     // console.log("USerdata: "+ userData);
     console.log("Credential: "+ JSON.stringify(credential));
     firebase.auth().signInWithCredential(credential).then(() => {
-        setCode("");
+        // setCode("");
+        code.current = null;
         navigation.navigate("Personal", {
           userType,
           lawyersCategoriesData,
         });
       }).catch((error) => {
-        console
+        console.log();
         // Alert.alert("Error", error.message);
         alert(error);
         return;
@@ -417,6 +417,8 @@ function Register({
             userType={userType}
             email={email}
             phone={phone}
+            code={code}
+            // setCode={setCode}
             setNewUserData1={setNewUserData1}
             newUserData={newUserData}
             lawyersCategoriesData={lawyersCategoriesData}
@@ -434,6 +436,7 @@ function SheetComponent({
   email,
   phone,
   newUserData,
+  code,
   setNewUserData1,
   lawyersCategoriesData,
   confirmCode,
@@ -453,7 +456,10 @@ function SheetComponent({
       initialValues={{
         otp: "",
       }}
-      onSubmit={() => {
+      onSubmit={(state) => {
+        console.log("OTP: "+state.otp);
+        // setCode(state.otp);
+        code.current = state.otp;
         confirmCode();
         // setData((prev)=>({
         //     ...prev,

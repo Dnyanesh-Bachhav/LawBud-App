@@ -52,8 +52,7 @@ function PersonalScreen({ route }) {
     async function handleSubmitData() {
         setLoading(true);
         if(name!==null)
-        {
-            
+        {            
         signUp(newUserData).then((response) => {
             navigation.navigate("SignIn");
         }).finally(() => {
