@@ -14,12 +14,12 @@ import { loginContext } from "../components/context1";
 const UserPersonalSchema = Yup.object().shape({
     name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
     HAddress: Yup.string().min(2, "Too short address").max(100, "Too long address").required('Required'),
-    AlternatePhone: Yup.string().min(10, "Must be exactly 10 digits").max(10, "Must be exactly 10 digits").matches(/^[0-9]+$/, "Must be only digits").notRequired()
+    AlternatePhone: Yup.string().min(13, "Must be exactly 13 digits").max(13, "Must be exactly 13 digits").matches(/^[+0-9]+$/, "Must be only digits").notRequired()
 });
 const LawyerPersonalSchema = Yup.object().shape({
     name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
     OAddress: Yup.string().min(2, "Too short address").max(100, "Too long address").required('Required'),
-    AlternatePhone: Yup.string().min(10, "Must be exactly 10 digits").max(10, "Must be exactly 10 digits").matches(/^[0-9]+$/, "Must be only digits").notRequired()
+    AlternatePhone: Yup.string().min(13, "Must be exactly 13 digits").max(13, "Must be exactly 13 digits").matches(/^[+0-9]+$/, "Must be only digits").notRequired()
 });
 function PersonalScreen({ route }) {
     const { newUserData, updateUser } = useContext(AuthContext);

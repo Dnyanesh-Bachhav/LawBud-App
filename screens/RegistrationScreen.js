@@ -230,7 +230,7 @@ function Register({
         return;
       });
       
-    Alert.alert("Login Successful...");
+    // Alert.alert("Login Successful...");
   };
 
   useEffect(() => {

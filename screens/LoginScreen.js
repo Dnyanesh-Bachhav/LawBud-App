@@ -41,11 +41,12 @@ function LoginScreen() {
   const navigation = useNavigation();
   const code = useRef(null);
   const [verificationId, setVerificationId] = useState(null);
-  const recapchaVerifier = useRef(null);  
+  const recapchaVerifier = useRef(null);
+  const foundUser = useRef(null);
   const { usersType, setUsersType } = useContext(AuthContext);
   const { signIn } = useContext(loginContext);
   let [userType, setUserType] = useState("user");
-  let [phone, setPhone] = useState();
+  let [phone, setPhone] = useState("");
   let [allUsers, setAllUsers] = useState([]);
   let [usersData, setUsersData] = useState(null);
   let [loading, setLoading] = useState(false);
@@ -56,7 +57,7 @@ function LoginScreen() {
     setLoading(true);
     console.log("Called 1");
     const data1 = await getLawyersData();
-    console.log(data1.data);
+    // console.log(data1.data);
     console.log("Called 2");
     setAllUsers(data1.data);
     setUsersData(
@@ -107,13 +108,16 @@ function LoginScreen() {
     Alert.alert("Login Successful...");
   };
   function checkUserIsValid() {
-    let foundUser = allUsers?.filter((item, index) => {
-      console.log( String(item.contact) +" "+ phone);
-      if (item.type === usersType) return ("+" + String(item.contact)) === phone;
+    console.log("Check user is valid...");
+    let formatted_phone = phone.replace("+","");
+    let foundUser1 = allUsers?.filter((item, index) => {
+      console.log( String(item.contact) +" "+ formatted_phone);
+      if (item.type === usersType) return (String(item.contact)) === formatted_phone;
     });
-    // console.log("Found user: "+ JSON.stringify(foundUser));
-    if (foundUser.length !== 0) {
+    console.log("Found user: "+ JSON.stringify(foundUser));
+    if (foundUser1.length !== 0) {
       // ToastAndroid.show("1234", ToastAndroid.SHORT);
+      foundUser.current = foundUser1;
       sendVerification(phone);
     } else {
       Alert.alert("Invalid user!", "Phone Number is incorrect...", [
@@ -330,6 +334,8 @@ function LoginScreen() {
                   setUsersType={setUsersType}
                   usersType={usersType}
                   setLoading={setLoading}
+                  confirmCode={confirmCode}
+                  foundUser={foundUser}
                   signIn={signIn}
                   phone={phone}
                   code={code}
@@ -358,6 +364,8 @@ function SheetComponent({
   setUsersType,
   setLoading,
   signIn,
+  foundUser,
+  confirmCode,
   code,
   phone,
   usersData,
@@ -370,18 +378,19 @@ function SheetComponent({
     setLoading(true);
     let usersArray = usersData;
     console.log(usersArray);
-    let foundUser = usersArray.filter((item, index) => {
-      console.log(String(item.contact) + " " + phone);
-      return String(item.contact) === phone;
-    });
-    console.log("Found user: " + JSON.stringify(foundUser));
-    if (foundUser.length === 0) {
-      Alert.alert("Invalid user!", "Username or password is incorrect...", [
-        { text: "Okay" },
-      ]);
-      return;
-    }
-    signIn(foundUser)
+    let formatted_phone = phone.replace("+","");
+    // let foundUser = usersArray.filter((item, index) => {
+    //   console.log(String(item.contact) + " " + formatted_phone);
+    //   return String(item.contact) === formatted_phone;
+    // });
+    // console.log("Found user: " + JSON.stringify(foundUser));
+    // if (foundUser.length === 0) {
+    //   Alert.alert("Invalid user!", "Username or password is incorrect...", [
+    //     { text: "Okay" },
+    //   ]);
+    //   return;
+    // }
+    signIn(foundUser.current)
       .then(() => {
         console.log("User logged in...");
       })
@@ -402,6 +411,8 @@ function SheetComponent({
       onSubmit={(state) => {
         // setOtp(state.otp);
         code.current = state.otp;
+        loginHandle();
+
       }}
     >
       {({
@@ -445,7 +456,6 @@ function SheetComponent({
               //     // navigation.navigate("LawyersDashboard");
               // }
               formikRef1.current.submitForm();
-              loginHandle(phone, otp);
             }}
           >
             <Text
