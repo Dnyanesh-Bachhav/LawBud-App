@@ -165,11 +165,11 @@ export default function App() {
         await AsyncStorage.setItem("userToken", userToken);
         await AsyncStorage.setItem("currentUserData", JSON.stringify(foundUser));
         // await AsyncStorage.setItem("currentUserData",null);
-        signInWithEmailAndPassword(auth,foundUser[0].email_id,foundUser[0].contact).then(()=>{
-          Alert.alert("Login Successful...");
-        }).catch((e)=>{
-          Alert.alert("Error occured...");
-        })
+        // signInWithEmailAndPassword(auth,foundUser[0].email_id,("+" + String(foundUser[0].contact))).then(()=>{
+        //   Alert.alert("Login Successful...");
+        // }).catch((e)=>{
+        //   Alert.alert("Error occured..."+e);
+        // })
 
       }
       catch (e) {

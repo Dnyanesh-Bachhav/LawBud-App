@@ -109,12 +109,13 @@ function LoginScreen() {
   };
   function checkUserIsValid() {
     console.log("Check user is valid...");
-    let formatted_phone = phone.replace("+","");
+    let formatted_phone = phone.replace("+", "");
     let foundUser1 = allUsers?.filter((item, index) => {
-      console.log( String(item.contact) +" "+ formatted_phone);
-      if (item.type === usersType) return (String(item.contact)) === formatted_phone;
+      console.log(String(item.contact) + " " + formatted_phone);
+      if (item.type === usersType)
+        return String(item.contact) === formatted_phone;
     });
-    console.log("Found user: "+ JSON.stringify(foundUser));
+    console.log("Found user: " + JSON.stringify(foundUser));
     if (foundUser1.length !== 0) {
       // ToastAndroid.show("1234", ToastAndroid.SHORT);
       foundUser.current = foundUser1;
@@ -143,7 +144,7 @@ function LoginScreen() {
         ref={recapchaVerifier}
         firebaseConfig={firebaseConfig}
       />
-      
+
       <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: "400" }}>
         Login
       </Text>
@@ -203,12 +204,12 @@ function LoginScreen() {
           </Text>
         </TouchableOpacity>
       </View>
-      {loading &&
-      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ color: COLORS.white, marginTop: 10}}>Loading...</Text>
-        <ActivityIndicator size={"small"} color={COLORS.white} />
-      </View> 
-      }
+      {loading && (
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Text style={{ color: COLORS.white, marginTop: 10 }}>Loading...</Text>
+          <ActivityIndicator size={"small"} color={COLORS.white} />
+        </View>
+      )}
       {!loading && (
         <View
           style={{
@@ -249,6 +250,7 @@ function LoginScreen() {
                       <TextInput
                         style={styles.inputStyle}
                         cursorColor={COLORS.gray}
+                        placeholder="Enter Phone no. with country code (+91)"
                         value={values.phone}
                         onChangeText={handleChange("phone")}
                         onBlur={() => setFieldTouched("phone")}
@@ -378,7 +380,7 @@ function SheetComponent({
     setLoading(true);
     let usersArray = usersData;
     console.log(usersArray);
-    let formatted_phone = phone.replace("+","");
+    let formatted_phone = phone.replace("+", "");
     // let foundUser = usersArray.filter((item, index) => {
     //   console.log(String(item.contact) + " " + formatted_phone);
     //   return String(item.contact) === formatted_phone;
@@ -412,7 +414,6 @@ function SheetComponent({
         // setOtp(state.otp);
         code.current = state.otp;
         loginHandle();
-
       }}
     >
       {({
