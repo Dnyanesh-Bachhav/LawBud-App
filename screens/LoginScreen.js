@@ -135,13 +135,14 @@ function LoginScreen() {
   }, []);
   return (
     <View style={styles.container}>
-      <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: "400" }}>
-        Login
-      </Text>
       <FirebaseRecaptchaVerifierModal
         ref={recapchaVerifier}
         firebaseConfig={firebaseConfig}
       />
+      
+      <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: "400" }}>
+        Login
+      </Text>
       <View
         style={{
           flexDirection: "row",
@@ -198,8 +199,13 @@ function LoginScreen() {
           </Text>
         </TouchableOpacity>
       </View>
-      {loading && <ActivityIndicator size={"small"} color={COLORS.white} />}
-      {usersData && (
+      {loading &&
+      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ color: COLORS.white, marginTop: 10}}>Loading...</Text>
+        <ActivityIndicator size={"small"} color={COLORS.white} />
+      </View> 
+      }
+      {!loading && (
         <View
           style={{
             backgroundColor: COLORS.white,
