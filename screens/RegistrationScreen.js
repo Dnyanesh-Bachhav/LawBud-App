@@ -482,7 +482,7 @@ function SheetComponent({
         isValid,
         handleSubmit,
       }) => (
-        <View style={{ padding: 10 }}>
+        <View style={{ paddingVertical: 20, paddingHorizontal: 40 }}>
           <View style={{ marginTop: 10 }}>
             <Text style={{ color: COLORS.gray }}>Enter OTP</Text>
             <TextInput
@@ -492,6 +492,7 @@ function SheetComponent({
               onChangeText={handleChange("otp")}
               onBlur={() => setFieldTouched("otp")}
             />
+            
           </View>
 
           <TouchableOpacity

@@ -207,12 +207,32 @@ export default function App() {
       let data1;
       try {
 
-        data1 = await axios.post("https://lawbud-backend.onrender.com/user/addUser", data);
-        createUserWithEmailAndPassword(auth, data.email_id,data.contact).then(()=>{
-          Alert.alert("Uploaded...");
-        }).catch((e)=>{
-          Alert.alert("Error...",e.message);
-        });
+        const promise1 = axios.post("https://lawbud-backend.onrender.com/user/addUser", data)
+        // .then(()=>{
+        //   // Alert.alert("User added...");
+        // }).catch((error)=>{
+        //   Alert.alert("Error"+error);
+        // });
+        // console.log("POST request");
+        // console.log(data1);
+        
+        const promise2 = createUserWithEmailAndPassword(auth, data.email_id,data.contact)
+        // .then(()=>{
+        //   Alert.alert("Uploaded...");
+        // }).catch((e)=>{
+        //   Alert.alert("Error...",e.message);
+        // });
+        Promise.all([promise1,promise2]).then(responses=>{
+          if(responses[0].status==200 && responses[0].status==200)
+          {
+            Alert.alert("Uploaded...");
+          }
+          else{
+            Alert.alert("Something went wrong...");
+          }
+        }).catch((error)=>{
+          console.log(error);
+        })
         const db = getFirestore();
           // const response = await db.collection("users").doc(uuidv4()).set({
           //   ...data,

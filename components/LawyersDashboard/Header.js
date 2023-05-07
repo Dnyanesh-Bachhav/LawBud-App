@@ -5,7 +5,7 @@ import { DrawerActions, useNavigation } from "@react-navigation/native";
 import SearchableDropDown from "react-native-searchable-dropdown";
 import { useContext } from "react";
 import { AuthContext } from "../context";
-function Header() {
+function Header({ currentUserData }) {
     const navigation = useNavigation();
     const { usersType } = useContext(AuthContext);
     return (
@@ -64,7 +64,10 @@ function Header() {
                         navigation.navigate("Profile");
                     }
                     else{
-                        navigation.navigate("LawyersProfile");
+                        navigation.navigate("LawyersProfile",{
+                                currentUserData: currentUserData
+                            
+                        });
                     }
                 }} >
                     <FontAwesome name="user" size={24} color={COLORS.white} style={{ marginLeft: 5 }} />

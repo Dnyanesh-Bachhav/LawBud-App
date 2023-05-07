@@ -1,15 +1,42 @@
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../components/constants";
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import Header from "../components/LawyersDashboard/Header";
+import { useEffect } from "react";
+import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function LawyersDashboardScreen() {
   const navigation = useNavigation();
+  const [ currentUserData, setCurrentUserData ] = useState();
+  const [loading, setLoading] = useState(false);
+  async function getCurrentUserData() {
+    setLoading(true);
+    let userData = await AsyncStorage.getItem("currentUserData");
+    console.log("In a profile:" + userData);
+    let data = JSON.parse(userData);
+    setCurrentUserData(data)
+    setLoading(false);
+  }
+  useEffect(()=>{
+    getCurrentUserData();
+  },[]);
   return (
     <View style={styles.container}>
-      <Header />
+      <Header currentUserData={currentUserData} />
+      {
+        loading == true ? 
+        <View style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }} >
+          <ActivityIndicator size={"small"} color={COLORS.black} />
+        </View>
+        :
+      
       <ScrollView style={{ paddingHorizontal: 20 }}>
         <Text style={styles.textStyle}>Hello, User</Text>
         <View style={styles.cardStyle}>
@@ -64,6 +91,7 @@ function LawyersDashboardScreen() {
           </View>
         {/* </View> */}
       </ScrollView>
+      }
     </View>
   );
 }
