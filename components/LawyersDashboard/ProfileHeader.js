@@ -46,9 +46,9 @@ function Header({ headerText, isEnabled, setIsEnabled }) {
             alignItems: "center",
           }}
         >
-          {/* <MaterialIcons name="edit" size={18} color={COLORS.white} /> */}
+          <MaterialIcons name="edit" size={18} color={COLORS.white} />
           <Text style={{ color: COLORS.white }}>Edit</Text>
-          <Switch
+          {/* <Switch
             trackColor={{ false: "#767577", true: "#81b0ff" }}
             thumbColor={isEnabled ? "#1976d2" : "#f4f3f4"}
             ios_backgroundColor="#3e3e3e"
@@ -59,7 +59,7 @@ function Header({ headerText, isEnabled, setIsEnabled }) {
                 margin: 0,
                 height: 30
             }}
-          />
+          /> */}
         </TouchableOpacity>
       </View>
     </View>
